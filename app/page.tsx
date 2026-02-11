@@ -35,7 +35,7 @@ export default async function Home({
     metal === "gold" ? getGoldRates(currency) : getSilverRates(currency)
   ]);
   const activeAsset = metal === "gold" ? overview.assets.gold : overview.assets.silver;
-  const accentColor = metal === "gold" ? "#a67922" : "#6b7280";
+  const accentColor = metal === "gold" ? "#d4a843" : "#9ca3af";
   const title = metal === "gold" ? "Gold" : "Silver";
   const convertedLivePrice =
     metal === "gold"
@@ -55,11 +55,11 @@ export default async function Home({
   return (
     <main className="min-h-screen bg-mesh px-4 py-8 md:px-8 md:py-10">
       <div className="mx-auto max-w-7xl space-y-6">
-        <section className="space-y-4 rounded-3xl border border-black/10 bg-panel/90 p-6 shadow-soft md:p-8">
+        <section className="space-y-4 rounded-3xl border border-border bg-panel/90 p-6 shadow-soft md:p-8">
           <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
             <div>
-              <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">Bullion Intelligence Panel</h1>
-              <p className="mt-1 text-sm text-ink/65">Focused live + historical view by selected asset tab</p>
+              <h1 className="text-3xl font-semibold tracking-tight text-accent md:text-4xl">SG Gold</h1>
+              <p className="mt-1 text-sm text-ink/50">Live bullion prices &amp; intelligence</p>
             </div>
             <div className="flex flex-col gap-2">
               <MetalNav active={metal} currency={currency} range={range} />
@@ -91,14 +91,13 @@ export default async function Home({
 
         <section className="space-y-3">
           {isMockSource ? (
-            <div className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-              Live provider is rate-limited right now. Showing fallback mock values, so prices may not match today's
-              India market.
+            <div className="rounded-xl border border-amber-700/50 bg-amber-900/20 px-4 py-3 text-sm text-amber-300">
+              Live provider is rate-limited. Showing fallback mock values — prices may not match today&apos;s market.
             </div>
           ) : null}
           <div>
             <h2 className="text-2xl font-semibold">{title} Rate Matrix</h2>
-            <p className="text-sm text-ink/65">
+            <p className="text-sm text-ink/50">
               Updated at {new Date(rates.updatedAt).toLocaleString("en-IN")} ({rates.source})
             </p>
           </div>

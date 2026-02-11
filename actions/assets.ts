@@ -1,5 +1,7 @@
 "use server";
 
+import { cookies } from "next/headers";
+
 export type Currency = "USD" | "INR" | "EUR" | "GBP" | "AED";
 export type Metal = "gold" | "silver";
 export type Range = "1D" | "1W" | "1M" | "5M" | "1Y" | "5Y" | "10Y";
@@ -8,9 +10,13 @@ const API_BASE = process.env.BACKEND_API_BASE_URL;
 const API_KEY = process.env.BACKEND_API_KEY;
 const DEFAULT_API_BASE = "http://localhost:4000";
 
-async function callBackend<T>(path: string): Promise<T> {
+export async function callBackend<T>(path: string, options?: RequestInit): Promise<T> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("sg_token")?.value;
+
   const headers: HeadersInit = {
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
+    ...(token ? { Cookie: `sg_token=${token}` } : {}),
   };
   const cleanedKey = API_KEY?.trim();
   if (cleanedKey && cleanedKey.toLowerCase() !== "replace_me") {
@@ -19,7 +25,8 @@ async function callBackend<T>(path: string): Promise<T> {
 
   const response = await fetch(`${API_BASE ?? DEFAULT_API_BASE}${path}`, {
     headers,
-    cache: "no-store"
+    cache: "no-store",
+    ...options,
   });
 
   if (!response.ok) {

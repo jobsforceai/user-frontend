@@ -36,20 +36,35 @@ export function HistoricalChart({ title, currency, color, range, data }: Props) 
     });
 
   return (
-    <Card className="border border-black/5 p-5 md:p-6">
-      <p className="mb-3 text-sm font-medium tracking-wide text-ink/75">{title}</p>
+    <Card className="border border-border p-5 md:p-6">
+      <p className="mb-3 text-sm font-medium tracking-wide text-ink/60">{title}</p>
       <div className="h-64 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
             <XAxis
               dataKey="time"
               tickFormatter={xTickFormatter}
-              tick={{ fontSize: 11 }}
+              tick={{ fontSize: 11, fill: "#9ca3af" }}
               minTickGap={28}
               interval="preserveStartEnd"
+              stroke="#2a2a2a"
             />
-            <YAxis tickFormatter={(value) => `${Math.round(value)}`} tick={{ fontSize: 11 }} width={60} />
-            <Tooltip formatter={(value: number) => formatCurrency(value, currency)} labelFormatter={tooltipLabelFormatter} />
+            <YAxis
+              tickFormatter={(value) => `${Math.round(value)}`}
+              tick={{ fontSize: 11, fill: "#9ca3af" }}
+              width={60}
+              stroke="#2a2a2a"
+            />
+            <Tooltip
+              formatter={(value: number) => formatCurrency(value, currency)}
+              labelFormatter={tooltipLabelFormatter}
+              contentStyle={{
+                backgroundColor: "#1a1a1a",
+                border: "1px solid #2a2a2a",
+                borderRadius: "8px",
+                color: "#f5f5f5"
+              }}
+            />
             <Line type="monotone" dataKey="price" stroke={color} strokeWidth={2.2} dot={false} />
           </LineChart>
         </ResponsiveContainer>
