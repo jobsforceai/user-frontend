@@ -10,6 +10,8 @@ export type User = {
   name: string;
   email?: string;
   accountType: "regular" | "jeweller";
+  jewellerStatus?: "pending" | "approved" | "rejected";
+  jewellerSubscriptionSlabPaise?: number;
 };
 
 async function authFetch<T>(path: string, body: Record<string, unknown>): Promise<{ data?: T; error?: string }> {
@@ -109,5 +111,79 @@ export async function getMe(): Promise<User | null> {
     return json.user;
   } catch {
     return null;
+  }
+}
+
+export async function updateProfile(data: {
+  name?: string;
+  email?: string;
+}): Promise<{ user?: User; error?: string }> {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("sg_token")?.value;
+
+    const response = await fetch(`${API_BASE}/api/v1/auth/profile`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Cookie: `sg_token=${token}` } : {}),
+      },
+      body: JSON.stringify(data),
+      cache: "no-store",
+    });
+
+    const json = await response.json() as Record<string, unknown>;
+    if (!response.ok) return { error: (json.message as string) ?? "Update failed" };
+    return { user: json.user as User };
+  } catch {
+    return { error: "Network error" };
+  }
+}
+
+export async function changePassword(data: {
+  currentPassword: string;
+  newPassword: string;
+}): Promise<{ ok?: boolean; error?: string }> {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("sg_token")?.value;
+
+    const response = await fetch(`${API_BASE}/api/v1/auth/password`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Cookie: `sg_token=${token}` } : {}),
+      },
+      body: JSON.stringify(data),
+      cache: "no-store",
+    });
+
+    const json = await response.json() as Record<string, unknown>;
+    if (!response.ok) return { error: (json.message as string) ?? "Password change failed" };
+    return { ok: true };
+  } catch {
+    return { error: "Network error" };
+  }
+}
+
+export async function requestJewellerAccount(): Promise<{ user?: User; error?: string }> {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("sg_token")?.value;
+
+    const response = await fetch(`${API_BASE}/api/v1/auth/jeweller-request`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Cookie: `sg_token=${token}` } : {}),
+      },
+      cache: "no-store",
+    });
+
+    const json = await response.json() as Record<string, unknown>;
+    if (!response.ok) return { error: (json.message as string) ?? "Request failed" };
+    return { user: json.user as User };
+  } catch {
+    return { error: "Network error" };
   }
 }

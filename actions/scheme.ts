@@ -54,12 +54,23 @@ export async function getScheme(schemeId: string) {
   return schemeFetch<{ scheme: SchemeData }>(`/api/v1/scheme/${schemeId}`);
 }
 
-export async function enrollScheme(slabAmountPaise: number) {
-  return schemeFetch<{ scheme: SchemeData }>("/api/v1/scheme/enroll", "POST", { slabAmountPaise });
+export async function enrollScheme(slabAmountPaise: number, sgxCode?: string) {
+  return schemeFetch<{ scheme: SchemeData }>("/api/v1/scheme/enroll", "POST", {
+    slabAmountPaise,
+    ...(sgxCode ? { sgxCode } : {}),
+  });
 }
 
 export async function paySchemeInstallment(schemeId: string) {
   return schemeFetch<{ scheme: SchemeData }>(`/api/v1/scheme/${schemeId}/pay`, "POST");
+}
+
+export async function verifySgxCode(code: string, monthlyAmountPaise: number) {
+  return schemeFetch<{ valid: boolean; code: string; reward?: string; error?: string }>(
+    "/api/v1/trade/sgx/verify",
+    "POST",
+    { code, monthlyAmountPaise }
+  );
 }
 
 export async function redeemSchemeAction(schemeId: string) {

@@ -31,3 +31,21 @@ export async function getTransactions(page = 1, limit = 20) {
     limit: number;
   }>(`/api/v1/wallet/transactions?page=${page}&limit=${limit}`);
 }
+
+export type StorageBenefitStatus = {
+  eligible: boolean;
+  thresholdMg: number;
+  rewardMg: number;
+  balanceMg: number;
+  claimedThisMonth: boolean;
+};
+
+export async function getStorageBenefitStatus() {
+  return callBackend<StorageBenefitStatus>("/api/v1/wallet/storage-benefit");
+}
+
+export async function claimStorageBenefit() {
+  return callBackend<{ creditedMg: number; newBalance: number }>("/api/v1/wallet/storage-benefit/claim", {
+    method: "POST",
+  });
+}

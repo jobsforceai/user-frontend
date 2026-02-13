@@ -1,20 +1,23 @@
-import { getWallet, getTransactions } from "@/actions/wallet";
+import { getWallet, getTransactions, getStorageBenefitStatus } from "@/actions/wallet";
 import { getOverview } from "@/actions/assets";
+import { StorageBenefitCard } from "./storage-benefit-card";
 
 const gramsPerOunce = 31.1035;
 
 export default async function WalletPage() {
-  let wallet, txResult, goldPerGram;
+  let wallet, txResult, goldPerGram, storageBenefit;
 
   try {
-    const [w, t, overview] = await Promise.all([
+    const [w, t, overview, sb] = await Promise.all([
       getWallet(),
       getTransactions(1, 20),
       getOverview("INR"),
+      getStorageBenefitStatus().catch(() => null),
     ]);
     wallet = w;
     txResult = t;
     goldPerGram = overview.assets.gold.price / gramsPerOunce;
+    storageBenefit = sb;
   } catch {
     return (
       <div className="mx-auto max-w-4xl">
@@ -70,6 +73,9 @@ export default async function WalletPage() {
           )}
         </div>
       </div>
+
+      {/* Storage Benefit */}
+      {storageBenefit && <StorageBenefitCard status={storageBenefit} />}
 
       <div className="rounded-2xl border border-border bg-panel">
         <div className="border-b border-border px-5 py-3">

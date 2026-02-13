@@ -40,7 +40,7 @@ export async function getOverview(currency: Currency) {
   return callBackend<{
     currency: Currency;
     updatedAt: string;
-    source: "alpha_vantage" | "mock";
+    source: "gold_api" | "yahoo_finance" | "alpha_vantage" | "mock";
     assets: {
       gold: {
         metal: Metal;
@@ -49,7 +49,7 @@ export async function getOverview(currency: Currency) {
         change: number;
         changePercent: number;
         timestamp: string;
-        source: "alpha_vantage" | "mock";
+        source: "gold_api" | "yahoo_finance" | "alpha_vantage" | "mock";
       };
       silver: {
         metal: Metal;
@@ -58,7 +58,7 @@ export async function getOverview(currency: Currency) {
         change: number;
         changePercent: number;
         timestamp: string;
-        source: "alpha_vantage" | "mock";
+        source: "gold_api" | "yahoo_finance" | "alpha_vantage" | "mock";
       };
     };
   }>(`/api/v1/assets/overview?currency=${currency}`);
@@ -69,7 +69,7 @@ export async function getHistorical(metal: Metal, currency: Currency, range: Ran
     metal: Metal;
     currency: Currency;
     range: Range;
-    source: "alpha_vantage" | "mock";
+    source: "gold_api" | "yahoo_finance" | "alpha_vantage" | "mock";
     data: Array<{ time: string; price: number }>;
   }>(`/api/v1/assets/${metal}/historical?currency=${currency}&range=${range}`);
 }
@@ -78,7 +78,7 @@ export async function getGoldRates(currency: Currency) {
   return callBackend<{
     currency: Currency;
     updatedAt: string;
-    source: "alpha_vantage" | "mock";
+    source: "gold_api" | "yahoo_finance" | "alpha_vantage" | "mock";
     rows: Array<{
       label: string;
       grams1: number;
@@ -94,7 +94,7 @@ export async function getSilverRates(currency: Currency) {
   return callBackend<{
     currency: Currency;
     updatedAt: string;
-    source: "alpha_vantage" | "mock";
+    source: "gold_api" | "yahoo_finance" | "alpha_vantage" | "mock";
     rows: Array<{
       label: string;
       grams1: number;
