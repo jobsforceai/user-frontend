@@ -58,7 +58,7 @@ const schemeSlabs = [
 const stores = [
   "Vizag", "Vijayawada", "Hyderabad", "Rajahmundry",
   "Bhimavaram", "Anakapalli", "Tirupati", "Guntur",
-  "Nellore", "Kakinada", "Warangal"
+  "Nellore", "Kakinada","Khammam", "Warangal"
 ];
 
 export default async function Home({
