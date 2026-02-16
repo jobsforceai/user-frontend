@@ -82,7 +82,7 @@ export function AboutSection() {
       style={{ backgroundColor: "#0B0B0F" }}
     >
       <div className="mx-auto max-w-7xl px-5 py-24 md:px-8 md:py-36">
-        <div className="grid items-center gap-16 lg:grid-cols-2">
+        <div className="grid items-center gap-10 sm:gap-16 lg:grid-cols-2">
           {/* Left — Text with gold accent line */}
           <div className="relative flex gap-6 md:gap-8">
             {/* Vertical gold line */}

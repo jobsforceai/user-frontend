@@ -148,7 +148,7 @@ export function BusinessSection({ authHref }: { authHref: string }) {
             <div
               key={tier.slab}
               ref={(el) => { cardRefs.current[i] = el; }}
-              className="group relative rounded-2xl p-6 text-center transition-all duration-500"
+              className="group relative rounded-2xl p-4 sm:p-6 text-center transition-all duration-500"
               style={{
                 background: "rgba(255,255,255,0.02)",
                 border: "1px solid rgba(255,255,255,0.06)",

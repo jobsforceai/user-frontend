@@ -37,23 +37,23 @@ export default async function WalletPage() {
     <div className="mx-auto max-w-4xl space-y-6">
       <h1 className="text-2xl font-semibold">Wallet</h1>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <div className="rounded-2xl border border-border bg-panel p-5">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3">
+        <div className="col-span-2 rounded-2xl border border-border bg-panel p-4 sm:col-span-1 sm:p-5">
           <p className="text-xs text-ink/40">Gold Balance</p>
-          <p className="mt-1 text-2xl font-semibold text-accent">{balanceGrams.toFixed(3)}g</p>
+          <p className="mt-1 text-xl font-semibold text-accent sm:text-2xl">{balanceGrams.toFixed(3)}g</p>
           <p className="text-sm text-ink/50">{fmt(balanceValue)}</p>
         </div>
-        <div className="rounded-2xl border border-border bg-panel p-5">
+        <div className="rounded-2xl border border-border bg-panel p-4 sm:p-5">
           <p className="text-xs text-ink/40">Total Purchased</p>
-          <p className="mt-1 text-2xl font-semibold">{(wallet.totalPurchasedMg / 1000).toFixed(3)}g</p>
+          <p className="mt-1 text-xl font-semibold sm:text-2xl">{(wallet.totalPurchasedMg / 1000).toFixed(3)}g</p>
         </div>
-        <div className="rounded-2xl border border-border bg-panel p-5">
+        <div className="rounded-2xl border border-border bg-panel p-4 sm:p-5">
           <p className="text-xs text-ink/40">Bonus Earned</p>
-          <p className="mt-1 text-2xl font-semibold text-green-400">{(wallet.totalBonusMg / 1000).toFixed(3)}g</p>
+          <p className="mt-1 text-xl font-semibold text-green-400 sm:text-2xl">{(wallet.totalBonusMg / 1000).toFixed(3)}g</p>
         </div>
       </div>
 
-      <div className="rounded-2xl border border-border bg-panel p-5 space-y-3">
+      <div className="rounded-2xl border border-border bg-panel p-4 sm:p-5 space-y-3">
         <p className="text-sm font-medium">First 1g Bonus Progress</p>
         <div className="space-y-1.5">
           <div className="flex justify-between text-xs text-ink/50">

@@ -30,7 +30,7 @@ export function ProfileForm({ name: initialName, email: initialEmail }: { name: 
   }
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-2xl border border-border bg-panel p-6">
+    <form onSubmit={handleSubmit} className="rounded-2xl border border-border bg-panel p-4 sm:p-6">
       <h2 className="mb-4 text-sm font-semibold uppercase tracking-widest text-ink/40">Edit Profile</h2>
 
       {error && <div className="mb-4 rounded-lg border border-red-800/50 bg-red-900/20 px-3 py-2 text-sm text-red-400">{error}</div>}

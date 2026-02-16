@@ -30,7 +30,7 @@ export default async function ProfilePage() {
       </div>
 
       {/* Account Info (read-only) */}
-      <div className="rounded-2xl border border-border bg-panel p-6">
+      <div className="rounded-2xl border border-border bg-panel p-4 sm:p-6">
         <h2 className="mb-4 text-sm font-semibold uppercase tracking-widest text-ink/40">Account</h2>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
@@ -46,7 +46,7 @@ export default async function ProfilePage() {
 
       {/* Jeweller Status (if applicable) */}
       {user.jewellerStatus === "approved" && user.jewellerSubscriptionSlabPaise && (
-        <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-6">
+        <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-4 sm:p-6">
           <h2 className="mb-3 text-sm font-semibold uppercase tracking-widest text-emerald-400">Jeweller Account</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>

@@ -57,7 +57,7 @@ export default function SellPage() {
         <p className="text-sm text-ink/50">Minimum 1,000mg to sell</p>
       </div>
 
-      <div className="space-y-5 rounded-2xl border border-border bg-panel p-6">
+      <div className="space-y-5 rounded-2xl border border-border bg-panel p-4 sm:p-6">
         {error && (
           <div className="rounded-lg border border-red-800/50 bg-red-900/20 px-3 py-2 text-sm text-red-400">{error}</div>
         )}

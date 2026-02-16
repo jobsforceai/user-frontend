@@ -1,9 +1,21 @@
 "use client";
 
-import { useRef, useEffect, Suspense } from "react";
+import { useRef, useEffect, useState, Suspense } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, Environment, ContactShadows } from "@react-three/drei";
 import * as THREE from "three";
+
+function isWebGLAvailable(): boolean {
+  try {
+    const canvas = document.createElement("canvas");
+    return !!(
+      window.WebGLRenderingContext &&
+      (canvas.getContext("webgl") || canvas.getContext("experimental-webgl"))
+    );
+  } catch {
+    return false;
+  }
+}
 
 const MODEL_PATH = "/3d-assets/197701168a124b83a466cf96390935ed_Textured.gltf";
 
@@ -87,6 +99,36 @@ interface Model3DViewerProps {
 }
 
 export function Model3DViewer({ stateRef, onLoaded }: Model3DViewerProps) {
+  const [webgl, setWebgl] = useState(true);
+
+  useEffect(() => {
+    if (!isWebGLAvailable()) {
+      setWebgl(false);
+      onLoaded(); // dismiss loading overlay
+    }
+  }, [onLoaded]);
+
+  if (!webgl) {
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <div className="text-center">
+          <div
+            className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full"
+            style={{
+              background: "linear-gradient(135deg, #d4a843 0%, #b8860b 100%)",
+              boxShadow: "0 4px 30px rgba(212,168,67,0.3)",
+            }}
+          >
+            <span className="text-2xl font-black text-white">SG</span>
+          </div>
+          <p className="text-sm font-medium" style={{ color: "#999" }}>
+            Digital Gold, Real Value
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <Canvas
       camera={{ position: [0, 0, 12], fov: 32 }}
@@ -114,6 +156,5 @@ export function Model3DViewer({ stateRef, onLoaded }: Model3DViewerProps) {
         />
       </Suspense>
     </Canvas>
-
   );
 }

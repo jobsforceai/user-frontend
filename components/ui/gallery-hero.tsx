@@ -188,7 +188,7 @@ export function GalleryHero() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-screen h-screen overflow-hidden"
+      className="relative w-full h-screen overflow-hidden"
       style={{ backgroundColor: "#ffffff" }}
     >
       {/* Background */}
@@ -220,7 +220,7 @@ export function GalleryHero() {
       {/* ── TOP HEADING ── */}
       <div
         ref={headingRef}
-        className="absolute left-0 bottom-2 z-10 pointer-events-none"
+        className="absolute left-0 bottom-2 z-10 pointer-events-none px-4 sm:px-6 md:px-8"
       >
         <h1
           className="select-none font-black uppercase text-left"
@@ -247,7 +247,7 @@ export function GalleryHero() {
       </div>
 
       {/* ── SUBHEADING ── */}
-      <div className="absolute bottom-2 right-0 z-10 flex flex-col items-center pointer-events-none">
+      <div className="absolute bottom-2 right-0 z-10 flex flex-col items-center pointer-events-none px-4 sm:px-6 md:px-8">
         <p
           ref={subheadingRef}
           className="max-w-lg text-right font-semibold select-none"

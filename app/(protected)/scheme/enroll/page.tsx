@@ -87,7 +87,7 @@ export default function SchemeEnrollPage() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* ── Left: Contribution Calculator ── */}
-        <div className="rounded-2xl border border-border bg-panel p-6">
+        <div className="rounded-2xl border border-border bg-panel p-4 sm:p-6">
           <h2 className="text-lg font-semibold text-ink">Contribution Calculator</h2>
 
           <div className="mt-6">
@@ -207,11 +207,11 @@ export default function SchemeEnrollPage() {
           </div>
 
           {/* Benefit table */}
-          <div className="overflow-hidden rounded-2xl border border-border bg-panel">
+          <div className="overflow-x-auto rounded-2xl border border-border bg-panel">
             <div className="border-b border-border bg-panel-alt/50 px-4 py-2.5">
               <p className="text-xs font-semibold uppercase tracking-widest text-ink/40">Benefit Comparison</p>
             </div>
-            <table className="w-full text-left text-sm">
+            <table className="w-full min-w-[420px] text-left text-sm">
               <thead className="text-xs uppercase tracking-wide text-ink/30">
                 <tr>
                   <th className="px-4 py-2">Monthly</th>

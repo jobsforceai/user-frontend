@@ -239,7 +239,7 @@ export function LiveMarketRates({
               </Link>
             </div>
 
-            <div className="flex gap-1">
+            <div className="flex flex-wrap gap-1">
               {ranges.map((r) => (
                 <Link
                   scroll={false}

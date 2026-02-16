@@ -42,9 +42,9 @@ export default async function SchemePage() {
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold">11-Month Scheme</h1>
+          <h1 className="text-xl font-semibold sm:text-2xl">11-Month Scheme</h1>
           <p className="text-sm text-ink/50">Invest monthly, earn bonus on the 12th month</p>
         </div>
         <Link

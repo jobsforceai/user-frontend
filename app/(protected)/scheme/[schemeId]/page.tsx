@@ -68,9 +68,9 @@ export default function SchemeDetailPage() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold">Scheme Detail</h1>
+          <h1 className="text-xl font-semibold sm:text-2xl">Scheme Detail</h1>
           <p className="text-sm text-ink/50">{fmt(scheme.slabAmountPaise)} /month</p>
         </div>
         <span className={`rounded-full px-3 py-1 text-xs font-medium ${
@@ -85,8 +85,8 @@ export default function SchemeDetailPage() {
       {error && <div className="rounded-lg border border-red-800/50 bg-red-900/20 px-3 py-2 text-sm text-red-400">{error}</div>}
       {success && <div className="rounded-lg border border-green-800/50 bg-green-900/20 px-3 py-2 text-sm text-green-400">{success}</div>}
 
-      <div className="grid gap-3 md:grid-cols-3">
-        <div className="rounded-xl border border-border bg-panel p-4">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+        <div className="col-span-2 rounded-xl border border-border bg-panel p-4 md:col-span-1">
           <p className="text-xs text-ink/40">Total Paid</p>
           <p className="mt-1 text-lg font-semibold">{fmt(totalPaidPaise)}</p>
         </div>

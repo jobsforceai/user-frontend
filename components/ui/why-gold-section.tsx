@@ -190,7 +190,7 @@ export function WhyGoldSection() {
             <div
               key={card.title}
               ref={(el) => { cardRefs.current[i] = el; }}
-              className="group relative rounded-2xl p-8 transition-all duration-500"
+              className="group relative rounded-2xl p-5 sm:p-8 transition-all duration-500"
               style={{
                 background: "rgba(255,255,255,0.02)",
                 border: "1px solid rgba(255,255,255,0.05)",

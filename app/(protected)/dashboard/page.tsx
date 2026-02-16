@@ -73,11 +73,11 @@ export default async function DashboardPage({
   };
 
   return (
-    <div className="mx-auto max-w-5xl space-y-6">
+    <div className="mx-auto max-w-5xl space-y-5 sm:space-y-6">
 
       {/* ── Wallet Summary ── */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-2xl border border-accent/20 bg-panel p-5">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+        <div className="rounded-2xl border border-accent/20 bg-panel p-4 sm:p-5">
           <div className="flex items-center justify-between">
             <p className="text-xs uppercase tracking-widest text-ink/40">Gold Balance</p>
             {profitPercent > 0 && (
@@ -89,19 +89,19 @@ export default async function DashboardPage({
           <p className="mt-1 text-2xl font-bold text-accent">{balanceGrams.toFixed(3)}g</p>
           <p className="text-sm text-ink/50">{fmt(balanceValue)}</p>
         </div>
-        <div className="rounded-2xl border border-border bg-panel p-5">
+        <div className="rounded-2xl border border-border bg-panel p-4 sm:p-5">
           <p className="text-xs uppercase tracking-widest text-ink/40">Total Purchased</p>
-          <p className="mt-1 text-2xl font-bold text-ink">{totalPurchasedGrams.toFixed(3)}g</p>
+          <p className="mt-1 text-xl font-bold text-ink sm:text-2xl">{totalPurchasedGrams.toFixed(3)}g</p>
           <p className="text-sm text-ink/50">{fmt(purchasedValue)}</p>
         </div>
-        <div className="rounded-2xl border border-border bg-panel p-5">
+        <div className="rounded-2xl border border-border bg-panel p-4 sm:p-5">
           <p className="text-xs uppercase tracking-widest text-ink/40">Bonus Earned</p>
-          <p className="mt-1 text-2xl font-bold text-emerald-400">{totalBonusGrams.toFixed(3)}g</p>
+          <p className="mt-1 text-xl font-bold text-emerald-400 sm:text-2xl">{totalBonusGrams.toFixed(3)}g</p>
           <p className="text-sm text-ink/50">{fmt(profitFromBonus)}</p>
         </div>
-        <div className="rounded-2xl border border-border bg-panel p-5">
+        <div className="rounded-2xl border border-border bg-panel p-4 sm:p-5">
           <p className="text-xs uppercase tracking-widest text-ink/40">Current Value</p>
-          <p className="mt-1 text-2xl font-bold text-ink">{fmt(balanceValue)}</p>
+          <p className="mt-1 text-xl font-bold text-ink sm:text-2xl">{fmt(balanceValue)}</p>
           <RefreshTimer intervalSeconds={60} />
         </div>
       </div>
@@ -166,7 +166,7 @@ export default async function DashboardPage({
               {metal === "gold" ? "Gold" : "Silver"} &middot; Live
             </p>
             <div className="mt-1.5 flex items-baseline gap-3">
-              <span className={`text-3xl font-bold tracking-tight md:text-4xl ${metal === "gold" ? "text-accent" : "text-silver"}`}>
+              <span className={`text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl ${metal === "gold" ? "text-accent" : "text-silver"}`}>
                 {formatCurrency(convertedLivePrice, currency)}
               </span>
               <span className="text-sm text-ink/40">{displayUnit}</span>
@@ -229,13 +229,13 @@ export default async function DashboardPage({
       </div>
 
       {/* ── Wallet Link ── */}
-      <div className="rounded-2xl border border-border bg-panel p-5">
-        <div className="flex items-center justify-between">
+      <div className="rounded-2xl border border-border bg-panel p-4 sm:p-5">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-lg font-semibold text-ink">Wallet &amp; Transactions</h2>
             <p className="text-sm text-ink/40">View your full transaction history and bonus progress</p>
           </div>
-          <Link href="/wallet" className="rounded-lg bg-accent/15 px-4 py-2 text-sm font-semibold text-accent transition hover:bg-accent/25">
+          <Link href="/wallet" className="rounded-lg bg-accent/15 px-4 py-2 text-center text-sm font-semibold text-accent transition hover:bg-accent/25 sm:text-left">
             View Wallet
           </Link>
         </div>

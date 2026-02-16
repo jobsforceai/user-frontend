@@ -259,7 +259,7 @@ export function Footer() {
           </p>
 
           <div
-            className="flex items-center gap-2 text-[11px]"
+            className="flex flex-wrap items-center gap-2 text-[11px]"
             style={{ color: "rgba(255,255,255,0.2)" }}
           >
             <span>Prices sourced from global bullion markets</span>

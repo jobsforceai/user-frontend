@@ -28,7 +28,7 @@ export function JewellerRequest({ status }: Props) {
 
   if (status === "pending") {
     return (
-      <div className="rounded-2xl border border-amber-500/20 bg-amber-500/5 p-6">
+      <div className="rounded-2xl border border-amber-500/20 bg-amber-500/5 p-4 sm:p-6">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/15">
             <svg className="h-5 w-5 text-amber-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
@@ -46,7 +46,7 @@ export function JewellerRequest({ status }: Props) {
 
   if (status === "rejected") {
     return (
-      <div className="rounded-2xl border border-red-500/20 bg-red-500/5 p-6">
+      <div className="rounded-2xl border border-red-500/20 bg-red-500/5 p-4 sm:p-6">
         <div className="flex items-start gap-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-500/15">
             <svg className="h-5 w-5 text-red-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
@@ -72,7 +72,7 @@ export function JewellerRequest({ status }: Props) {
 
   // No status — show request CTA
   return (
-    <div className="rounded-2xl border border-accent/20 bg-panel p-6">
+    <div className="rounded-2xl border border-accent/20 bg-panel p-4 sm:p-6">
       <div className="flex items-start gap-4">
         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent/10">
           <svg className="h-5 w-5 text-accent" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">

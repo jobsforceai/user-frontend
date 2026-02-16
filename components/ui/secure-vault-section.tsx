@@ -139,7 +139,7 @@ export function SecureVaultSection() {
       />
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 py-24 md:px-8 md:py-36">
-        <div className="grid items-center gap-16 lg:grid-cols-2">
+        <div className="grid items-center gap-10 sm:gap-16 lg:grid-cols-2">
           {/* Left — Vault illustration */}
           <div ref={vaultRef} className="flex items-center justify-center">
             <div className="relative w-full max-w-md">
