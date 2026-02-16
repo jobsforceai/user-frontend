@@ -188,8 +188,8 @@ export function GalleryHero() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-screen overflow-hidden"
-      style={{ backgroundColor: "#ffffff" }}
+      className="relative w-full overflow-hidden"
+      style={{ backgroundColor: "#ffffff", minHeight: "100svh" }}
     >
       {/* Background */}
       <div className="absolute inset-0" style={{ backgroundColor: "#ffffff" }} />
@@ -217,63 +217,16 @@ export function GalleryHero() {
         }}
       />
 
-      {/* ── TOP HEADING ── */}
-      <div
-        ref={headingRef}
-        className="absolute left-0 bottom-2 z-10 pointer-events-none px-4 sm:px-6 md:px-8"
-      >
-        <h1
-          className="select-none font-black uppercase text-left"
-          style={{
-            color: "#111111",
-            fontSize: "clamp(2.5rem, 7vw, 7rem)",
-            letterSpacing: "-0.04em",
-            lineHeight: 0.95,
-          }}
-        >
-          <span>Gold</span>
-          <br />
-          <span>Demands</span>
-          <br />
-          <span
-            className="bg-clip-text text-transparent"
-            style={{
-              backgroundImage: "linear-gradient(135deg, #d4a843 0%, #b8860b 50%, #d4a843 100%)",
-            }}
-          >
-            Strength.
-          </span>
-        </h1>
-      </div>
-
-      {/* ── SUBHEADING ── */}
-      <div className="absolute bottom-2 right-0 z-10 flex flex-col items-center pointer-events-none px-4 sm:px-6 md:px-8">
-        <p
-          ref={subheadingRef}
-          className="max-w-lg text-right font-semibold select-none"
-          style={{
-            color: "#555555",
-            fontSize: "clamp(0.875rem, 1.5vw, 2.125rem)",
-            lineHeight: 1.6,
-            letterSpacing: "0.01em",
-          }}
-        >
-          Invest in digital gold at live market prices.
-          <br />
-          Buy, save, and take delivery — all in one place.
-        </p>
-      </div>
-
-      {/* ── Loading overlay ── */}
-      <LoadingOverlay visible={loading} />
-
       {/* ── 3D MODEL VIEWER ── */}
-      <div className="absolute h-full w-full inset-0 z-[5]">
+      <div className="absolute inset-0 z-[5]">
         <Model3DViewer
           stateRef={modelStateRef}
           onLoaded={handleModelLoaded}
         />
       </div>
+
+      {/* ── Loading overlay ── */}
+      <LoadingOverlay visible={loading} />
 
       {/* ── Shadow below model ── */}
       <div
@@ -289,6 +242,48 @@ export function GalleryHero() {
           opacity: 0.2,
         }}
       />
+
+      {/* ── TEXT OVERLAY ── */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex flex-col items-start gap-3 px-4 pb-6 sm:px-6 md:flex-row md:items-end md:justify-between md:gap-8 md:px-8 md:pb-8">
+        <div ref={headingRef}>
+          <h1
+            className="select-none font-black uppercase text-left"
+            style={{
+              color: "#111111",
+              fontSize: "clamp(2rem, 8vw, 7rem)",
+              letterSpacing: "-0.04em",
+              lineHeight: 0.95,
+            }}
+          >
+            <span>Gold</span>
+            <br />
+            <span>Demands</span>
+            <br />
+            <span
+              className="bg-clip-text text-transparent"
+              style={{
+                backgroundImage: "linear-gradient(135deg, #d4a843 0%, #b8860b 50%, #d4a843 100%)",
+              }}
+            >
+              Strength.
+            </span>
+          </h1>
+        </div>
+        <p
+          ref={subheadingRef}
+          className="max-w-lg shrink-0 text-left font-medium select-none md:text-right md:font-semibold"
+          style={{
+            color: "#555555",
+            fontSize: "clamp(0.813rem, 1.5vw, 2.125rem)",
+            lineHeight: 1.5,
+            letterSpacing: "0.01em",
+          }}
+        >
+          Invest in digital gold at live market prices.
+          <br className="hidden md:inline" />
+          {" "}Buy, save, and take delivery — all in one place.
+        </p>
+      </div>
     </section>
   );
 }
