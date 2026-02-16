@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { register } from "@/actions/auth";
 
 export default function RegisterPage() {
@@ -45,21 +46,28 @@ export default function RegisterPage() {
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-bg px-4 py-8">
-      <div className="w-full max-w-sm space-y-6">
+      {/* Subtle radial glow behind form */}
+      <div className="pointer-events-none fixed inset-0" style={{ background: "radial-gradient(ellipse at 50% 40%, rgba(212,168,67,0.06) 0%, transparent 60%)" }} />
+
+      <div className="relative w-full max-w-md space-y-8">
+        {/* Brand */}
         <div className="text-center">
-          <h1 className="text-3xl font-semibold text-accent">SG Gold</h1>
-          <p className="mt-2 text-sm text-ink/50">Create your account</p>
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-accent/10 shadow-card overflow-hidden">
+            <Image src="/logo.png" alt="SG Gold" width={56} height={56} className="h-full w-full object-cover" />
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-ink">Create your account</h1>
+          <p className="mt-1 text-sm text-ink/40">Start investing in digital gold today</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4 rounded-2xl border border-border bg-panel p-6 shadow-soft">
+        <form onSubmit={handleSubmit} className="space-y-5 rounded-2xl border border-border bg-panel p-8 shadow-card">
           {error && (
-            <div className="rounded-lg border border-red-800/50 bg-red-900/20 px-3 py-2 text-sm text-red-400">
+            <div className="rounded-xl border border-red-800/40 bg-red-900/20 px-4 py-2.5 text-sm text-red-400">
               {error}
             </div>
           )}
 
           <div className="space-y-1.5">
-            <label htmlFor="name" className="text-sm text-ink/70">Full Name</label>
+            <label htmlFor="name" className="text-xs font-medium uppercase tracking-wider text-ink/40">Full Name</label>
             <input
               id="name"
               type="text"
@@ -67,12 +75,12 @@ export default function RegisterPage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="w-full rounded-lg border border-border bg-panel-alt px-3 py-2.5 text-ink placeholder:text-ink/30 focus:border-accent focus:outline-none"
+              className="w-full rounded-xl border border-border bg-panel-alt px-4 py-3 text-ink transition placeholder:text-ink/20 focus:border-accent/60 focus:ring-2 focus:ring-accent/10 focus:outline-none"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label htmlFor="phone" className="text-sm text-ink/70">Phone Number</label>
+            <label htmlFor="phone" className="text-xs font-medium uppercase tracking-wider text-ink/40">Phone Number</label>
             <input
               id="phone"
               type="tel"
@@ -81,24 +89,24 @@ export default function RegisterPage() {
               onChange={(e) => setPhone(e.target.value)}
               maxLength={10}
               required
-              className="w-full rounded-lg border border-border bg-panel-alt px-3 py-2.5 text-ink placeholder:text-ink/30 focus:border-accent focus:outline-none"
+              className="w-full rounded-xl border border-border bg-panel-alt px-4 py-3 text-ink transition placeholder:text-ink/20 focus:border-accent/60 focus:ring-2 focus:ring-accent/10 focus:outline-none"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label htmlFor="email" className="text-sm text-ink/70">Email <span className="text-ink/30">(optional)</span></label>
+            <label htmlFor="email" className="text-xs font-medium uppercase tracking-wider text-ink/40">Email <span className="text-ink/20">(optional)</span></label>
             <input
               id="email"
               type="email"
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-border bg-panel-alt px-3 py-2.5 text-ink placeholder:text-ink/30 focus:border-accent focus:outline-none"
+              className="w-full rounded-xl border border-border bg-panel-alt px-4 py-3 text-ink transition placeholder:text-ink/20 focus:border-accent/60 focus:ring-2 focus:ring-accent/10 focus:outline-none"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label htmlFor="password" className="text-sm text-ink/70">Password</label>
+            <label htmlFor="password" className="text-xs font-medium uppercase tracking-wider text-ink/40">Password</label>
             <input
               id="password"
               type="password"
@@ -107,12 +115,12 @@ export default function RegisterPage() {
               onChange={(e) => setPassword(e.target.value)}
               minLength={6}
               required
-              className="w-full rounded-lg border border-border bg-panel-alt px-3 py-2.5 text-ink placeholder:text-ink/30 focus:border-accent focus:outline-none"
+              className="w-full rounded-xl border border-border bg-panel-alt px-4 py-3 text-ink transition placeholder:text-ink/20 focus:border-accent/60 focus:ring-2 focus:ring-accent/10 focus:outline-none"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label htmlFor="confirmPassword" className="text-sm text-ink/70">Confirm Password</label>
+            <label htmlFor="confirmPassword" className="text-xs font-medium uppercase tracking-wider text-ink/40">Confirm Password</label>
             <input
               id="confirmPassword"
               type="password"
@@ -121,22 +129,22 @@ export default function RegisterPage() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               minLength={6}
               required
-              className="w-full rounded-lg border border-border bg-panel-alt px-3 py-2.5 text-ink placeholder:text-ink/30 focus:border-accent focus:outline-none"
+              className="w-full rounded-xl border border-border bg-panel-alt px-4 py-3 text-ink transition placeholder:text-ink/20 focus:border-accent/60 focus:ring-2 focus:ring-accent/10 focus:outline-none"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg bg-accent py-2.5 font-medium text-bg transition hover:bg-accent-dim disabled:opacity-50"
+            className="w-full rounded-xl bg-accent py-3 text-sm font-semibold text-bg shadow-sm transition hover:bg-accent-dim disabled:opacity-50"
           >
             {loading ? "Creating account..." : "Create Account"}
           </button>
         </form>
 
-        <p className="text-center text-sm text-ink/50">
+        <p className="text-center text-sm text-ink/35">
           Already have an account?{" "}
-          <Link href="/login" className="text-accent hover:underline">
+          <Link href="/login" className="font-medium text-accent hover:underline">
             Sign in
           </Link>
         </p>

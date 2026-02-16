@@ -12,17 +12,18 @@ const config: Config = {
         accent: "#d4a843",
         "accent-dim": "#a67922",
         silver: "#9ca3af",
-        border: "#2a2a2a"
+        border: "#2a2a2a",
       },
       backgroundImage: {
-        mesh: "radial-gradient(circle at 20% 20%, rgba(212,168,67,0.08), transparent 40%), radial-gradient(circle at 80% 0%, rgba(156,163,175,0.05), transparent 35%)"
+        mesh: "radial-gradient(circle at 20% 20%, rgba(212,168,67,0.08), transparent 40%), radial-gradient(circle at 80% 0%, rgba(156,163,175,0.05), transparent 35%)",
       },
       boxShadow: {
-        soft: "0 10px 35px rgba(0, 0, 0, 0.4)"
-      }
-    }
+        soft: "0 10px 35px rgba(0,0,0,0.4)",
+        card: "0 2px 12px rgba(0,0,0,0.3), 0 0 1px rgba(212,168,67,0.08)",
+      },
+    },
   },
-  plugins: []
+  plugins: [],
 };
 
 export default config;

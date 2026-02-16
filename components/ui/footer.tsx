@@ -70,13 +70,12 @@ export function Footer() {
           <div className="lg:col-span-4">
             <div className="flex items-center gap-3">
               <div
-                className="flex h-10 w-10 items-center justify-center rounded-lg"
+                className="flex h-10 w-10 items-center justify-center rounded-lg overflow-hidden"
                 style={{
-                  background: "linear-gradient(135deg, #d4a843 0%, #b8860b 100%)",
                   boxShadow: "0 4px 20px rgba(212,168,67,0.2)",
                 }}
               >
-                <span className="text-[12px] font-black tracking-tight text-white">SG</span>
+                <img src="/logo.png" alt="SG Gold" className="h-full w-full object-cover" />
               </div>
               <div className="flex flex-col">
                 <span

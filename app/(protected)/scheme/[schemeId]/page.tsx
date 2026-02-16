@@ -86,15 +86,15 @@ export default function SchemeDetailPage() {
       {success && <div className="rounded-lg border border-green-800/50 bg-green-900/20 px-3 py-2 text-sm text-green-400">{success}</div>}
 
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-        <div className="col-span-2 rounded-xl border border-border bg-panel p-4 md:col-span-1">
+        <div className="rounded-xl border border-border bg-panel p-4 shadow-card">
           <p className="text-xs text-ink/40">Total Paid</p>
           <p className="mt-1 text-lg font-semibold">{fmt(totalPaidPaise)}</p>
         </div>
-        <div className="rounded-xl border border-border bg-panel p-4">
+        <div className="rounded-xl border border-border bg-panel p-4 shadow-card">
           <p className="text-xs text-ink/40">Bonus (12th month)</p>
           <p className="mt-1 text-lg font-semibold text-green-400">{fmt(scheme.bonusAmountPaise)}</p>
         </div>
-        <div className="rounded-xl border border-border bg-panel p-4">
+        <div className="rounded-xl border border-border bg-panel p-4 shadow-card">
           <p className="text-xs text-ink/40">Total Value</p>
           <p className="mt-1 text-lg font-semibold text-accent">{fmt(totalPaidPaise + scheme.bonusAmountPaise)}</p>
         </div>
@@ -125,7 +125,7 @@ export default function SchemeDetailPage() {
         <button
           onClick={handlePay}
           disabled={actionLoading}
-          className="w-full rounded-lg bg-accent py-2.5 font-medium text-bg transition hover:bg-accent-dim disabled:opacity-50"
+          className="w-full rounded-xl bg-accent py-2.5 font-medium text-bg transition hover:bg-accent-dim disabled:opacity-50"
         >
           {actionLoading ? "Processing..." : `Pay Installment #${nextPending + 1} (${fmt(scheme.slabAmountPaise)})`}
         </button>
@@ -135,7 +135,7 @@ export default function SchemeDetailPage() {
         <button
           onClick={handleRedeem}
           disabled={actionLoading}
-          className="w-full rounded-lg bg-green-600 py-2.5 font-medium text-white transition hover:bg-green-700 disabled:opacity-50"
+          className="w-full rounded-xl bg-green-600 py-2.5 font-medium text-white transition hover:bg-green-700 disabled:opacity-50"
         >
           {actionLoading ? "Processing..." : "Redeem Scheme — Convert to Gold"}
         </button>

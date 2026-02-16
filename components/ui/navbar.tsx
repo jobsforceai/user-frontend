@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, useCallback } from "react";
 
@@ -71,15 +72,13 @@ export function Navbar({ isLoggedIn }: NavbarProps) {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 md:px-8 lg:px-10">
           {/* Logo */}
           <Link href="/" className="group flex items-center gap-3">
-            <div
-              className="relative flex h-9 w-9 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-105"
-              style={{
-                background: "linear-gradient(135deg, #d4a843 0%, #b8860b 100%)",
-                boxShadow: "0 2px 12px rgba(212,168,67,0.3)",
-              }}
-            >
-              <span className="text-[11px] font-black tracking-tight text-white">SG</span>
-            </div>
+            <Image 
+              src="/logo.png"
+              alt="SG Gold Logo"
+              width={32}
+              height={32}
+              className="w-8 h-8 object-cover rounded-sm group-hover:brightness-110 transition-all duration-200"
+            />
             <div className="flex flex-col">
               <span
                 className="text-[15px] font-bold tracking-tight leading-none"

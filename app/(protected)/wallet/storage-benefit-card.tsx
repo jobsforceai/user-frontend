@@ -50,7 +50,7 @@ export function StorageBenefitCard({ status }: { status: StorageBenefitStatus })
             <span>{balanceGrams}g held</span>
             <span>{thresholdGrams}g required</span>
           </div>
-          <div className="h-2 rounded-full bg-white/10">
+          <div className="h-2 rounded-full bg-border">
             <div className="h-2 rounded-full bg-accent/50 transition-all" style={{ width: `${progress}%` }} />
           </div>
         </div>
