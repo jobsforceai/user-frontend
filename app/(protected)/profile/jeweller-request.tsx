@@ -59,7 +59,7 @@ export function JewellerRequest({ status }: Props) {
             <button
               onClick={handleRequest}
               disabled={loading}
-              className="mt-3 rounded-lg border border-border bg-panel-alt px-4 py-2 text-sm font-medium text-ink/70 transition hover:bg-ink/5 disabled:opacity-50"
+              className="mt-3 rounded-xl border border-border bg-panel-alt px-4 py-2 text-sm font-medium text-ink/70 transition hover:bg-ink/5 disabled:opacity-50"
             >
               {loading ? "Requesting..." : "Request Again"}
             </button>
@@ -94,7 +94,7 @@ export function JewellerRequest({ status }: Props) {
           <button
             onClick={handleRequest}
             disabled={loading}
-            className="mt-4 rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-bg transition hover:brightness-110 disabled:opacity-50"
+            className="mt-4 rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-bg transition hover:brightness-110 disabled:opacity-50"
           >
             {loading ? "Submitting..." : "Request Jeweller Account"}
           </button>

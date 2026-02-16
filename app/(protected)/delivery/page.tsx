@@ -62,7 +62,7 @@ export default function DeliveryPage() {
         <p className="text-sm text-ink/50">Convert digital gold to physical coins or bars</p>
       </div>
 
-      <div className="space-y-4 rounded-2xl border border-border bg-panel p-6">
+      <div className="space-y-4 rounded-2xl border border-border bg-panel p-6 shadow-card">
         {error && <div className="rounded-lg border border-red-800/50 bg-red-900/20 px-3 py-2 text-sm text-red-400">{error}</div>}
         {success && <div className="rounded-lg border border-green-800/50 bg-green-900/20 px-3 py-2 text-sm text-green-400">{success}</div>}
 
@@ -105,7 +105,7 @@ export default function DeliveryPage() {
           <select
             value={storeId}
             onChange={(e) => setStoreId(e.target.value)}
-            className="w-full rounded-lg border border-border bg-panel-alt px-3 py-2.5 text-ink focus:border-accent focus:outline-none"
+            className="w-full rounded-xl border border-border bg-panel-alt px-3 py-2.5 text-ink focus:border-accent/60 focus:outline-none focus:ring-2 focus:ring-accent/10"
           >
             {stores.map((s) => (
               <option key={s.id} value={s.id}>{s.name}, {s.state}</option>
@@ -121,7 +121,7 @@ export default function DeliveryPage() {
         <button
           onClick={handleSubmit}
           disabled={loading || !storeId}
-          className="w-full rounded-lg bg-accent py-2.5 font-medium text-bg transition hover:bg-accent-dim disabled:opacity-50"
+          className="w-full rounded-xl bg-accent py-2.5 font-medium text-bg transition hover:bg-accent-dim disabled:opacity-50"
         >
           {loading ? "Processing..." : "Request Delivery"}
         </button>

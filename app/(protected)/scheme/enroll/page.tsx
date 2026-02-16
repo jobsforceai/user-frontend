@@ -87,7 +87,7 @@ export default function SchemeEnrollPage() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* ── Left: Contribution Calculator ── */}
-        <div className="rounded-2xl border border-border bg-panel p-6">
+        <div className="rounded-2xl border border-border bg-panel p-6 shadow-card">
           <h2 className="text-lg font-semibold text-ink">Contribution Calculator</h2>
 
           <div className="mt-6">
@@ -184,12 +184,12 @@ export default function SchemeEnrollPage() {
                     placeholder="Enter Eligibility Code"
                     value={eligibilityCode}
                     onChange={(e) => { setEligibilityCode(e.target.value); setCodeStatus("idle"); }}
-                    className="flex-1 rounded-lg border border-border bg-panel-alt px-3 py-2.5 text-sm text-ink placeholder:text-ink/30 focus:border-accent focus:outline-none"
+                    className="flex-1 rounded-xl border border-border bg-panel-alt px-3 py-2.5 text-sm text-ink placeholder:text-ink/30 focus:border-accent/60 focus:outline-none focus:ring-2 focus:ring-accent/10"
                   />
                   <button
                     onClick={handleVerifyCode}
                     disabled={codeLoading}
-                    className="rounded-lg bg-accent px-4 py-2.5 text-sm font-bold text-bg transition hover:brightness-110 disabled:opacity-50"
+                    className="rounded-xl bg-accent px-4 py-2.5 text-sm font-bold text-bg transition hover:brightness-110 disabled:opacity-50"
                   >
                     {codeLoading ? "..." : "Verify"}
                   </button>

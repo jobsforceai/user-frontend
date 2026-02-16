@@ -57,7 +57,7 @@ export default function SellPage() {
         <p className="text-sm text-ink/50">Minimum 1,000mg to sell</p>
       </div>
 
-      <div className="space-y-5 rounded-2xl border border-border bg-panel p-6">
+      <div className="space-y-5 rounded-2xl border border-border bg-panel p-6 shadow-card">
         {error && (
           <div className="rounded-lg border border-red-800/50 bg-red-900/20 px-3 py-2 text-sm text-red-400">{error}</div>
         )}
@@ -80,10 +80,10 @@ export default function SellPage() {
             min={1000}
             value={amountMg}
             onChange={(e) => setAmountMg(Math.max(0, parseInt(e.target.value) || 0))}
-            className={`w-full rounded-lg border px-3 py-2.5 text-ink focus:outline-none ${
+            className={`w-full rounded-xl border px-3 py-2.5 text-ink focus:outline-none focus:ring-2 focus:ring-accent/10 ${
               insufficientBalance
                 ? "border-red-500/50 bg-red-900/10 focus:border-red-500"
-                : "border-border bg-panel-alt focus:border-accent"
+                : "border-border bg-panel-alt focus:border-accent/60"
             }`}
           />
           <div className="flex justify-between">

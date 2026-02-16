@@ -36,7 +36,7 @@ export function PasswordForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-2xl border border-border bg-panel p-6">
+    <form onSubmit={handleSubmit} className="rounded-2xl border border-border bg-panel p-6 shadow-card">
       <h2 className="mb-4 text-sm font-semibold uppercase tracking-widest text-ink/40">Change Password</h2>
 
       {error && <div className="mb-4 rounded-lg border border-red-800/50 bg-red-900/20 px-3 py-2 text-sm text-red-400">{error}</div>}
@@ -51,7 +51,7 @@ export function PasswordForm() {
             value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
             required
-            className="w-full rounded-lg border border-border bg-panel-alt px-3 py-2.5 text-ink focus:border-accent focus:outline-none"
+            className="w-full rounded-xl border border-border bg-panel-alt px-3 py-2.5 text-ink focus:border-accent/60 focus:outline-none focus:ring-2 focus:ring-accent/10"
           />
         </div>
 
@@ -65,7 +65,7 @@ export function PasswordForm() {
             required
             minLength={6}
             placeholder="Min 6 characters"
-            className="w-full rounded-lg border border-border bg-panel-alt px-3 py-2.5 text-ink placeholder:text-ink/30 focus:border-accent focus:outline-none"
+            className="w-full rounded-xl border border-border bg-panel-alt px-3 py-2.5 text-ink placeholder:text-ink/30 focus:border-accent/60 focus:outline-none focus:ring-2 focus:ring-accent/10"
           />
         </div>
 
@@ -78,14 +78,14 @@ export function PasswordForm() {
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
             minLength={6}
-            className="w-full rounded-lg border border-border bg-panel-alt px-3 py-2.5 text-ink focus:border-accent focus:outline-none"
+            className="w-full rounded-xl border border-border bg-panel-alt px-3 py-2.5 text-ink focus:border-accent/60 focus:outline-none focus:ring-2 focus:ring-accent/10"
           />
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="rounded-lg border border-border bg-panel-alt px-5 py-2.5 text-sm font-medium text-ink/70 transition hover:bg-ink/5 disabled:opacity-50"
+          className="rounded-xl border border-border bg-panel-alt px-5 py-2.5 text-sm font-medium text-ink/70 transition hover:bg-ink/5 disabled:opacity-50"
         >
           {loading ? "Changing..." : "Change Password"}
         </button>

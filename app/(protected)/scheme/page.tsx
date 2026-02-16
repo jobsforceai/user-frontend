@@ -25,7 +25,7 @@ function SchemeCard({ scheme }: { scheme: SchemeData }) {
       </div>
       <div className="mt-3 flex items-center gap-2">
         <div className="flex-1">
-          <div className="h-2 rounded-full bg-white/10">
+            <div className="h-2 rounded-full bg-border">
             <div className="h-2 rounded-full bg-accent transition-all" style={{ width: `${(paidCount / total) * 100}%` }} />
           </div>
         </div>
@@ -49,7 +49,7 @@ export default async function SchemePage() {
         </div>
         <Link
           href="/scheme/enroll"
-          className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-bg transition hover:bg-accent-dim"
+          className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-bg transition hover:bg-accent-dim"
         >
           Enroll Now
         </Link>
