@@ -105,3 +105,23 @@ export async function getSilverRates(currency: Currency) {
     }>;
   }>(`/api/v1/assets/silver/rates?currency=${currency}`);
 }
+
+// Simulated live price updates with random fluctuations
+export async function getLivePrices(currency: Currency, baseGoldPrice: number, baseSilverPrice: number) {
+  "use server";
+  
+  // Generate random fluctuation between -0.5% and +0.5%
+  const goldFluctuation = (Math.random() - 0.5) * 0.01; // -0.005 to +0.005 (±0.5%)
+  const silverFluctuation = (Math.random() - 0.5) * 0.01;
+  
+  const newGoldPrice = baseGoldPrice * (1 + goldFluctuation);
+  const newSilverPrice = baseSilverPrice * (1 + silverFluctuation);
+  
+  return {
+    goldPerGram: newGoldPrice,
+    silverPerGram: newSilverPrice,
+    goldChange: goldFluctuation * 100, // Convert to percentage
+    silverChange: silverFluctuation * 100,
+    timestamp: new Date().toISOString(),
+  };
+}
