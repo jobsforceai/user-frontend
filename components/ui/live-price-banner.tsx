@@ -86,47 +86,42 @@ export function LivePriceBanner({
         boxShadow: "0 -4px 24px rgba(0, 0, 0, 0.4)"
       }}
     >
-      <div className="mx-auto max-w-7xl px-4 py-3">
-        <div className="flex items-center justify-center gap-4 flex-wrap">
-          {/* Left side - Live indicator */}
-          <div className="flex items-center gap-2">
-            <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+      <div className="mx-auto max-w-7xl px-3 py-2 md:px-4 md:py-3">
+        <div className="flex items-center justify-between gap-2 md:justify-center md:gap-4">
+          {/* Live indicator - compact on mobile */}
+          <div className="flex items-center gap-1.5 md:gap-2">
+            <span className="flex h-1.5 w-1.5 md:h-2 md:w-2 rounded-full bg-emerald-400 animate-pulse" />
             <span 
-              className="text-xs font-semibold uppercase tracking-wider"
+              className="text-[10px] md:text-xs font-semibold uppercase tracking-wider"
               style={{ color: "rgba(245,245,245,0.5)" }}
             >
               Live
             </span>
           </div>
 
-          {/* Center - Prices */}
-          <div className="flex items-center gap-6 md:gap-8">
+          {/* Prices - optimized for mobile */}
+          <div className="flex items-center gap-3 md:gap-6 lg:gap-8">
             {/* Gold */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5 md:gap-3">
               <span 
-                className="text-xs font-medium uppercase tracking-wider hidden sm:inline"
+                className="text-[10px] md:text-xs font-medium uppercase tracking-wider"
                 style={{ color: "rgba(245,245,245,0.4)" }}
               >
-                Gold · {purity}
+                <span className="hidden sm:inline">Gold · {purity}</span>
+                <span className="sm:hidden">Au</span>
               </span>
-              <span 
-                className="text-xs font-medium uppercase tracking-wider sm:hidden"
-                style={{ color: "rgba(245,245,245,0.4)" }}
-              >
-                Au
-              </span>
-              <div className="flex items-baseline gap-2">
+              <div className="flex items-baseline gap-1 md:gap-2">
                 <span 
-                  className="text-lg font-bold transition-colors duration-700 ease-in-out"
+                  className="text-sm md:text-lg font-bold transition-colors duration-700 ease-in-out"
                   style={{ color: goldPriceColor }}
                 >
                   {formatCurrency(goldPrice, currency)}
                 </span>
-                <span className="text-xs font-medium" style={{ color: "rgba(245,245,245,0.3)" }}>
+                <span className="text-[10px] md:text-xs font-medium hidden sm:inline" style={{ color: "rgba(245,245,245,0.3)" }}>
                   /g
                 </span>
                 <span 
-                  className={`text-xs font-semibold transition-colors duration-300 ${isLiveGoldUp ? "text-emerald-400" : "text-red-400"}`}
+                  className={`text-[10px] md:text-xs font-semibold transition-colors duration-300 ${isLiveGoldUp ? "text-emerald-400" : "text-red-400"}`}
                 >
                   {isLiveGoldUp ? "▲" : "▼"} {Math.abs(liveGoldChange).toFixed(2)}%
                 </span>
@@ -134,43 +129,35 @@ export function LivePriceBanner({
             </div>
 
             {/* Divider */}
-            <div className="h-8 w-px" style={{ backgroundColor: "rgba(255,255,255,0.06)" }} />
+            <div className="h-6 md:h-8 w-px" style={{ backgroundColor: "rgba(255,255,255,0.06)" }} />
 
             {/* Silver */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5 md:gap-3">
               <span 
-                className="text-xs font-medium uppercase tracking-wider hidden sm:inline"
+                className="text-[10px] md:text-xs font-medium uppercase tracking-wider"
                 style={{ color: "rgba(245,245,245,0.4)" }}
               >
-                Silver · 999
+                <span className="hidden sm:inline">Silver · 999</span>
+                <span className="sm:hidden">Ag</span>
               </span>
-              <span 
-                className="text-xs font-medium uppercase tracking-wider sm:hidden"
-                style={{ color: "rgba(245,245,245,0.4)" }}
-              >
-                Ag
-              </span>
-              <div className="flex items-baseline gap-2">
+              <div className="flex items-baseline gap-1 md:gap-2">
                 <span 
-                  className="text-lg font-bold transition-colors duration-700 ease-in-out"
+                  className="text-sm md:text-lg font-bold transition-colors duration-700 ease-in-out"
                   style={{ color: silverPriceColor }}
                 >
                   {formatCurrency(silverPrice, currency)}
                 </span>
-                <span className="text-xs font-medium" style={{ color: "rgba(245,245,245,0.3)" }}>
+                <span className="text-[10px] md:text-xs font-medium hidden sm:inline" style={{ color: "rgba(245,245,245,0.3)" }}>
                   /g
                 </span>
                 <span 
-                  className={`text-xs font-semibold transition-colors duration-300 ${isLiveSilverUp ? "text-emerald-400" : "text-red-400"}`}
+                  className={`text-[10px] md:text-xs font-semibold transition-colors duration-300 ${isLiveSilverUp ? "text-emerald-400" : "text-red-400"}`}
                 >
                   {isLiveSilverUp ? "▲" : "▼"} {Math.abs(liveSilverChange).toFixed(2)}%
                 </span>
               </div>
             </div>
           </div>
-
-          {/* Right side - Spacer for balance */}
-          <div className="hidden md:block w-16"></div>
         </div>
       </div>
     </div>
