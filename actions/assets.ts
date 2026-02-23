@@ -106,6 +106,20 @@ export async function getSilverRates(currency: Currency) {
   }>(`/api/v1/assets/silver/rates?currency=${currency}`);
 }
 
+export type LocalCityPrice = {
+  city: string;
+  pricePerGram: number;
+  bid: number | null;
+  ask: number | null;
+};
+
+export async function getLocalPrices() {
+  return callBackend<{
+    source: string;
+    prices: LocalCityPrice[];
+  }>("/api/v1/assets/local-prices");
+}
+
 // Simulated live price updates with random fluctuations
 export async function getLivePrices(currency: Currency, baseGoldPrice: number, baseSilverPrice: number) {
   "use server";

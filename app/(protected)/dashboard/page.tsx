@@ -8,6 +8,11 @@ import { RefreshTimer } from "@/components/ui/refresh-timer";
 
 const gramsPerOunce = 31.1035;
 
+const storeCities = [
+  "Vizag", "Vijayawada", "Hyderabad", "Rajahmundry", "Bhimavaram",
+  "Anakapalli", "Tirupati", "Guntur", "Nellore", "Kakinada", "Warangal",
+];
+
 const currencies: Currency[] = ["INR", "USD", "EUR", "GBP", "AED"];
 const ranges: Array<{ key: Range; label: string }> = [
   { key: "1D", label: "1D" },
@@ -163,7 +168,7 @@ export default async function DashboardPage({
               {isGoldUp ? "+" : ""}{gold.changePercent.toFixed(2)}%
             </span>
           </div>
-          <p className="mt-4 text-3xl font-black tracking-tight text-accent">{formatCurrency(goldPrice10g, "INR")}</p>
+          <p className="mt-4 text-3xl font-black tracking-tight text-accent">{formatCurrency(goldPrice10g, currency)}</p>
           {metal === "gold" && <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-accent/[0.06] blur-2xl" />}
         </Link>
 
@@ -188,9 +193,33 @@ export default async function DashboardPage({
               {isSilverUp ? "+" : ""}{silver.changePercent.toFixed(2)}%
             </span>
           </div>
-          <p className="mt-4 text-3xl font-black tracking-tight text-silver">{formatCurrency(silverPrice1kg, "INR")}</p>
+          <p className="mt-4 text-3xl font-black tracking-tight text-silver">{formatCurrency(silverPrice1kg, currency)}</p>
           {metal === "silver" && <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-silver/[0.06] blur-2xl" />}
         </Link>
+      </section>
+
+      {/* ── City Gold Prices ── */}
+      <section className="rounded-2xl border border-border bg-panel p-4 shadow-card sm:p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-accent/15 text-xs font-bold text-accent ring-2 ring-accent/10">
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+            </svg>
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-ink">City Gold Prices</p>
+            <p className="text-[10px] uppercase tracking-wider text-ink/30">24K (999) &middot; Per 1 gram &middot; Live</p>
+          </div>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {storeCities.map((city) => (
+            <div key={city} className="flex items-center justify-between rounded-xl border border-border/60 bg-bg/50 px-4 py-3">
+              <p className="text-sm font-medium text-ink/70">{city}</p>
+              <p className="text-base font-bold text-accent">{formatCurrency(goldPerGram, "INR")}</p>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* ── Price Detail + Chart ── */}
