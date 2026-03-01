@@ -36,50 +36,57 @@ export function SecureVaultSection() {
   const headingRef = useRef<HTMLDivElement>(null);
   const featureRefs = useRef<(HTMLDivElement | null)[]>([]);
   const iconRefs = useRef<(SVGSVGElement | null)[]>([]);
+  const dividerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Vault animation
-      gsap.from(vaultRef.current, {
-        opacity: 0,
-        x: -50,
-        duration: 1.2,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
-        },
-      });
-
-      // Heading
-      gsap.from(headingRef.current, {
-        y: 40,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
-        },
-      });
-
-      // Features staggered
-      featureRefs.current.forEach((el, i) => {
-        if (!el) return;
-        gsap.from(el, {
-          y: 30,
-          opacity: 0,
-          duration: 0.7,
-          ease: "power3.out",
-          delay: i * 0.12,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 60%",
-          },
+      /* ── Section divider ── */
+      if (dividerRef.current) {
+        gsap.fromTo(dividerRef.current, { scaleX: 0 }, {
+          scaleX: 1, transformOrigin: "center", duration: 1.5, ease: "power3.inOut",
+          scrollTrigger: { trigger: dividerRef.current, start: "top 90%" },
         });
-      });
+      }
 
-      // Icon stroke draw
+      /* ── Vault image parallax + scale reveal ── */
+      if (vaultRef.current) {
+        gsap.fromTo(vaultRef.current,
+          { opacity: 0, scale: 1.12, filter: "blur(8px)" },
+          {
+            opacity: 1, scale: 1, filter: "blur(0px)", duration: 1.4, ease: "power3.out",
+            scrollTrigger: { trigger: sectionRef.current, start: "top 68%" },
+          }
+        );
+        gsap.to(vaultRef.current, {
+          y: -40,
+          scrollTrigger: { trigger: vaultRef.current, start: "top 80%", end: "bottom 20%", scrub: 0.6 },
+        });
+      }
+
+      /* ── Heading split-line ── */
+      const headingLines = headingRef.current?.querySelectorAll(".split-line-inner");
+      if (headingLines) {
+        gsap.fromTo(headingLines,
+          { y: "110%", skewY: 3 },
+          {
+            y: "0%", skewY: 0, duration: 1.2, ease: "power4.out", stagger: 0.12,
+            scrollTrigger: { trigger: sectionRef.current, start: "top 65%" },
+          }
+        );
+      }
+
+      /* ── Feature items stagger ── */
+      const validFeatures = featureRefs.current.filter(Boolean) as HTMLDivElement[];
+      gsap.fromTo(validFeatures,
+        { x: 40, opacity: 0, filter: "blur(4px)" },
+        {
+          x: 0, opacity: 1, filter: "blur(0px)",
+          duration: 0.8, ease: "power3.out", stagger: 0.1,
+          scrollTrigger: { trigger: sectionRef.current, start: "top 55%" },
+        }
+      );
+
+      /* ── Icon stroke draw ── */
       iconRefs.current.forEach((svg, i) => {
         if (!svg) return;
         const paths = svg.querySelectorAll("path");
@@ -91,10 +98,7 @@ export function SecureVaultSection() {
             duration: 1.2,
             ease: "power2.out",
             delay: i * 0.15,
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top 55%",
-            },
+            scrollTrigger: { trigger: sectionRef.current, start: "top 55%" },
           });
         });
       });
@@ -109,6 +113,8 @@ export function SecureVaultSection() {
       className="relative overflow-hidden"
       style={{ backgroundColor: "#0B0B0F" }}
     >
+      <div ref={dividerRef} className="section-divider" />
+
       {/* Metal texture bg */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -138,26 +144,27 @@ export function SecureVaultSection() {
         }}
       />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-5 py-24 md:px-8 md:py-36">
+      <div className="relative z-10 mx-auto max-w-7xl px-5 py-28 md:px-8 md:py-40">
         <div className="grid items-center gap-16 lg:grid-cols-2">
           {/* Left — Vault illustration */}
           <div ref={vaultRef} className="flex items-center justify-center">
             <div className="relative w-full max-w-md">
-
-
               <Image
                 src="/vault2.png"
                 alt="About SG Gold"
                 width={400}
                 height={500}
-                className="w-full h-auto object-cover rounded-sm"
-                style={{
-                  filter: "brightness(0.9) contrast(1.05)",
-                }}
+                className="w-full h-auto object-cover rounded-2xl"
+                style={{ filter: "brightness(0.9) contrast(1.05)" }}
                 priority
               />
-
-
+              {/* Gold glow behind image */}
+              <div
+                className="absolute -inset-8 -z-10 rounded-3xl"
+                style={{
+                  background: "radial-gradient(circle at center, rgba(212,168,67,0.05) 0%, transparent 60%)",
+                }}
+              />
             </div>
           </div>
 
@@ -165,7 +172,7 @@ export function SecureVaultSection() {
           <div>
             <div ref={headingRef}>
               <p
-                className="mb-4 text-xs font-semibold uppercase tracking-[0.3em]"
+                className="mb-5 text-xs font-semibold uppercase tracking-[0.4em]"
                 style={{ color: "#d4a843" }}
               >
                 Security
@@ -178,29 +185,25 @@ export function SecureVaultSection() {
                   letterSpacing: "-0.03em",
                 }}
               >
-                Stored. Insured.
-                <br />
-                <span
-                  className="bg-clip-text text-transparent"
-                  style={{
-                    backgroundImage: "linear-gradient(135deg, #d4a843, #f0d78c, #b8860b)",
-                  }}
-                >
-                  Protected.
+                <span className="split-line">
+                  <span className="split-line-inner">Stored. Insured.</span>
+                </span>
+                <span className="split-line">
+                  <span className="split-line-inner gold-text">Protected.</span>
                 </span>
               </h2>
             </div>
 
             {/* Feature bullets */}
-            <div className="mt-10 space-y-6">
+            <div className="mt-12 space-y-7">
               {features.map((f, i) => (
                 <div
                   key={f.title}
                   ref={(el) => { featureRefs.current[i] = el; }}
-                  className="flex items-start gap-4"
+                  className="glass-card border-glow flex items-start gap-4 rounded-xl p-4"
                 >
                   <div
-                    className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
+                    className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl"
                     style={{ background: "rgba(212,168,67,0.08)" }}
                   >
                     <svg
@@ -215,16 +218,10 @@ export function SecureVaultSection() {
                     </svg>
                   </div>
                   <div>
-                    <h4
-                      className="text-sm font-bold"
-                      style={{ color: "#f5f5f5" }}
-                    >
+                    <h4 className="text-sm font-bold" style={{ color: "#f5f5f5" }}>
                       {f.title}
                     </h4>
-                    <p
-                      className="mt-1 text-sm"
-                      style={{ color: "rgba(245,245,245,0.6)" }}
-                    >
+                    <p className="mt-1 text-sm" style={{ color: "rgba(245,245,245,0.5)" }}>
                       {f.desc}
                     </p>
                   </div>

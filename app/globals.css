@@ -4,15 +4,57 @@
 
 :root {
   color-scheme: dark;
+  --gold: #d4a843;
+  --gold-dark: #b8860b;
+  --gold-light: #f0d78c;
+  --bg: #0a0a0a;
+  --bg-card: #0B0B0F;
+  --text: #f5f5f5;
+  --text-muted: rgba(245,245,245,0.55);
+  --text-dim: rgba(245,245,245,0.35);
+}
+
+/* ── Lenis smooth scroll ── */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 body {
   margin: 0;
-  background: #0a0a0a;
-  color: #f5f5f5;
-  font-family: "Satoshi", "Manrope", "Avenir Next", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Satoshi", "Manrope", "Avenir Next", -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ── Selection styling ── */
+::selection {
+  background: rgba(212, 168, 67, 0.3);
+  color: #fff;
+}
+
+/* ── Custom cursor glow (optional, can be toggled) ── */
+.cursor-glow {
+  position: fixed;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 168, 67, 0.04) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
 }
 
 /* ── Shimmer animation for gold numbers ── */
@@ -25,6 +67,143 @@ body {
 @keyframes float-particle {
   0%, 100% { transform: translateY(0) scale(1); opacity: 0.15; }
   50% { transform: translateY(-40px) scale(1.2); opacity: 0.35; }
+}
+
+/* ── Magnetic hover pulse ── */
+@keyframes magnetic-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(212, 168, 67, 0); }
+  50% { box-shadow: 0 0 30px 4px rgba(212, 168, 67, 0.12); }
+}
+
+/* ── Text reveal clip animation ── */
+@keyframes reveal-up {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ── Horizontal line draw ── */
+@keyframes line-draw {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* ── Grain overlay for cinematic feel ── */
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -10%); }
+  20% { transform: translate(-15%, 5%); }
+  30% { transform: translate(7%, -25%); }
+  40% { transform: translate(-5%, 25%); }
+  50% { transform: translate(-15%, 10%); }
+  60% { transform: translate(15%, 0%); }
+  70% { transform: translate(0%, 15%); }
+  80% { transform: translate(3%, 35%); }
+  90% { transform: translate(-10%, 10%); }
+}
+
+.grain-overlay::after {
+  content: "";
+  position: absolute;
+  inset: -150%;
+  width: 400%;
+  height: 400%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 100;
+  animation: grain 8s steps(10) infinite;
+  opacity: 0.4;
+}
+
+/* ── Smooth text split reveal ── */
+.split-line {
+  overflow: hidden;
+  display: block;
+}
+.split-line-inner {
+  display: block;
+  transform: translateY(110%);
+}
+
+/* ── Magnetic button styles ── */
+.magnetic-btn {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1);
+}
+.magnetic-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.magnetic-btn:hover::before {
+  opacity: 1;
+}
+
+/* ── Glass card ── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: all 0.5s cubic-bezier(0.2, 0, 0, 1);
+}
+.glass-card:hover {
+  border-color: rgba(212, 168, 67, 0.3);
+  box-shadow: 0 0 60px rgba(212, 168, 67, 0.06);
+  transform: translateY(-4px);
+}
+
+/* ── Horizontal scrolling marquee ── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ── Stagger reveal utility ── */
+.stagger-reveal > * {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* ── Gold gradient text utility ── */
+.gold-text {
+  background-image: linear-gradient(135deg, #d4a843 0%, #f0d78c 40%, #b8860b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Border glow hover ── */
+.border-glow {
+  position: relative;
+}
+.border-glow::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(212,168,67,0) 0%, rgba(212,168,67,0.3) 50%, rgba(212,168,67,0) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.border-glow:hover::after {
+  opacity: 1;
 }
 
 /* ── Scheme slider custom styling ── */
@@ -48,11 +227,12 @@ body {
   border: 3px solid #0a0a0a;
   box-shadow: 0 0 12px rgba(212, 168, 67, 0.4);
   cursor: pointer;
-  transition: box-shadow 0.2s ease;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .scheme-slider::-webkit-slider-thumb:hover {
-  box-shadow: 0 0 20px rgba(212, 168, 67, 0.6);
+  box-shadow: 0 0 24px rgba(212, 168, 67, 0.6);
+  transform: scale(1.15);
 }
 
 .scheme-slider::-moz-range-thumb {
@@ -69,4 +249,28 @@ body {
   height: 6px;
   border-radius: 3px;
   background: #2a2a2a;
+}
+
+/* ── Smooth number counter ── */
+.counter-value {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* ── Section divider ── */
+.section-divider {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(212,168,67,0.15) 20%, rgba(212,168,67,0.4) 50%, rgba(212,168,67,0.15) 80%, transparent 100%);
+}
+
+/* ── Scroll progress indicator ── */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #d4a843, #f0d78c, #b8860b);
+  z-index: 9999;
+  transform-origin: left;
 }

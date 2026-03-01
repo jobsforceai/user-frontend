@@ -14,7 +14,7 @@ export function SavingsSchemeSection({ authHref }: { authHref: string }) {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
-  const barsRef = useRef<HTMLDivElement>(null);
+  const dividerRef = useRef<HTMLDivElement>(null);
 
   const [monthly, setMonthly] = useState(10000);
   const [animatedBonus, setAnimatedBonus] = useState(20000);
@@ -22,7 +22,6 @@ export function SavingsSchemeSection({ authHref }: { authHref: string }) {
   const bonus = monthly * 2;
   const total11 = monthly * 11;
 
-  // Animate bonus number counting up
   useEffect(() => {
     const obj = { val: animatedBonus };
     gsap.to(obj, {
@@ -35,27 +34,34 @@ export function SavingsSchemeSection({ authHref }: { authHref: string }) {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(headingRef.current, {
-        y: 50,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
-        },
-      });
+      /* ── Section divider ── */
+      if (dividerRef.current) {
+        gsap.fromTo(dividerRef.current, { scaleX: 0 }, {
+          scaleX: 1, transformOrigin: "center", duration: 1.5, ease: "power3.inOut",
+          scrollTrigger: { trigger: dividerRef.current, start: "top 90%" },
+        });
+      }
 
-      gsap.from(sliderRef.current, {
-        y: 40,
-        opacity: 0,
-        duration: 0.9,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 60%",
-        },
-      });
+      /* ── Heading split reveal ── */
+      const headingLines = headingRef.current?.querySelectorAll(".split-line-inner");
+      if (headingLines) {
+        gsap.fromTo(headingLines,
+          { y: "110%", skewY: 3 },
+          {
+            y: "0%", skewY: 0, duration: 1.2, ease: "power4.out", stagger: 0.1,
+            scrollTrigger: { trigger: sectionRef.current, start: "top 65%" },
+          }
+        );
+      }
+
+      /* ── Slider area ── */
+      gsap.fromTo(sliderRef.current,
+        { y: 60, opacity: 0, filter: "blur(6px)" },
+        {
+          y: 0, opacity: 1, filter: "blur(0px)", duration: 1, ease: "power3.out",
+          scrollTrigger: { trigger: sectionRef.current, start: "top 55%" },
+        }
+      );
     }, sectionRef);
 
     return () => ctx.revert();
@@ -76,17 +82,13 @@ export function SavingsSchemeSection({ authHref }: { authHref: string }) {
       className="relative overflow-hidden"
       style={{ backgroundColor: "#0B0B0F" }}
     >
-      {/* Subtle top gradient */}
-      <div
-        className="absolute top-0 left-0 right-0 h-px"
-        style={{ background: "linear-gradient(90deg, transparent, rgba(212,168,67,0.15), transparent)" }}
-      />
+      <div ref={dividerRef} className="section-divider" />
 
-      <div className="relative z-10 mx-auto max-w-5xl px-5 py-24 md:px-8 md:py-36">
+      <div className="relative z-10 mx-auto max-w-5xl px-5 py-28 md:px-8 md:py-40">
         {/* Heading */}
         <div ref={headingRef} className="mb-16 text-center">
           <p
-            className="mb-4 text-xs font-semibold uppercase tracking-[0.3em]"
+            className="mb-5 text-xs font-semibold uppercase tracking-[0.4em]"
             style={{ color: "#d4a843" }}
           >
             Savings Scheme
@@ -99,20 +101,16 @@ export function SavingsSchemeSection({ authHref }: { authHref: string }) {
               letterSpacing: "-0.03em",
             }}
           >
-            Discipline Builds
-            <br />
-            <span
-              className="bg-clip-text text-transparent"
-              style={{
-                backgroundImage: "linear-gradient(135deg, #d4a843, #f0d78c, #b8860b)",
-              }}
-            >
-              Wealth.
+            <span className="split-line" style={{ justifyContent: "center" }}>
+              <span className="split-line-inner">Discipline Builds</span>
+            </span>
+            <span className="split-line" style={{ justifyContent: "center" }}>
+              <span className="split-line-inner gold-text">Wealth.</span>
             </span>
           </h2>
           <p
             className="mx-auto mt-5 max-w-lg text-base"
-            style={{ color: "rgba(245,245,245,0.6)" }}
+            style={{ color: "rgba(245,245,245,0.5)" }}
           >
             Save for 11 months. Unlock your reward in month 12.
           </p>
@@ -124,12 +122,12 @@ export function SavingsSchemeSection({ authHref }: { authHref: string }) {
           <div className="mb-10">
             <p
               className="mb-3 text-center text-sm font-medium"
-              style={{ color: "rgba(245,245,245,0.6)" }}
+              style={{ color: "rgba(245,245,245,0.5)" }}
             >
               Monthly Amount
             </p>
             <p
-              className="mb-6 text-center font-black"
+              className="mb-6 text-center font-black counter-value"
               style={{
                 color: "#d4a843",
                 fontSize: "clamp(2rem, 5vw, 3.5rem)",
@@ -146,7 +144,7 @@ export function SavingsSchemeSection({ authHref }: { authHref: string }) {
               onChange={handleSlider}
               className="scheme-slider w-full"
             />
-            <div className="mt-2 flex justify-between text-[11px] uppercase tracking-widest" style={{ color: "rgba(245,245,245,0.4)" }}>
+            <div className="mt-2 flex justify-between text-[11px] uppercase tracking-widest" style={{ color: "rgba(245,245,245,0.35)" }}>
               <span>₹5K</span>
               <span>₹10K</span>
               <span>₹25K</span>
@@ -156,46 +154,40 @@ export function SavingsSchemeSection({ authHref }: { authHref: string }) {
           </div>
 
           {/* Gold bars visual */}
-          <div ref={barsRef} className="mb-10 flex items-end justify-center gap-2 h-32">
+          <div className="mb-10 flex items-end justify-center gap-3 h-32">
             {Array.from({ length: 5 }).map((_, i) => (
               <div
                 key={i}
-                className="rounded-sm transition-all duration-500"
+                className="rounded-md transition-all duration-700 ease-out"
                 style={{
-                  width: "clamp(24px, 5vw, 40px)",
+                  width: "clamp(28px, 6vw, 44px)",
                   height: i < barCount ? `${40 + i * 18}px` : "8px",
                   background: i < barCount
                     ? "linear-gradient(180deg, #f0d78c 0%, #d4a843 40%, #b8860b 100%)"
                     : "rgba(255,255,255,0.04)",
-                  boxShadow: i < barCount ? "0 4px 20px rgba(212,168,67,0.15)" : "none",
+                  boxShadow: i < barCount ? "0 4px 30px rgba(212,168,67,0.2), inset 0 1px 0 rgba(255,255,255,0.1)" : "none",
                   opacity: i < barCount ? 1 : 0.3,
                 }}
               />
             ))}
           </div>
 
-          {/* Stats row */}
-          <div
-            className="grid grid-cols-3 divide-x rounded-2xl p-6"
-            style={{
-              background: "rgba(255,255,255,0.02)",
-              border: "1px solid rgba(255,255,255,0.06)",
-            }}
-          >
-            <div className="text-center px-4">
-              <p className="text-[11px] uppercase tracking-[0.2em]" style={{ color: "rgba(245,245,245,0.5)" }}>
+          {/* Stats row — glass cards */}
+          <div className="grid grid-cols-3 gap-3">
+            <div className="glass-card rounded-xl p-5 text-center">
+              <p className="text-[10px] uppercase tracking-[0.2em]" style={{ color: "rgba(245,245,245,0.4)" }}>
                 11-Month Total
               </p>
-              <p className="mt-2 text-xl font-bold" style={{ color: "#f5f5f5" }}>
+              <p className="mt-2 text-xl font-bold counter-value" style={{ color: "#f5f5f5" }}>
                 ₹{formatINR(total11)}
               </p>
             </div>
-            <div className="text-center px-4">
-              <p className="text-[11px] uppercase tracking-[0.2em]" style={{ color: "rgba(245,245,245,0.5)" }}>
+            <div className="glass-card rounded-xl p-5 text-center border-glow">
+              <p className="text-[10px] uppercase tracking-[0.2em]" style={{ color: "rgba(245,245,245,0.4)" }}>
                 12th Month Bonus
               </p>
               <p
-                className="mt-2 text-xl font-bold"
+                className="mt-2 text-xl font-bold counter-value"
                 style={{
                   backgroundImage: "linear-gradient(90deg, #34d399, #6ee7b7)",
                   WebkitBackgroundClip: "text",
@@ -206,11 +198,11 @@ export function SavingsSchemeSection({ authHref }: { authHref: string }) {
                 ₹{formatINR(animatedBonus)}
               </p>
             </div>
-            <div className="text-center px-4">
-              <p className="text-[11px] uppercase tracking-[0.2em]" style={{ color: "rgba(245,245,245,0.5)" }}>
+            <div className="glass-card rounded-xl p-5 text-center">
+              <p className="text-[10px] uppercase tracking-[0.2em]" style={{ color: "rgba(245,245,245,0.4)" }}>
                 Multiplier
               </p>
-              <p className="mt-2 text-xl font-bold" style={{ color: "#d4a843" }}>
+              <p className="mt-2 text-xl font-bold gold-text">
                 2.0x
               </p>
             </div>
@@ -220,23 +212,15 @@ export function SavingsSchemeSection({ authHref }: { authHref: string }) {
           <div className="mt-10 text-center">
             <Link
               href={authHref}
-              className="inline-flex items-center gap-3 rounded-xl px-10 py-4 text-sm font-bold transition-all duration-300"
+              className="magnetic-btn inline-flex items-center gap-3 rounded-full px-10 py-4 text-sm font-bold transition-all duration-300 hover:scale-105"
               style={{
                 background: "linear-gradient(135deg, #d4a843, #b8860b)",
                 color: "#0B0B0F",
-                boxShadow: "0 8px 32px rgba(212,168,67,0.2)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = "0 12px 48px rgba(212,168,67,0.35)";
-                e.currentTarget.style.transform = "translateY(-2px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = "0 8px 32px rgba(212,168,67,0.2)";
-                e.currentTarget.style.transform = "translateY(0)";
+                boxShadow: "0 8px 40px rgba(212,168,67,0.25)",
               }}
             >
               Start a Scheme
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
+              <svg className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
               </svg>
             </Link>

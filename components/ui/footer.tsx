@@ -10,20 +10,39 @@ gsap.registerPlugin(ScrollTrigger);
 export function Footer() {
   const footerRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const dividerRef = useRef<HTMLDivElement>(null);
+  const colRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(contentRef.current, {
-        y: 40,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: footerRef.current,
-          start: "top 90%",
-          toggleActions: "play none none none",
-        },
-      });
+      /* ── Gold accent line ── */
+      if (dividerRef.current) {
+        gsap.fromTo(dividerRef.current, { scaleX: 0 }, {
+          scaleX: 1, transformOrigin: "center", duration: 1.5, ease: "power3.inOut",
+          scrollTrigger: { trigger: dividerRef.current, start: "top 95%" },
+        });
+      }
+
+      /* ── Column stagger ── */
+      const validCols = colRefs.current.filter(Boolean) as HTMLDivElement[];
+      gsap.fromTo(validCols,
+        { y: 40, opacity: 0, filter: "blur(4px)" },
+        {
+          y: 0, opacity: 1, filter: "blur(0px)",
+          duration: 0.9, ease: "power3.out", stagger: 0.12,
+          scrollTrigger: { trigger: footerRef.current, start: "top 85%" },
+        }
+      );
+
+      /* ── Bottom bar ── */
+      gsap.fromTo(bottomRef.current,
+        { opacity: 0 },
+        {
+          opacity: 1, duration: 1, delay: 0.4, ease: "power3.out",
+          scrollTrigger: { trigger: footerRef.current, start: "top 85%" },
+        }
+      );
     }, footerRef);
     return () => ctx.revert();
   }, []);
@@ -50,12 +69,10 @@ export function Footer() {
   ];
 
   return (
-    <footer
-      ref={footerRef}
-      style={{ backgroundColor: "#0B0B0F" }}
-    >
+    <footer ref={footerRef} style={{ backgroundColor: "#0B0B0F" }}>
       {/* Gold accent line */}
       <div
+        ref={dividerRef}
         className="h-px w-full"
         style={{
           background:
@@ -65,23 +82,18 @@ export function Footer() {
 
       <div ref={contentRef} className="mx-auto max-w-7xl px-5 md:px-8 lg:px-10">
         {/* Main grid */}
-        <div className="grid grid-cols-1 gap-12 pt-16 pb-12 md:grid-cols-2 lg:grid-cols-12 lg:gap-8">
+        <div className="grid grid-cols-1 gap-12 pt-20 pb-14 md:grid-cols-2 lg:grid-cols-12 lg:gap-8">
           {/* Brand column */}
-          <div className="lg:col-span-4">
+          <div ref={(el) => { colRefs.current[0] = el; }} className="lg:col-span-4">
             <div className="flex items-center gap-3">
               <div
                 className="flex h-10 w-10 items-center justify-center rounded-lg overflow-hidden"
-                style={{
-                  boxShadow: "0 4px 20px rgba(212,168,67,0.2)",
-                }}
+                style={{ boxShadow: "0 4px 20px rgba(212,168,67,0.2)" }}
               >
                 <img src="/logo.png" alt="SG Gold" className="h-full w-full object-cover" />
               </div>
               <div className="flex flex-col">
-                <span
-                  className="text-[16px] font-bold tracking-tight leading-none"
-                  style={{ color: "#f5f5f5" }}
-                >
+                <span className="text-[16px] font-bold tracking-tight leading-none" style={{ color: "#f5f5f5" }}>
                   SG Gold
                 </span>
                 <span
@@ -95,14 +107,14 @@ export function Footer() {
 
             <p
               className="mt-5 max-w-xs text-[14px] leading-relaxed"
-              style={{ color: "rgba(255,255,255,0.45)" }}
+              style={{ color: "rgba(255,255,255,0.4)" }}
             >
               Invest in digital gold at live market prices. Buy, save, and take
               delivery — all secured in insured vaults.
             </p>
 
             {/* Social icons */}
-            <div className="mt-7 flex items-center gap-4">
+            <div className="mt-7 flex items-center gap-3">
               {[
                 {
                   label: "Twitter",
@@ -121,18 +133,10 @@ export function Footer() {
                   key={social.label}
                   href="#"
                   aria-label={social.label}
-                  className="group flex h-9 w-9 items-center justify-center rounded-full transition-all duration-300"
+                  className="group flex h-9 w-9 items-center justify-center rounded-full border-glow transition-all duration-300"
                   style={{
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    backgroundColor: "rgba(255,255,255,0.03)",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = "rgba(212,168,67,0.4)";
-                    e.currentTarget.style.backgroundColor = "rgba(212,168,67,0.08)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-                    e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.03)";
+                    border: "1px solid rgba(255,255,255,0.06)",
+                    backgroundColor: "rgba(255,255,255,0.02)",
                   }}
                 >
                   <svg
@@ -140,8 +144,8 @@ export function Footer() {
                     height="14"
                     viewBox="0 0 24 24"
                     fill="currentColor"
-                    style={{ color: "rgba(255,255,255,0.4)" }}
-                    className="group-hover:text-[#d4a843] transition-colors duration-300"
+                    className="transition-colors duration-300"
+                    style={{ color: "rgba(255,255,255,0.35)" }}
                   >
                     <path d={social.path} />
                   </svg>
@@ -151,10 +155,10 @@ export function Footer() {
           </div>
 
           {/* Quick Links */}
-          <div className="lg:col-span-2 lg:col-start-6">
+          <div ref={(el) => { colRefs.current[1] = el; }} className="lg:col-span-2 lg:col-start-6">
             <h4
               className="text-[11px] font-semibold uppercase tracking-[0.2em] mb-5"
-              style={{ color: "rgba(255,255,255,0.3)" }}
+              style={{ color: "rgba(255,255,255,0.25)" }}
             >
               Quick Links
             </h4>
@@ -163,10 +167,8 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-[14px] transition-colors duration-200"
-                    style={{ color: "rgba(255,255,255,0.5)" }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = "#d4a843")}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.5)")}
+                    className="footer-link text-[14px] transition-colors duration-300"
+                    style={{ color: "rgba(255,255,255,0.45)" }}
                   >
                     {link.label}
                   </Link>
@@ -176,10 +178,10 @@ export function Footer() {
           </div>
 
           {/* Company */}
-          <div className="lg:col-span-2">
+          <div ref={(el) => { colRefs.current[2] = el; }} className="lg:col-span-2">
             <h4
               className="text-[11px] font-semibold uppercase tracking-[0.2em] mb-5"
-              style={{ color: "rgba(255,255,255,0.3)" }}
+              style={{ color: "rgba(255,255,255,0.25)" }}
             >
               Company
             </h4>
@@ -188,10 +190,8 @@ export function Footer() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="text-[14px] transition-colors duration-200"
-                    style={{ color: "rgba(255,255,255,0.5)" }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = "#d4a843")}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.5)")}
+                    className="footer-link text-[14px] transition-colors duration-300"
+                    style={{ color: "rgba(255,255,255,0.45)" }}
                   >
                     {link.label}
                   </a>
@@ -201,10 +201,10 @@ export function Footer() {
           </div>
 
           {/* Legal + Contact */}
-          <div className="lg:col-span-2">
+          <div ref={(el) => { colRefs.current[3] = el; }} className="lg:col-span-2">
             <h4
               className="text-[11px] font-semibold uppercase tracking-[0.2em] mb-5"
-              style={{ color: "rgba(255,255,255,0.3)" }}
+              style={{ color: "rgba(255,255,255,0.25)" }}
             >
               Legal
             </h4>
@@ -213,10 +213,8 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-[14px] transition-colors duration-200"
-                    style={{ color: "rgba(255,255,255,0.5)" }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = "#d4a843")}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.5)")}
+                    className="footer-link text-[14px] transition-colors duration-300"
+                    style={{ color: "rgba(255,255,255,0.45)" }}
                   >
                     {link.label}
                   </Link>
@@ -226,16 +224,14 @@ export function Footer() {
 
             <h4
               className="text-[11px] font-semibold uppercase tracking-[0.2em] mt-8 mb-3"
-              style={{ color: "rgba(255,255,255,0.3)" }}
+              style={{ color: "rgba(255,255,255,0.25)" }}
             >
               Contact
             </h4>
             <a
               href="mailto:support@sggold.in"
-              className="text-[14px] transition-colors duration-200"
-              style={{ color: "rgba(255,255,255,0.5)" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#d4a843")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.5)")}
+              className="footer-link text-[14px] transition-colors duration-300"
+              style={{ color: "rgba(255,255,255,0.45)" }}
             >
               support@sggold.in
             </a>
@@ -243,26 +239,17 @@ export function Footer() {
         </div>
 
         {/* Divider */}
-        <div
-          className="h-px w-full"
-          style={{ background: "rgba(255,255,255,0.06)" }}
-        />
+        <div className="h-px w-full" style={{ background: "rgba(255,255,255,0.05)" }} />
 
         {/* Bottom bar */}
-        <div className="flex flex-col items-center justify-between gap-4 py-7 md:flex-row">
-          <p
-            className="text-[12px]"
-            style={{ color: "rgba(255,255,255,0.25)" }}
-          >
+        <div ref={bottomRef} className="flex flex-col items-center justify-between gap-4 py-8 md:flex-row">
+          <p className="text-[12px]" style={{ color: "rgba(255,255,255,0.2)" }}>
             &copy; {new Date().getFullYear()} SG Gold. All rights reserved.
           </p>
 
-          <div
-            className="flex items-center gap-2 text-[11px]"
-            style={{ color: "rgba(255,255,255,0.2)" }}
-          >
+          <div className="flex items-center gap-2 text-[11px]" style={{ color: "rgba(255,255,255,0.15)" }}>
             <span>Prices sourced from global bullion markets</span>
-            <span style={{ color: "rgba(255,255,255,0.1)" }}>•</span>
+            <span style={{ color: "rgba(255,255,255,0.08)" }}>•</span>
             <span>Secured with 256-bit encryption</span>
           </div>
         </div>
