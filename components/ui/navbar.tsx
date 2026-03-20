@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
+import gsap from "gsap";
 
 interface NavbarProps {
   isLoggedIn: boolean;
@@ -12,26 +13,45 @@ export function Navbar({ isLoggedIn }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let lastY = window.scrollY;
     const onScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 40);
-      if (y > lastY && y > 80) setHidden(true);   // scrolling down
-      else setHidden(false);                        // scrolling up
+      if (y > lastY && y > 80) setHidden(true);
+      else setHidden(false);
       lastY = y;
+
+      // Update scroll progress bar
+      if (progressRef.current) {
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? y / docHeight : 0;
+        progressRef.current.style.transform = `scaleX(${progress})`;
+      }
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* Lock body scroll when mobile menu is open */
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
+
+  /* Navbar entrance animation */
+  useEffect(() => {
+    if (navRef.current) {
+      gsap.fromTo(
+        navRef.current,
+        { y: -100, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.3 }
+      );
+    }
+  }, []);
 
   const scrollTo = useCallback((id: string) => {
     setMobileOpen(false);
@@ -48,23 +68,31 @@ export function Navbar({ isLoggedIn }: NavbarProps) {
 
   return (
     <>
+      {/* Scroll progress bar */}
+      <div
+        ref={progressRef}
+        className="scroll-progress"
+        style={{ transform: "scaleX(0)" }}
+      />
+
       <nav
-        className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+        ref={navRef}
+        className="fixed top-0 left-0 right-0 z-50 transition-all duration-700"
         style={{
-          backgroundColor: scrolled ? "rgba(255,255,255,0.92)" : "transparent",
-          backdropFilter: scrolled ? "saturate(180%) blur(20px)" : "none",
-          WebkitBackdropFilter: scrolled ? "saturate(180%) blur(20px)" : "none",
+          backgroundColor: scrolled ? "rgba(11,11,15,0.85)" : "transparent",
+          backdropFilter: scrolled ? "saturate(180%) blur(24px)" : "none",
+          WebkitBackdropFilter: scrolled ? "saturate(180%) blur(24px)" : "none",
           boxShadow: scrolled
-            ? "0 1px 0 rgba(0,0,0,0.04), 0 4px 20px rgba(0,0,0,0.03)"
+            ? "0 1px 0 rgba(212,168,67,0.06), 0 4px 30px rgba(0,0,0,0.3)"
             : "none",
           transform: hidden && !mobileOpen ? "translateY(-100%)" : "translateY(0)",
         }}
       >
         {/* Gold accent line at very top */}
         <div
-          className="h-[1px] w-full transition-opacity duration-500"
+          className="h-[1px] w-full transition-opacity duration-700"
           style={{
-            background: "linear-gradient(90deg, transparent 0%, #d4a843 50%, transparent 100%)",
+            background: "linear-gradient(90deg, transparent 0%, rgba(212,168,67,0.4) 50%, transparent 100%)",
             opacity: scrolled ? 1 : 0,
           }}
         />
@@ -72,23 +100,23 @@ export function Navbar({ isLoggedIn }: NavbarProps) {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 md:px-8 lg:px-10">
           {/* Logo */}
           <Link href="/" className="group flex items-center gap-3">
-            <Image 
+            <Image
               src="/logo.png"
               alt="SG Gold Logo"
               width={32}
               height={32}
-              className="w-8 h-8 object-cover rounded-sm group-hover:brightness-110 transition-all duration-200"
+              className="w-8 h-8 object-cover rounded-sm transition-all duration-300 group-hover:scale-110"
             />
             <div className="flex flex-col">
               <span
-                className="text-[15px] font-bold tracking-tight leading-none"
-                style={{ color: "#111" }}
+                className="text-[15px] font-bold tracking-tight leading-none transition-colors duration-500"
+                style={{ color: scrolled ? "#f5f5f5" : "#f5f5f5" }}
               >
                 SG Gold
               </span>
               <span
-                className="text-[9px] font-medium uppercase tracking-[0.2em] leading-none mt-[2px]"
-                style={{ color: "#999" }}
+                className="text-[9px] font-medium uppercase tracking-[0.2em] leading-none mt-[2px] transition-colors duration-500"
+                style={{ color: scrolled ? "rgba(212,168,67,0.6)" : "rgba(255,255,255,0.4)" }}
               >
                 Digital Bullion
               </span>
@@ -101,18 +129,20 @@ export function Navbar({ isLoggedIn }: NavbarProps) {
               <button
                 key={link.id}
                 onClick={() => scrollTo(link.id)}
-                className="relative px-4 py-2 text-[13px] font-medium tracking-wide transition-colors duration-200 rounded-full"
-                style={{ color: "#555" }}
+                className="relative px-4 py-2 text-[13px] font-medium tracking-wide transition-all duration-300 rounded-full group"
+                style={{ color: "rgba(245,245,245,0.5)" }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.color = "#111";
-                  e.currentTarget.style.backgroundColor = "rgba(0,0,0,0.04)";
+                  e.currentTarget.style.color = "#d4a843";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.color = "#555";
-                  e.currentTarget.style.backgroundColor = "transparent";
+                  e.currentTarget.style.color = "rgba(245,245,245,0.5)";
                 }}
               >
                 {link.label}
+                <span
+                  className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[1px] w-0 group-hover:w-[60%] transition-all duration-300"
+                  style={{ background: "#d4a843" }}
+                />
               </button>
             ))}
           </div>
@@ -122,10 +152,11 @@ export function Navbar({ isLoggedIn }: NavbarProps) {
             {isLoggedIn ? (
               <Link
                 href="/dashboard"
-                className="hidden md:inline-flex items-center gap-2 rounded-full px-6 py-2 text-[13px] font-semibold text-white transition-all duration-200 hover:shadow-lg"
+                className="magnetic-btn hidden md:inline-flex items-center gap-2 rounded-full px-6 py-2 text-[13px] font-semibold transition-all duration-300 hover:scale-105"
                 style={{
                   background: "linear-gradient(135deg, #d4a843 0%, #b8860b 100%)",
-                  boxShadow: "0 2px 12px rgba(212,168,67,0.25)",
+                  color: "#0B0B0F",
+                  boxShadow: "0 4px 20px rgba(212,168,67,0.3)",
                 }}
               >
                 Dashboard
@@ -137,17 +168,20 @@ export function Navbar({ isLoggedIn }: NavbarProps) {
               <>
                 <Link
                   href="/login"
-                  className="hidden md:inline-flex px-4 py-2 text-[13px] font-medium transition-colors duration-200 rounded-full"
-                  style={{ color: "#555" }}
+                  className="hidden md:inline-flex px-4 py-2 text-[13px] font-medium transition-all duration-300 rounded-full"
+                  style={{ color: "rgba(245,245,245,0.5)" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#d4a843")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(245,245,245,0.5)")}
                 >
                   Sign in
                 </Link>
                 <Link
                   href="/register"
-                  className="hidden md:inline-flex items-center gap-2 rounded-full px-6 py-2 text-[13px] font-semibold text-white transition-all duration-200 hover:shadow-lg"
+                  className="magnetic-btn hidden md:inline-flex items-center gap-2 rounded-full px-6 py-2 text-[13px] font-semibold transition-all duration-300 hover:scale-105"
                   style={{
                     background: "linear-gradient(135deg, #d4a843 0%, #b8860b 100%)",
-                    boxShadow: "0 2px 12px rgba(212,168,67,0.25)",
+                    color: "#0B0B0F",
+                    boxShadow: "0 4px 20px rgba(212,168,67,0.3)",
                   }}
                 >
                   Get Started
@@ -162,21 +196,21 @@ export function Navbar({ isLoggedIn }: NavbarProps) {
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="md:hidden relative w-9 h-9 flex items-center justify-center rounded-full transition-colors"
-              style={{ backgroundColor: mobileOpen ? "rgba(0,0,0,0.06)" : "transparent" }}
+              style={{ backgroundColor: mobileOpen ? "rgba(212,168,67,0.1)" : "transparent" }}
               aria-label="Menu"
             >
               <div className="w-[18px] flex flex-col gap-[5px]">
                 <span
                   className="block h-[1.5px] rounded-full transition-all duration-300"
                   style={{
-                    backgroundColor: "#111",
+                    backgroundColor: "#f5f5f5",
                     transform: mobileOpen ? "rotate(45deg) translate(2.3px, 2.3px)" : "none",
                   }}
                 />
                 <span
                   className="block h-[1.5px] rounded-full transition-all duration-300"
                   style={{
-                    backgroundColor: "#111",
+                    backgroundColor: "#f5f5f5",
                     opacity: mobileOpen ? 0 : 1,
                     transform: mobileOpen ? "scaleX(0)" : "scaleX(1)",
                   }}
@@ -184,7 +218,7 @@ export function Navbar({ isLoggedIn }: NavbarProps) {
                 <span
                   className="block h-[1.5px] rounded-full transition-all duration-300"
                   style={{
-                    backgroundColor: "#111",
+                    backgroundColor: "#f5f5f5",
                     transform: mobileOpen ? "rotate(-45deg) translate(2.3px, -2.3px)" : "none",
                   }}
                 />
@@ -196,7 +230,7 @@ export function Navbar({ isLoggedIn }: NavbarProps) {
 
       {/* ── Mobile slide-down menu ── */}
       <div
-        className="fixed inset-0 z-40 md:hidden transition-all duration-400"
+        className="fixed inset-0 z-40 md:hidden transition-all duration-500"
         style={{
           pointerEvents: mobileOpen ? "auto" : "none",
           opacity: mobileOpen ? 1 : 0,
@@ -204,26 +238,29 @@ export function Navbar({ isLoggedIn }: NavbarProps) {
       >
         {/* Backdrop */}
         <div
-          className="absolute inset-0 bg-black/20 backdrop-blur-sm"
+          className="absolute inset-0 bg-black/60 backdrop-blur-sm"
           onClick={() => setMobileOpen(false)}
         />
 
         {/* Panel */}
         <div
-          className="absolute top-0 left-0 right-0 pt-[72px] pb-8 px-6 transition-transform duration-400"
+          className="absolute top-0 left-0 right-0 pt-[72px] pb-8 px-6 transition-transform duration-500"
           style={{
-            backgroundColor: "rgba(255,255,255,0.98)",
+            backgroundColor: "rgba(11,11,15,0.98)",
             backdropFilter: "blur(30px)",
             transform: mobileOpen ? "translateY(0)" : "translateY(-100%)",
           }}
         >
           <div className="flex flex-col gap-1">
-            {navLinks.map((link) => (
+            {navLinks.map((link, i) => (
               <button
                 key={link.id}
                 onClick={() => scrollTo(link.id)}
-                className="w-full text-left px-4 py-3.5 text-[15px] font-medium rounded-xl transition-colors"
-                style={{ color: "#222" }}
+                className="w-full text-left px-4 py-3.5 text-[15px] font-medium rounded-xl transition-all duration-300"
+                style={{
+                  color: "rgba(245,245,245,0.7)",
+                  transitionDelay: mobileOpen ? `${i * 50}ms` : "0ms",
+                }}
               >
                 {link.label}
               </button>
@@ -232,7 +269,7 @@ export function Navbar({ isLoggedIn }: NavbarProps) {
 
           <div
             className="h-[1px] my-4"
-            style={{ background: "linear-gradient(90deg, transparent, rgba(0,0,0,0.08), transparent)" }}
+            style={{ background: "linear-gradient(90deg, transparent, rgba(212,168,67,0.2), transparent)" }}
           />
 
           <div className="flex flex-col gap-2 px-4">
@@ -240,9 +277,10 @@ export function Navbar({ isLoggedIn }: NavbarProps) {
               <Link
                 href="/dashboard"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-center gap-2 rounded-full py-3 text-[14px] font-semibold text-white"
+                className="flex items-center justify-center gap-2 rounded-full py-3 text-[14px] font-semibold"
                 style={{
                   background: "linear-gradient(135deg, #d4a843 0%, #b8860b 100%)",
+                  color: "#0B0B0F",
                 }}
               >
                 Dashboard
@@ -252,9 +290,10 @@ export function Navbar({ isLoggedIn }: NavbarProps) {
                 <Link
                   href="/register"
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center justify-center gap-2 rounded-full py-3 text-[14px] font-semibold text-white"
+                  className="flex items-center justify-center gap-2 rounded-full py-3 text-[14px] font-semibold"
                   style={{
                     background: "linear-gradient(135deg, #d4a843 0%, #b8860b 100%)",
+                    color: "#0B0B0F",
                   }}
                 >
                   Get Started
@@ -263,7 +302,7 @@ export function Navbar({ isLoggedIn }: NavbarProps) {
                   href="/login"
                   onClick={() => setMobileOpen(false)}
                   className="flex items-center justify-center py-3 text-[14px] font-medium rounded-full"
-                  style={{ color: "#555" }}
+                  style={{ color: "rgba(245,245,245,0.5)" }}
                 >
                   Sign in
                 </Link>
