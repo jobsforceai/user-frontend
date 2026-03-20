@@ -194,8 +194,8 @@ export function GalleryHero() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full overflow-hidden"
-      style={{ backgroundColor: "#ffffff", minHeight: "100svh" }}
+      className="relative w-full bg-bg"
+      style={{ height: "500vh" }}
     >
       {/* ── Pinned viewport wrapper ── */}
       <div className="sticky top-0 h-screen w-full overflow-hidden">
@@ -215,72 +215,82 @@ export function GalleryHero() {
         {/* Film grain overlay */}
         <div className="grain-overlay absolute inset-0 z-[2] pointer-events-none" />
 
-      {/* ── 3D MODEL VIEWER ── */}
-      <div className="absolute inset-0 z-[5]">
-        <Model3DViewer
-          stateRef={modelStateRef}
-          onLoaded={handleModelLoaded}
-        />
-      </div>
-
-      {/* ── Loading overlay ── */}
-      <LoadingOverlay visible={loading} />
-
-      {/* ── Shadow below model ── */}
-      <div
-        ref={shadowRef}
-        className="absolute left-1/2 -translate-x-1/2 z-[4] pointer-events-none"
-        style={{
-          bottom: "18%",
-          width: "min(50vw, 400px)",
-          height: "30px",
-          borderRadius: "50%",
-          background:
-            "radial-gradient(ellipse at center, rgba(0,0,0,0.18) 0%, transparent 70%)",
-          opacity: 0.2,
-        }}
-      />
-
-      {/* ── TEXT OVERLAY ── */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex flex-col items-start gap-3 px-4 pb-6 sm:px-6 md:flex-row md:items-end md:justify-between md:gap-8 md:px-8 md:pb-8">
-        <div ref={headingRef}>
-          <h1
-            className="select-none font-black uppercase text-left"
-            style={{
-              color: "#111111",
-              fontSize: "clamp(2rem, 8vw, 7rem)",
-              letterSpacing: "-0.04em",
-              lineHeight: 0.95,
-            }}
-          >
-            <span>Gold</span>
-            <br />
-            <span>Demands</span>
-            <br />
-            <span
-              className="bg-clip-text text-transparent"
+        {/* ── Centered content ── */}
+        <div className="absolute inset-0 z-[10] flex flex-col items-center justify-center px-6">
+          {/* ── HEADING with split-line reveal ── */}
+          <div ref={headingRef} className="text-center">
+            <h1
+              className="select-none font-black uppercase"
               style={{
-                backgroundImage: "linear-gradient(135deg, #d4a843 0%, #b8860b 50%, #d4a843 100%)",
+                color: "#f5f5f5",
+                fontSize: "clamp(3rem, 9vw, 9rem)",
+                letterSpacing: "-0.04em",
+                lineHeight: 0.9,
               }}
             >
-              Strength.
-            </span>
-          </h1>
+              <span className="split-line">
+                <span className="split-line-inner">Gold</span>
+              </span>
+              <span className="split-line">
+                <span className="split-line-inner">Demands</span>
+              </span>
+              <span className="split-line">
+                <span
+                  className="split-line-inner gold-text"
+                  style={{ display: "inline-block" }}
+                >
+                  Strength.
+                </span>
+              </span>
+            </h1>
+          </div>
+
+          {/* ── SUBHEADING ── */}
+          <p
+            ref={subheadingRef}
+            className="mt-6 max-w-lg text-center font-medium select-none"
+            style={{
+              color: "rgba(245,245,245,0.5)",
+              fontSize: "clamp(0.875rem, 1.5vw, 1.25rem)",
+              lineHeight: 1.7,
+              letterSpacing: "0.02em",
+              opacity: 0,
+            }}
+          >
+            Invest in digital gold at live market prices.
+            <br />
+            Buy, save, and take delivery — all in one place.
+          </p>
         </div>
-        <p
-          ref={subheadingRef}
-          className="max-w-lg shrink-0 text-left font-medium select-none md:text-right md:font-semibold"
-          style={{
-            color: "#555555",
-            fontSize: "clamp(0.813rem, 1.5vw, 2.125rem)",
-            lineHeight: 1.5,
-            letterSpacing: "0.01em",
-          }}
+
+        {/* ── Scroll indicator ── */}
+        <div
+          ref={scrollIndicatorRef}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-[10] flex flex-col items-center gap-2"
+          style={{ opacity: 0 }}
         >
-          Invest in digital gold at live market prices.
-          <br className="hidden md:inline" />
-          {" "}Buy, save, and take delivery — all in one place.
-        </p>
+          <span
+            className="text-[10px] font-semibold uppercase tracking-[0.3em]"
+            style={{ color: "rgba(245,245,245,0.4)" }}
+          >
+            Scroll
+          </span>
+          <div
+            className="h-10 w-[1px]"
+            style={{
+              background: "linear-gradient(180deg, rgba(212,168,67,0.6) 0%, transparent 100%)",
+            }}
+          />
+        </div>
+
+        {/* ── Vignette ── */}
+        <div
+          className="absolute inset-0 z-[3] pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.5) 100%)",
+          }}
+        />
       </div>
     </section>
   );

@@ -172,24 +172,18 @@ export function SavingsSchemeSection({ authHref }: { authHref: string }) {
             ))}
           </div>
 
-          {/* Stats row */}
-          <div
-            className="grid grid-cols-1 divide-y sm:grid-cols-3 sm:divide-y-0 sm:divide-x rounded-2xl p-4 sm:p-6"
-            style={{
-              background: "rgba(255,255,255,0.02)",
-              border: "1px solid rgba(255,255,255,0.06)",
-            }}
-          >
-            <div className="text-center px-2 py-3 sm:px-4 sm:py-0">
-              <p className="text-[11px] uppercase tracking-[0.2em]" style={{ color: "rgba(245,245,245,0.5)" }}>
+          {/* Stats row — glass cards */}
+          <div className="grid grid-cols-3 gap-3">
+            <div className="glass-card rounded-xl p-5 text-center">
+              <p className="text-[10px] uppercase tracking-[0.2em]" style={{ color: "rgba(245,245,245,0.4)" }}>
                 11-Month Total
               </p>
               <p className="mt-2 text-xl font-bold counter-value" style={{ color: "#f5f5f5" }}>
                 ₹{formatINR(total11)}
               </p>
             </div>
-            <div className="text-center px-2 py-3 sm:px-4 sm:py-0">
-              <p className="text-[11px] uppercase tracking-[0.2em]" style={{ color: "rgba(245,245,245,0.5)" }}>
+            <div className="glass-card rounded-xl p-5 text-center border-glow">
+              <p className="text-[10px] uppercase tracking-[0.2em]" style={{ color: "rgba(245,245,245,0.4)" }}>
                 12th Month Bonus
               </p>
               <p
@@ -204,8 +198,8 @@ export function SavingsSchemeSection({ authHref }: { authHref: string }) {
                 ₹{formatINR(animatedBonus)}
               </p>
             </div>
-            <div className="text-center px-2 py-3 sm:px-4 sm:py-0">
-              <p className="text-[11px] uppercase tracking-[0.2em]" style={{ color: "rgba(245,245,245,0.5)" }}>
+            <div className="glass-card rounded-xl p-5 text-center">
+              <p className="text-[10px] uppercase tracking-[0.2em]" style={{ color: "rgba(245,245,245,0.4)" }}>
                 Multiplier
               </p>
               <p className="mt-2 text-xl font-bold gold-text">

@@ -2,7 +2,6 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { GalleryHero } from "@/components/ui/gallery-hero";
 import { Navbar } from "@/components/ui/navbar";
-import { LivePriceBanner } from "@/components/ui/live-price-banner";
 import { LiveMarketRates } from "@/components/ui/live-market-rates";
 import { AboutSection } from "@/components/ui/about-section";
 import { WhyGoldSection } from "@/components/ui/why-gold-section";
@@ -237,15 +236,6 @@ export default async function Home({
 
       {/* --------- FOOTER --------- */}
       <Footer />
-
-      {/* ───────────────────── FLOATING LIVE PRICE BANNER ───────────────────── */}
-      <LivePriceBanner
-        currency={currency}
-        initialGoldPerGram={goldPerGram}
-        initialSilverPerGram={silverPerGram}
-        purityFactor={purityFactor}
-        purity={purity}
-      />
     </main>
   );
 }

@@ -197,20 +197,8 @@ export function WhyGoldSection() {
             <div
               key={card.title}
               ref={(el) => { cardRefs.current[i] = el; }}
-              className="group relative rounded-2xl p-5 sm:p-8 transition-all duration-500"
-              style={{
-                background: "rgba(255,255,255,0.02)",
-                border: "1px solid rgba(255,255,255,0.05)",
-                backdropFilter: "blur(20px)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "rgba(212,168,67,0.3)";
-                e.currentTarget.style.boxShadow = "0 0 40px rgba(212,168,67,0.08)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.05)";
-                e.currentTarget.style.boxShadow = "none";
-              }}
+              className="glass-card group relative rounded-2xl p-8 border-glow cursor-default"
+              style={{ transformStyle: "preserve-3d" }}
             >
               {/* Icon */}
               <div

@@ -1,24 +1,14 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import Link from "next/link";
 import { HistoricalChart } from "@/components/ui/historical-chart";
 import { formatCurrency } from "@/lib/utils";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Currency, Metal, Range } from "@/actions/assets";
-import { getLivePrices } from "@/actions/assets";
 
 gsap.registerPlugin(ScrollTrigger);
-
-// Custom hook to track previous value
-function usePrevious<T>(value: T): T | undefined {
-  const ref = useRef<T>();
-  useEffect(() => {
-    ref.current = value;
-  }, [value]);
-  return ref.current;
-}
 
 const ranges: Array<{ key: Range; label: string }> = [
   { key: "1D", label: "Today" },
@@ -52,8 +42,8 @@ export function LiveMarketRates({
   range,
   purity,
   purityFactor,
-  goldPerGram: initialGoldPerGram,
-  silverPerGram: initialSilverPerGram,
+  goldPerGram,
+  silverPerGram,
   isGoldUp,
   isSilverUp,
   goldChangePercent,
@@ -69,49 +59,6 @@ export function LiveMarketRates({
   const chartRef = useRef<HTMLDivElement>(null);
   const dividerRef = useRef<HTMLDivElement>(null);
 
-  // Live price state
-  const [goldPerGram, setGoldPerGram] = useState(initialGoldPerGram);
-  const [silverPerGram, setSilverPerGram] = useState(initialSilverPerGram);
-  const [liveGoldChange, setLiveGoldChange] = useState(0);
-  const [liveSilverChange, setLiveSilverChange] = useState(0);
-
-  // Track previous prices for color transitions
-  const prevGoldPrice = usePrevious(goldPerGram);
-  const prevSilverPrice = usePrevious(silverPerGram);
-
-  // Determine color based on price change
-  const goldPriceColor = prevGoldPrice !== undefined && goldPerGram > prevGoldPrice
-    ? "#10b981" // green
-    : prevGoldPrice !== undefined && goldPerGram < prevGoldPrice
-    ? "#ef4444" // red
-    : "#d4a843"; // default gold
-
-  const silverPriceColor = prevSilverPrice !== undefined && silverPerGram > prevSilverPrice
-    ? "#10b981" // green
-    : prevSilverPrice !== undefined && silverPerGram < prevSilverPrice
-    ? "#ef4444" // red
-    : "#9ca3af"; // default silver
-
-  // Live price updates
-  useEffect(() => {
-    const updatePrices = async () => {
-      try {
-        const livePrices = await getLivePrices(currency, goldPerGram, silverPerGram);
-        setGoldPerGram(livePrices.goldPerGram);
-        setSilverPerGram(livePrices.silverPerGram);
-        setLiveGoldChange(livePrices.goldChange);
-        setLiveSilverChange(livePrices.silverChange);
-      } catch (error) {
-        console.error("Failed to update live prices:", error);
-      }
-    };
-
-    // Update prices every 3 seconds
-    const interval = setInterval(updatePrices, 3000);
-    return () => clearInterval(interval);
-  }, [currency, goldPerGram, silverPerGram]);
-
-  // GSAP animations
   useEffect(() => {
     const ctx = gsap.context(() => {
       /* ── Section divider ── */
@@ -157,10 +104,6 @@ export function LiveMarketRates({
 
   const goldPrice = goldPerGram * purityFactor;
   const silverPrice = silverPerGram;
-  
-  // Calculate cumulative change
-  const isLiveGoldUp = liveGoldChange >= 0;
-  const isLiveSilverUp = liveSilverChange >= 0;
 
   return (
     <section id="market" ref={sectionRef} style={{ backgroundColor: "#0B0B0F" }}>
@@ -205,7 +148,6 @@ export function LiveMarketRates({
           <div className="glass-card flex flex-col justify-between p-8 md:p-10 rounded-none border-0" style={{ background: "#0B0B0F" }}>
             <div>
               <div className="mb-1 flex items-center gap-3">
-                <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
                 <span
                   className="text-sm font-semibold uppercase tracking-[0.2em]"
                   style={{ color: "rgba(245,245,245,0.4)" }}
@@ -214,20 +156,16 @@ export function LiveMarketRates({
                 </span>
               </div>
               <p
-                className="mt-3 font-black transition-colors duration-700 ease-in-out"
-                style={{ 
-                  fontSize: "clamp(2.2rem, 5vw, 3.5rem)", 
-                  lineHeight: 1, 
-                  color: goldPriceColor 
-                }}
+                className="mt-3 font-black counter-value"
+                style={{ fontSize: "clamp(2.2rem, 5vw, 3.5rem)", lineHeight: 1, color: "#d4a843" }}
               >
                 {formatCurrency(goldPrice, currency)}
                 <span className="text-lg font-normal" style={{ color: "rgba(245,245,245,0.25)" }}>
                   /g
                 </span>
               </p>
-              <p className={`mt-2 text-sm font-semibold transition-colors duration-300 ${isLiveGoldUp ? "text-emerald-400" : "text-red-400"}`}>
-                {isLiveGoldUp ? "▲" : "▼"} {Math.abs(liveGoldChange).toFixed(2)}% live
+              <p className={`mt-2 text-sm font-semibold ${isGoldUp ? "text-emerald-400" : "text-red-400"}`}>
+                {isGoldUp ? "▲" : "▼"} {Math.abs(goldChangePercent).toFixed(2)}% today
               </p>
             </div>
             <div className="mt-6 flex gap-3">
@@ -252,7 +190,6 @@ export function LiveMarketRates({
           <div className="glass-card flex flex-col justify-between p-8 md:p-10 rounded-none border-0" style={{ background: "#0B0B0F" }}>
             <div>
               <div className="mb-1 flex items-center gap-3">
-                <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
                 <span
                   className="text-sm font-semibold uppercase tracking-[0.2em]"
                   style={{ color: "rgba(245,245,245,0.4)" }}
@@ -261,20 +198,16 @@ export function LiveMarketRates({
                 </span>
               </div>
               <p
-                className="mt-3 font-black transition-colors duration-700 ease-in-out"
-                style={{ 
-                  fontSize: "clamp(2.2rem, 5vw, 3.5rem)", 
-                  lineHeight: 1, 
-                  color: silverPriceColor 
-                }}
+                className="mt-3 font-black counter-value"
+                style={{ fontSize: "clamp(2.2rem, 5vw, 3.5rem)", lineHeight: 1, color: "#9ca3af" }}
               >
                 {formatCurrency(silverPrice, currency)}
                 <span className="text-lg font-normal" style={{ color: "rgba(245,245,245,0.25)" }}>
                   /g
                 </span>
               </p>
-              <p className={`mt-2 text-sm font-semibold transition-colors duration-300 ${isLiveSilverUp ? "text-emerald-400" : "text-red-400"}`}>
-                {isLiveSilverUp ? "▲" : "▼"} {Math.abs(liveSilverChange).toFixed(2)}% live
+              <p className={`mt-2 text-sm font-semibold ${isSilverUp ? "text-emerald-400" : "text-red-400"}`}>
+                {isSilverUp ? "▲" : "▼"} {Math.abs(silverChangePercent).toFixed(2)}% today
               </p>
             </div>
             <div className="mt-6 flex gap-3">
@@ -330,7 +263,7 @@ export function LiveMarketRates({
               </Link>
             </div>
 
-            <div className="flex flex-wrap gap-1">
+            <div className="flex gap-1 rounded-full p-1" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
               {ranges.map((r) => (
                 <Link
                   scroll={false}

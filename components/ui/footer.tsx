@@ -247,10 +247,7 @@ export function Footer() {
             &copy; {new Date().getFullYear()} SG Gold. All rights reserved.
           </p>
 
-          <div
-            className="flex flex-wrap items-center gap-2 text-[11px]"
-            style={{ color: "rgba(255,255,255,0.2)" }}
-          >
+          <div className="flex items-center gap-2 text-[11px]" style={{ color: "rgba(255,255,255,0.15)" }}>
             <span>Prices sourced from global bullion markets</span>
             <span style={{ color: "rgba(255,255,255,0.08)" }}>•</span>
             <span>Secured with 256-bit encryption</span>

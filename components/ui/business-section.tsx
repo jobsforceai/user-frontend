@@ -166,21 +166,7 @@ export function BusinessSection({ authHref }: { authHref: string }) {
             <div
               key={tier.slab}
               ref={(el) => { cardRefs.current[i] = el; }}
-              className="group relative rounded-2xl p-4 sm:p-6 text-center transition-all duration-500"
-              style={{
-                background: "rgba(255,255,255,0.02)",
-                border: "1px solid rgba(255,255,255,0.06)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "rgba(212,168,67,0.35)";
-                e.currentTarget.style.boxShadow = "0 0 50px rgba(212,168,67,0.08)";
-                e.currentTarget.style.transform = "scale(1.03)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)";
-                e.currentTarget.style.boxShadow = "none";
-                e.currentTarget.style.transform = "scale(1)";
-              }}
+              className="glass-card border-glow group relative rounded-2xl p-7 text-center"
             >
               {/* Tag badge */}
               <span
