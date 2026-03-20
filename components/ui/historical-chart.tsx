@@ -27,8 +27,8 @@ export function HistoricalChart({ title, currency, color, range, data }: Props) 
           ? new Date(value).toLocaleDateString("en-IN", { day: "2-digit", month: "short" })
           : new Date(value).toLocaleDateString("en-IN", { month: "short", year: "2-digit" });
 
-  const tooltipLabelFormatter = (value: string) =>
-    new Date(value).toLocaleString("en-IN", {
+  const tooltipLabelFormatter = (value: unknown) =>
+    new Date(String(value ?? "")).toLocaleString("en-IN", {
       day: "2-digit",
       month: "short",
       year: "numeric",
@@ -53,7 +53,7 @@ export function HistoricalChart({ title, currency, color, range, data }: Props) 
           stroke="#2a2a2a"
         />
         <Tooltip
-          formatter={(value: number) => formatCurrency(value, currency)}
+          formatter={(value) => formatCurrency(Number(value ?? 0), currency)}
           labelFormatter={tooltipLabelFormatter}
           contentStyle={{
             backgroundColor: "#1a1a1a",
