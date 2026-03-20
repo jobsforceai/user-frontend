@@ -29,14 +29,15 @@ export const dynamic = "force-dynamic";
 export default async function Home({
   searchParams
 }: {
-  searchParams: { metal?: Metal; currency?: Currency; range?: Range; purity?: string; state?: string };
+  searchParams: Promise<{ metal?: Metal; currency?: Currency; range?: Range; purity?: string; state?: string }>;
 }) {
-  const metal = searchParams.metal === "silver" ? "silver" : fallbackMetal;
-  const currency = searchParams.currency ?? fallbackCurrency;
-  const range = searchParams.range ?? fallbackRange;
-  const purity = metal === "gold" ? (searchParams.purity === "22K" ? "22K" : searchParams.purity === "18K" ? "18K" : "24K") : "999";
+  const params = await searchParams;
+  const metal = params.metal === "silver" ? "silver" : fallbackMetal;
+  const currency = params.currency ?? fallbackCurrency;
+  const range = params.range ?? fallbackRange;
+  const purity = metal === "gold" ? (params.purity === "22K" ? "22K" : params.purity === "18K" ? "18K" : "24K") : "999";
   const purityFactor = purity === "22K" ? 22 / 24 : purity === "18K" ? 18 / 24 : 1;
-  const selectedState = searchParams.state ?? "Andhra Pradesh";
+  const selectedState = params.state ?? "Andhra Pradesh";
 
   const [overview, history, goldRates, silverRates] = await Promise.all([
     getOverview(currency),
@@ -71,24 +72,25 @@ export default async function Home({
     price: metal === "gold" ? (point.price / gramsPerOunce) * 10 : (point.price / gramsPerOunce) * 1000
   }));
 
-  const isLoggedIn = cookies().has("sg_token");
+  const cookieStore = await cookies();
+  const isLoggedIn = cookieStore.has("sg_token");
   const authHref = (path: string) => isLoggedIn ? path : "/register";
 
   return (
     <main className="min-h-screen bg-bg">
 
-      {/* ───────────────────── NAVBAR ───────────────────── */}
+      {/* --------- NAVBAR --------- */}
       <Navbar isLoggedIn={isLoggedIn} />
 
-      {/* ───────────────────── HERO — Gallery Style ───────────────────── */}
+      {/* --------- HERO - Gallery Style --------- */}
       <GalleryHero />
 
-      {/* ───────────────────── PREMIUM SECTIONS ───────────────────── */}
+      {/* --------- PREMIUM SECTIONS --------- */}
       <AboutSection />
 
       <WhyGoldSection />
       <SavingsSchemeSection authHref={authHref("/scheme/enroll")} />
-      {/* ───────────────────── LIVE MARKET RATES ───────────────────── */}
+      {/* --------- LIVE MARKET RATES --------- */}
       <LiveMarketRates
         metal={metal}
         currency={currency}
@@ -109,7 +111,7 @@ export default async function Home({
       <BusinessSection authHref={authHref("/profile")} />
       <SecureVaultSection />
 
-      {/* ───────────────────── FINAL CTA ───────────────────── */}
+      {/* --------- FINAL CTA --------- */}
       <section
         className="relative overflow-hidden"
         style={{ backgroundColor: "#0B0B0F" }}
@@ -233,7 +235,7 @@ export default async function Home({
         </div>
       </section>
 
-      {/* ───────────────────── FOOTER ───────────────────── */}
+      {/* --------- FOOTER --------- */}
       <Footer />
 
       {/* ───────────────────── FLOATING LIVE PRICE BANNER ───────────────────── */}

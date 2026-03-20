@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useEffect, useState } from "react";
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Card } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/utils";
@@ -14,6 +15,30 @@ type Props = {
 };
 
 export function HistoricalChart({ title, currency, color, range, data }: Props) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (containerRef.current) {
+        setContainerSize({
+          width: containerRef.current.offsetWidth || 1,
+          height: containerRef.current.offsetHeight || 1,
+        });
+      }
+    };
+
+    handleResize();
+    const observer = new ResizeObserver(handleResize);
+    if (containerRef.current) observer.observe(containerRef.current);
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const isIntraday = range === "1D";
   const isWeekly = range === "1W";
   const isMonthly = range === "1M" || range === "5M";
@@ -27,8 +52,8 @@ export function HistoricalChart({ title, currency, color, range, data }: Props) 
           ? new Date(value).toLocaleDateString("en-IN", { day: "2-digit", month: "short" })
           : new Date(value).toLocaleDateString("en-IN", { month: "short", year: "2-digit" });
 
-  const tooltipLabelFormatter = (value: string) =>
-    new Date(value).toLocaleString("en-IN", {
+  const tooltipLabelFormatter = (value: unknown) =>
+    new Date(String(value ?? "")).toLocaleString("en-IN", {
       day: "2-digit",
       month: "short",
       year: "numeric",
@@ -36,7 +61,7 @@ export function HistoricalChart({ title, currency, color, range, data }: Props) 
     });
 
   const chart = (
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveContainer width={containerSize.width || "100%"} height={containerSize.height || 300}>
       <LineChart data={data}>
         <XAxis
           dataKey="time"
@@ -53,7 +78,7 @@ export function HistoricalChart({ title, currency, color, range, data }: Props) 
           stroke="#2a2a2a"
         />
         <Tooltip
-          formatter={(value: number) => formatCurrency(value, currency)}
+          formatter={(value) => formatCurrency(Number(value ?? 0), currency)}
           labelFormatter={tooltipLabelFormatter}
           contentStyle={{
             backgroundColor: "#1a1a1a",
@@ -69,14 +94,14 @@ export function HistoricalChart({ title, currency, color, range, data }: Props) 
 
   // When embedded (no title), render just the chart — parent controls height
   if (!title) {
-    return <div className="h-full w-full">{chart}</div>;
+    return <div ref={containerRef} className="h-full w-full min-h-0 min-w-0">{chart}</div>;
   }
 
   // Standalone mode with Card wrapper
   return (
     <Card className="border border-border p-5 md:p-6">
       <p className="mb-3 text-sm font-medium tracking-wide text-ink/60">{title}</p>
-      <div className="h-64 w-full">{chart}</div>
+      <div ref={containerRef} className="h-64 w-full min-h-0 min-w-0">{chart}</div>
     </Card>
   );
 }
