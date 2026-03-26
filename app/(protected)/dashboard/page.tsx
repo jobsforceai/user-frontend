@@ -3,6 +3,7 @@ import Image from "next/image";
 import { getOverview, getHistorical, type Currency, type Metal, type Range } from "@/actions/assets";
 import { getWallet } from "@/actions/wallet";
 import { HistoricalChart } from "@/components/ui/historical-chart";
+import { IndicativeLivePrice } from "@/components/ui/indicative-live-price";
 import { formatCurrency, formatPercent } from "@/lib/utils";
 import { RefreshTimer } from "@/components/ui/refresh-timer";
 
@@ -163,7 +164,13 @@ export default async function DashboardPage({
               {isGoldUp ? "+" : ""}{gold.changePercent.toFixed(2)}%
             </span>
           </div>
-          <p className="mt-4 text-3xl font-black tracking-tight text-accent">{formatCurrency(goldPrice10g, "INR")}</p>
+          <div className="mt-4">
+            <IndicativeLivePrice
+              baseValue={goldPrice10g}
+              currency="INR"
+              className="text-3xl font-black tracking-tight text-accent"
+            />
+          </div>
           {metal === "gold" && <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-accent/[0.06] blur-2xl" />}
         </Link>
 
@@ -188,7 +195,13 @@ export default async function DashboardPage({
               {isSilverUp ? "+" : ""}{silver.changePercent.toFixed(2)}%
             </span>
           </div>
-          <p className="mt-4 text-3xl font-black tracking-tight text-silver">{formatCurrency(silverPrice1kg, "INR")}</p>
+          <div className="mt-4">
+            <IndicativeLivePrice
+              baseValue={silverPrice1kg}
+              currency="INR"
+              className="text-3xl font-black tracking-tight text-silver"
+            />
+          </div>
           {metal === "silver" && <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-silver/[0.06] blur-2xl" />}
         </Link>
       </section>
@@ -200,10 +213,12 @@ export default async function DashboardPage({
           <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-ink/30">
             {metal === "gold" ? "Gold" : "Silver"} &middot; Live
           </p>
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className={`text-3xl font-black tracking-tight ${metal === "gold" ? "text-accent" : "text-silver"}`}>
-              {formatCurrency(convertedLivePrice, currency)}
-            </span>
+          <div className="mt-3">
+            <IndicativeLivePrice
+              baseValue={convertedLivePrice}
+              currency={currency}
+              className={`text-3xl font-black tracking-tight ${metal === "gold" ? "text-accent" : "text-silver"}`}
+            />
           </div>
           <p className="mt-0.5 text-xs text-ink/35">{displayUnit}</p>
 
