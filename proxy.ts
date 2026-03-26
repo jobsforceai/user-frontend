@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 const protectedPrefixes = ["/dashboard", "/wallet", "/buy", "/sell", "/scheme", "/delivery", "/profile"];
 const authPages = ["/login", "/register"];
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const token = request.cookies.get("sg_token")?.value;
   const { pathname } = request.nextUrl;
 
