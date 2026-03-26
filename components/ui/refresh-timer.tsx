@@ -9,17 +9,17 @@ export function RefreshTimer({ intervalSeconds = 60 }: { intervalSeconds?: numbe
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setSecondsLeft((prev) => {
-        if (prev <= 1) {
-          router.refresh();
-          return intervalSeconds;
-        }
-        return prev - 1;
-      });
+      setSecondsLeft((prev) => Math.max(prev - 1, 0));
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [intervalSeconds, router]);
+  }, []);
+
+  useEffect(() => {
+    if (secondsLeft !== 0) return;
+    router.refresh();
+    setSecondsLeft(intervalSeconds);
+  }, [secondsLeft, intervalSeconds, router]);
 
   return (
     <div className="flex items-center gap-1.5 text-xs text-ink/40">

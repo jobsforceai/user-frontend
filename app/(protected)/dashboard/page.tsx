@@ -3,6 +3,7 @@ import Image from "next/image";
 import { getOverview, getHistorical, type Currency, type Metal, type Range } from "@/actions/assets";
 import { getWallet } from "@/actions/wallet";
 import { HistoricalChart } from "@/components/ui/historical-chart";
+import { CityLivePricesGrid } from "@/components/ui/city-live-prices-grid";
 import { IndicativeLivePrice } from "@/components/ui/indicative-live-price";
 import { formatCurrency, formatPercent } from "@/lib/utils";
 import { RefreshTimer } from "@/components/ui/refresh-timer";
@@ -27,11 +28,12 @@ const ranges: Array<{ key: Range; label: string }> = [
 export default async function DashboardPage({
   searchParams,
 }: {
-  searchParams: { metal?: Metal; currency?: Currency; range?: Range };
+  searchParams: Promise<{ metal?: Metal; currency?: Currency; range?: Range }>;
 }) {
-  const metal: Metal = searchParams.metal === "silver" ? "silver" : "gold";
-  const currency: Currency = searchParams.currency ?? "INR";
-  const range: Range = searchParams.range ?? "1D";
+  const params = await searchParams;
+  const metal: Metal = params.metal === "silver" ? "silver" : "gold";
+  const currency: Currency = params.currency ?? "INR";
+  const range: Range = params.range ?? "1D";
 
   const [overview, history, wallet] = await Promise.all([
     getOverview(currency),
@@ -225,14 +227,7 @@ export default async function DashboardPage({
             <p className="text-[10px] uppercase tracking-wider text-ink/30">24K (999) &middot; Per 1 gram &middot; Live</p>
           </div>
         </div>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {storeCities.map((city) => (
-            <div key={city} className="flex items-center justify-between rounded-xl border border-border/60 bg-bg/50 px-4 py-3">
-              <p className="text-sm font-medium text-ink/70">{city}</p>
-              <p className="text-base font-bold text-accent">{formatCurrency(goldPerGram, "INR")}</p>
-            </div>
-          ))}
-        </div>
+        <CityLivePricesGrid cities={storeCities} basePricePerGram={goldPerGram} />
       </section>
 
       {/* ── Price Detail + Chart ── */}
