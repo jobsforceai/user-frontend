@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useMemo, useState } from "react";
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Card } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/utils";
@@ -60,6 +60,22 @@ export function HistoricalChart({ title, currency, color, range, data }: Props) 
       ...(isIntraday ? { hour: "2-digit", minute: "2-digit" } : {})
     });
 
+  const yDomain = useMemo((): [number, number] => {
+    const prices = data
+      .map((point) => point.price)
+      .filter((value) => Number.isFinite(value));
+
+    if (prices.length === 0) return [0, 1];
+
+    const min = Math.min(...prices);
+    const max = Math.max(...prices);
+    const spread = max - min;
+
+    // Keep a visible vertical band even when prices are nearly flat.
+    const padding = spread > 0 ? spread * 0.15 : Math.max(Math.abs(max) * 0.002, 1);
+    return [min - padding, max + padding];
+  }, [data]);
+
   const chart = (
     <ResponsiveContainer width={containerSize.width || "100%"} height={containerSize.height || 300}>
       <LineChart data={data}>
@@ -76,6 +92,7 @@ export function HistoricalChart({ title, currency, color, range, data }: Props) 
           tick={{ fontSize: 11, fill: "#9ca3af" }}
           width={60}
           stroke="#2a2a2a"
+          domain={yDomain}
         />
         <Tooltip
           formatter={(value) => formatCurrency(Number(value ?? 0), currency)}

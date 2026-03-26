@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { buyGold } from "@/actions/trade";
+import { useIndicativePrice } from "@/lib/use-indicative-price";
 
 const presets = [
   { label: "100mg", mg: 100 },
@@ -38,6 +39,7 @@ export default function BuyPage() {
   const basePaise = pricePerGramPaise > 0 ? Math.round((amountMg / 1000) * pricePerGramPaise) : 0;
   const gstPaise = Math.round(basePaise * 0.03);
   const totalPaise = basePaise + gstPaise;
+  const priceTick = useIndicativePrice(pricePerGramPaise, { maxPercent: 0.5, stepPercent: 0.2, intervalMs: 2200 });
 
   const bonusEligible = totalPurchasedMg < 1000 && totalBonusMg < 100;
   const rawBonus = bonusEligible ? Math.floor((amountMg * 10) / 100) : 0;
@@ -114,7 +116,13 @@ export default function BuyPage() {
           <div className="space-y-2 rounded-xl border border-border bg-panel-alt/50 p-4">
             <div className="flex justify-between text-sm">
               <span className="text-ink/50">Live price per 1,000mg</span>
-              <span className="text-ink">{fmt(pricePerGramPaise)}</span>
+              <span className="text-ink">{fmt(Math.round(priceTick.value))}</span>
+            </div>
+            <div className="flex justify-between text-xs">
+              <span className="text-ink/40">Market pulse</span>
+              <span className={priceTick.isUp ? "text-emerald-400" : "text-red-400"}>
+                {priceTick.isUp ? "▲" : "▼"} {Math.abs(priceTick.offsetPercent).toFixed(2)}% indicative
+              </span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-ink/50">Gold value ({amountMg.toLocaleString()}mg)</span>

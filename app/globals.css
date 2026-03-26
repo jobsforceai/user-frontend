@@ -255,6 +255,15 @@ body {
   font-feature-settings: "tnum";
 }
 
+/* ── Landing live-price numeral style ── */
+.live-price-number {
+  font-family: "Manrope", -apple-system, sans-serif;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  letter-spacing: -0.03em;
+  font-weight: 800;
+}
+
 /* ── Section divider ── */
 .section-divider {
   height: 1px;

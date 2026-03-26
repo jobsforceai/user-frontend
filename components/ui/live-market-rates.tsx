@@ -2,8 +2,10 @@
 
 import { useRef, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { HistoricalChart } from "@/components/ui/historical-chart";
 import { formatCurrency } from "@/lib/utils";
+import { useIndicativePrice } from "@/lib/use-indicative-price";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Currency, Metal, Range } from "@/actions/assets";
@@ -53,6 +55,7 @@ export function LiveMarketRates({
   buyHref,
   sellHref,
 }: LiveMarketRatesProps) {
+  const router = useRouter();
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const pricesRef = useRef<HTMLDivElement>(null);
@@ -102,8 +105,20 @@ export function LiveMarketRates({
     return () => ctx.revert();
   }, []);
 
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      if (document.visibilityState === "visible") {
+        router.refresh();
+      }
+    }, 60000);
+
+    return () => window.clearInterval(id);
+  }, [router]);
+
   const goldPrice = goldPerGram * purityFactor;
   const silverPrice = silverPerGram;
+  const goldTick = useIndicativePrice(goldPrice, { maxPercent: 0.5, stepPercent: 0.16, intervalMs: 2400 });
+  const silverTick = useIndicativePrice(silverPrice, { maxPercent: 0.5, stepPercent: 0.16, intervalMs: 2400 });
 
   return (
     <section id="market" ref={sectionRef} style={{ backgroundColor: "#0B0B0F" }}>
@@ -136,6 +151,7 @@ export function LiveMarketRates({
               <span className="split-line-inner gold-text">Trade.</span>
             </span>
           </h2>
+          <p className="mt-3 text-xs text-[rgba(245,245,245,0.35)]">Chart auto-refreshes every 60s</p>
         </div>
 
         {/* ── Side-by-side price blocks ── */}
@@ -156,13 +172,16 @@ export function LiveMarketRates({
                 </span>
               </div>
               <p
-                className="mt-3 font-black counter-value"
+                className="mt-3 font-black counter-value live-price-number"
                 style={{ fontSize: "clamp(2.2rem, 5vw, 3.5rem)", lineHeight: 1, color: "#d4a843" }}
               >
-                {formatCurrency(goldPrice, currency)}
+                {formatCurrency(goldTick.value, currency)}
                 <span className="text-lg font-normal" style={{ color: "rgba(245,245,245,0.25)" }}>
                   /g
                 </span>
+              </p>
+              <p className={`mt-1 text-xs font-medium ${goldTick.isUp ? "text-emerald-400" : "text-red-400"}`}>
+                {goldTick.isUp ? "▲" : "▼"} {Math.abs(goldTick.offsetPercent).toFixed(2)}% indicative tick
               </p>
               <p className={`mt-2 text-sm font-semibold ${isGoldUp ? "text-emerald-400" : "text-red-400"}`}>
                 {isGoldUp ? "▲" : "▼"} {Math.abs(goldChangePercent).toFixed(2)}% today
@@ -198,13 +217,16 @@ export function LiveMarketRates({
                 </span>
               </div>
               <p
-                className="mt-3 font-black counter-value"
+                className="mt-3 font-black counter-value live-price-number"
                 style={{ fontSize: "clamp(2.2rem, 5vw, 3.5rem)", lineHeight: 1, color: "#9ca3af" }}
               >
-                {formatCurrency(silverPrice, currency)}
+                {formatCurrency(silverTick.value, currency)}
                 <span className="text-lg font-normal" style={{ color: "rgba(245,245,245,0.25)" }}>
                   /g
                 </span>
+              </p>
+              <p className={`mt-1 text-xs font-medium ${silverTick.isUp ? "text-emerald-400" : "text-red-400"}`}>
+                {silverTick.isUp ? "▲" : "▼"} {Math.abs(silverTick.offsetPercent).toFixed(2)}% indicative tick
               </p>
               <p className={`mt-2 text-sm font-semibold ${isSilverUp ? "text-emerald-400" : "text-red-400"}`}>
                 {isSilverUp ? "▲" : "▼"} {Math.abs(silverChangePercent).toFixed(2)}% today
