@@ -8,6 +8,7 @@ import { WhyGoldSection } from "@/components/ui/why-gold-section";
 import { BusinessSection } from "@/components/ui/business-section";
 import { SavingsSchemeSection } from "@/components/ui/savings-scheme-section";
 import { SecureVaultSection } from "@/components/ui/secure-vault-section";
+import { BottomLiveRateBoard } from "@/components/ui/bottom-live-rate-board";
 import { Footer } from "@/components/ui/footer";
 import {
   getGoldRates,
@@ -76,7 +77,7 @@ export default async function Home({
   const authHref = (path: string) => isLoggedIn ? path : "/register";
 
   return (
-    <main className="min-h-screen bg-bg">
+    <main className="min-h-screen bg-bg pb-16 md:pb-16">
 
       {/* --------- NAVBAR --------- */}
       <Navbar isLoggedIn={isLoggedIn} />
@@ -236,6 +237,13 @@ export default async function Home({
 
       {/* --------- FOOTER --------- */}
       <Footer />
+
+      <BottomLiveRateBoard
+        currency={currency}
+        gold24k10g={goldPrice10g}
+        silver9991kg={silverPrice1kg}
+        buyHref={authHref("/buy")}
+      />
     </main>
   );
 }
