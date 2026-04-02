@@ -30,15 +30,15 @@ export function ProfileForm({ name: initialName, email: initialEmail }: { name: 
   }
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-2xl border border-border bg-panel p-4 shadow-card sm:p-6">
-      <h2 className="mb-4 text-sm font-semibold uppercase tracking-widest text-ink/40">Edit Profile</h2>
+    <form onSubmit={handleSubmit} className="rounded-3xl border border-[#404964] bg-[#1a2032]/95 p-5 shadow-[0_18px_46px_rgba(0,0,0,0.3)] sm:p-6">
+      <h2 className="mb-4 text-sm font-semibold uppercase tracking-[0.16em] text-[#8f98b3]">Edit Profile</h2>
 
-      {error && <div className="mb-4 rounded-lg border border-red-800/50 bg-red-900/20 px-3 py-2 text-sm text-red-400">{error}</div>}
-      {success && <div className="mb-4 rounded-lg border border-green-800/50 bg-green-900/20 px-3 py-2 text-sm text-green-400">{success}</div>}
+      {error && <div className="mb-4 rounded-lg border border-red-500/30 bg-red-500/12 px-3 py-2 text-sm text-red-300">{error}</div>}
+      {success && <div className="mb-4 rounded-lg border border-emerald-500/30 bg-emerald-500/12 px-3 py-2 text-sm text-emerald-300">{success}</div>}
 
       <div className="space-y-4">
         <div className="space-y-1.5">
-          <label htmlFor="name" className="text-sm text-ink/70">Full Name</label>
+          <label htmlFor="name" className="text-sm text-[#d7ddf1]">Full Name</label>
           <input
             id="name"
             type="text"
@@ -46,26 +46,26 @@ export function ProfileForm({ name: initialName, email: initialEmail }: { name: 
             onChange={(e) => setName(e.target.value)}
             required
             minLength={2}
-            className="w-full rounded-xl border border-border bg-panel-alt px-3 py-2.5 text-ink focus:border-accent/60 focus:outline-none focus:ring-2 focus:ring-accent/10"
+            className="w-full rounded-xl border border-[#3f4762] bg-[#11182a] px-3 py-2.5 text-[#eef2ff] focus:border-[#d7af35]/55 focus:outline-none focus:ring-2 focus:ring-[#d7af35]/15"
           />
         </div>
 
         <div className="space-y-1.5">
-          <label htmlFor="email" className="text-sm text-ink/70">Email <span className="text-ink/30">(optional)</span></label>
+          <label htmlFor="email" className="text-sm text-[#d7ddf1]">Email <span className="text-[#8f98b3]">(optional)</span></label>
           <input
             id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
-            className="w-full rounded-xl border border-border bg-panel-alt px-3 py-2.5 text-ink placeholder:text-ink/30 focus:border-accent/60 focus:outline-none focus:ring-2 focus:ring-accent/10"
+            className="w-full rounded-xl border border-[#3f4762] bg-[#11182a] px-3 py-2.5 text-[#eef2ff] placeholder:text-[#6f7898] focus:border-[#d7af35]/55 focus:outline-none focus:ring-2 focus:ring-[#d7af35]/15"
           />
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-bg transition hover:brightness-110 disabled:opacity-50"
+          className="rounded-xl bg-[#d7af35] px-5 py-2.5 text-sm font-extrabold text-[#171b28] transition hover:brightness-110 disabled:opacity-50"
         >
           {loading ? "Saving..." : "Save Changes"}
         </button>

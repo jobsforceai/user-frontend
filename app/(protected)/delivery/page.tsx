@@ -56,100 +56,127 @@ export default function DeliveryPage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Physical Delivery</h1>
-        <p className="text-sm text-ink/50">Convert digital gold to physical coins or bars</p>
-      </div>
-
-      <div className="space-y-4 rounded-2xl border border-border bg-panel p-4 shadow-card sm:p-6">
-        {error && <div className="rounded-lg border border-red-800/50 bg-red-900/20 px-3 py-2 text-sm text-red-400">{error}</div>}
-        {success && <div className="rounded-lg border border-green-800/50 bg-green-900/20 px-3 py-2 text-sm text-green-400">{success}</div>}
-
-        <div className="space-y-1.5">
-          <label className="text-sm text-ink/70">Product Type</label>
-          <div className="flex gap-2">
-            {(["coin", "bar"] as const).map((t) => (
-              <button
-                key={t}
-                onClick={() => { setProductType(t); setWeightMg(t === "coin" ? coinWeights[0] : barWeights[0]); }}
-                className={`rounded-full border px-4 py-1.5 text-sm capitalize transition ${
-                  productType === t ? "border-accent bg-accent text-bg font-medium" : "border-border bg-panel-alt text-ink/70"
-                }`}
-              >
-                {t}
-              </button>
-            ))}
-          </div>
+    <div className="mx-auto max-w-4xl space-y-6">
+      <section className="relative overflow-hidden rounded-[28px] border border-[#4a5270] bg-[#1b2236]/95 p-6 shadow-[0_24px_56px_rgba(0,0,0,0.35)] sm:p-7">
+        <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[#d7af35]/16 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-20 left-10 h-48 w-48 rounded-full bg-[#3f79a5]/16 blur-3xl" />
+        <div className="relative">
+          <span className="inline-flex rounded-full border border-[#d7af35]/35 bg-[#d7af35]/12 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#f7de89]">Fulfillment Desk</span>
+          <h1 className="mt-3 text-3xl font-black tracking-tight text-[#f3f6ff]">Physical Delivery</h1>
+          <p className="mt-2 text-sm text-[#b4bdd5]">Convert digital holdings into verified coin or bar delivery requests.</p>
         </div>
+      </section>
 
-        <div className="space-y-1.5">
-          <label className="text-sm text-ink/70">Weight</label>
-          <div className="flex flex-wrap gap-2">
-            {weights.map((w) => (
-              <button
-                key={w}
-                onClick={() => setWeightMg(w)}
-                className={`rounded-full border px-3 py-1 text-sm transition ${
-                  weightMg === w ? "border-accent bg-accent text-bg font-medium" : "border-border bg-panel-alt text-ink/70"
-                }`}
-              >
-                {fmtG(w)}
-              </button>
-            ))}
+      <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+        <div className="space-y-4 rounded-3xl border border-[#404964] bg-[#1a2032]/95 p-5 shadow-[0_18px_46px_rgba(0,0,0,0.3)] sm:p-6">
+          {error && <div className="rounded-xl border border-red-500/30 bg-red-500/12 px-3 py-2 text-sm text-red-300">{error}</div>}
+          {success && <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/12 px-3 py-2 text-sm text-emerald-300">{success}</div>}
+
+          <div className="space-y-1.5">
+            <label className="text-sm font-medium text-[#d7ddf1]">Product Type</label>
+            <div className="flex gap-2">
+              {(["coin", "bar"] as const).map((t) => (
+                <button
+                  key={t}
+                  onClick={() => {
+                    setProductType(t);
+                    setWeightMg(t === "coin" ? coinWeights[0] : barWeights[0]);
+                  }}
+                  className={`rounded-full border px-4 py-1.5 text-sm capitalize transition ${
+                    productType === t
+                      ? "border-[#d7af35]/45 bg-[#d7af35]/18 font-semibold text-[#f8df8a]"
+                      : "border-[#3f4762] bg-[#20263a] text-[#b2bbd3] hover:border-[#667197] hover:text-[#eef2ff]"
+                  }`}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
 
-        <div className="space-y-1.5">
-          <label className="text-sm text-ink/70">Pickup Store</label>
-          <select
-            value={storeId}
-            onChange={(e) => setStoreId(e.target.value)}
-            className="w-full rounded-xl border border-border bg-panel-alt px-3 py-2.5 text-ink focus:border-accent/60 focus:outline-none focus:ring-2 focus:ring-accent/10"
+          <div className="space-y-1.5">
+            <label className="text-sm font-medium text-[#d7ddf1]">Weight</label>
+            <div className="flex flex-wrap gap-2">
+              {weights.map((w) => (
+                <button
+                  key={w}
+                  onClick={() => setWeightMg(w)}
+                  className={`rounded-full border px-3 py-1 text-sm transition ${
+                    weightMg === w
+                      ? "border-[#d7af35]/45 bg-[#d7af35]/18 font-semibold text-[#f8df8a]"
+                      : "border-[#3f4762] bg-[#20263a] text-[#b2bbd3] hover:border-[#667197] hover:text-[#eef2ff]"
+                  }`}
+                >
+                  {fmtG(w)}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-sm font-medium text-[#d7ddf1]">Pickup Store</label>
+            <select
+              value={storeId}
+              onChange={(e) => setStoreId(e.target.value)}
+              className="w-full rounded-xl border border-[#3f4762] bg-[#11182a] px-3 py-2.5 text-[#eef2ff] focus:border-[#d7af35]/55 focus:outline-none focus:ring-2 focus:ring-[#d7af35]/15"
+            >
+              {stores.map((s) => (
+                <option key={s.id} value={s.id}>{s.name}, {s.state}</option>
+              ))}
+            </select>
+          </div>
+
+          <button
+            onClick={handleSubmit}
+            disabled={loading || !storeId}
+            className="w-full rounded-xl bg-[#d7af35] py-2.5 font-extrabold text-[#171b28] transition hover:brightness-110 disabled:opacity-50"
           >
-            {stores.map((s) => (
-              <option key={s.id} value={s.id}>{s.name}, {s.state}</option>
-            ))}
-          </select>
+            {loading ? "Processing..." : "Request Delivery"}
+          </button>
         </div>
 
-        <div className="rounded-xl bg-white/5 p-4 text-sm space-y-1">
-          <p>Gold: <span className="text-accent">{fmtG(weightMg)}</span></p>
-          <p className="text-xs text-ink/40">+ Coin charge (if coin) + 3% GST. Exact charges shown after confirmation.</p>
-        </div>
+        <div className="space-y-4">
+          <div className="rounded-3xl border border-[#404964] bg-[#1a2032]/95 p-5 shadow-[0_18px_46px_rgba(0,0,0,0.3)]">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#8f98b3]">Current Selection</p>
+            <p className="mt-2 text-2xl font-black text-[#f8df8a]">{fmtG(weightMg)}</p>
+            <p className="mt-1 text-sm capitalize text-[#b4bdd5]">{productType} delivery</p>
+            <p className="mt-3 text-xs text-[#8f98b3]">Coin charges (if applicable) and 3% GST are applied during confirmation.</p>
+          </div>
 
-        <button
-          onClick={handleSubmit}
-          disabled={loading || !storeId}
-          className="w-full rounded-xl bg-accent py-2.5 font-medium text-bg transition hover:bg-accent-dim disabled:opacity-50"
-        >
-          {loading ? "Processing..." : "Request Delivery"}
-        </button>
+          <div className="rounded-3xl border border-[#404964] bg-[#1a2032]/95 p-5 shadow-[0_18px_46px_rgba(0,0,0,0.3)]">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#8f98b3]">Fulfillment Flow</p>
+            <ul className="mt-3 space-y-2 text-sm text-[#b4bdd5]">
+              <li>1. Create delivery request with product and store.</li>
+              <li>2. Team validates inventory and reserve quantity.</li>
+              <li>3. Track readiness and collection status below.</li>
+            </ul>
+          </div>
+        </div>
       </div>
 
       {deliveries.length > 0 && (
-        <div className="rounded-2xl border border-border bg-panel">
-          <div className="border-b border-border px-5 py-3">
-            <p className="text-sm font-medium">Past Requests</p>
+        <div className="rounded-3xl border border-[#404964] bg-[#1a2032]/95 shadow-[0_18px_46px_rgba(0,0,0,0.3)]">
+          <div className="border-b border-[#3f4762] px-5 py-3">
+            <p className="text-sm font-semibold text-[#eef2ff]">Past Requests</p>
           </div>
-          <div className="divide-y divide-border">
+          <div className="divide-y divide-[#2c344c]">
             {deliveries.map((d) => (
-              <div key={d._id} className="flex items-center justify-between px-5 py-3">
+              <div key={d._id} className="flex items-center justify-between gap-3 px-5 py-3">
                 <div>
-                  <p className="text-sm font-medium capitalize">{d.productType} — {fmtG(d.amountMg)}</p>
-                  <p className="text-xs text-ink/40">{new Date(d.createdAt).toLocaleDateString("en-IN")} · Store: {d.pickupStoreId}</p>
+                  <p className="text-sm font-semibold capitalize text-[#eef2ff]">{d.productType} - {fmtG(d.amountMg)}</p>
+                  <p className="text-xs text-[#8f98b3]">{new Date(d.createdAt).toLocaleDateString("en-IN")} | Store: {d.pickupStoreId}</p>
                 </div>
                 <div className="text-right">
-                  <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                    d.status === "collected" ? "bg-green-900/30 text-green-400" :
-                    d.status === "ready" ? "bg-accent/20 text-accent" :
-                    d.status === "cancelled" ? "bg-red-900/30 text-red-400" :
-                    "bg-white/10 text-ink/50"
+                  <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                    d.status === "collected" ? "bg-emerald-500/15 text-emerald-300" :
+                    d.status === "ready" ? "bg-[#d7af35]/18 text-[#f7de89]" :
+                    d.status === "cancelled" ? "bg-red-500/15 text-red-300" :
+                    "bg-[#252d43] text-[#aab2ca]"
                   }`}>
                     {d.status}
                   </span>
                   {d.totalChargePaise > 0 && (
-                    <p className="mt-1 text-xs text-ink/40">Charges: {fmtINR(d.totalChargePaise)}</p>
+                    <p className="mt-1 text-xs text-[#8f98b3]">Charges: {fmtINR(d.totalChargePaise)}</p>
                   )}
                 </div>
               </div>

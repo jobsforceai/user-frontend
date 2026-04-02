@@ -31,69 +31,78 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-bg px-4">
-      {/* Subtle radial glow behind form */}
-      <div className="pointer-events-none fixed inset-0" style={{ background: "radial-gradient(ellipse at 50% 40%, rgba(212,168,67,0.06) 0%, transparent 60%)" }} />
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0d1220] px-4 py-8">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_15%,rgba(215,175,53,0.14),transparent_38%),radial-gradient(circle_at_82%_18%,rgba(114,94,181,0.2),transparent_42%),radial-gradient(circle_at_40%_100%,rgba(49,93,140,0.16),transparent_38%)]" />
 
-      <div className="relative w-full max-w-md space-y-8">
-        {/* Brand */}
-        <div className="text-center">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-accent/10 shadow-card overflow-hidden">
-            <Image src="/logo.png" alt="SG Gold" width={56} height={56} className="h-full w-full object-cover" />
+      <div className="relative grid w-full max-w-5xl gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+        <section className="hidden overflow-hidden rounded-[30px] border border-[#4a5270] bg-[#1b2236]/95 p-8 shadow-[0_26px_60px_rgba(0,0,0,0.36)] lg:block">
+          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-[#f6d97f]">Secure Bullion Platform</h2>
+          <h1 className="mt-4 text-4xl font-black tracking-tight text-[#eef2ff]">Welcome Back</h1>
+          <p className="mt-3 max-w-md text-sm text-[#b4bdd5]">Continue with live rates, synchronized wallet tracking, and protected transaction workflows.</p>
+          <div className="mt-6 space-y-3 text-sm text-[#d0d7ee]">
+            <div className="rounded-xl border border-[#3f4762] bg-[#20263a]/90 px-4 py-3">Live gold and silver rates with market pulse indicators.</div>
+            <div className="rounded-xl border border-[#3f4762] bg-[#20263a]/90 px-4 py-3">Unified dashboard for wallet, schemes, and delivery lifecycle.</div>
+            <div className="rounded-xl border border-[#3f4762] bg-[#20263a]/90 px-4 py-3">Session and identity controls built for account safety.</div>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-ink">Welcome back</h1>
-          <p className="mt-1 text-sm text-ink/40">Sign in to your SG Gold account</p>
-        </div>
+        </section>
 
-        <form onSubmit={handleSubmit} className="space-y-5 rounded-2xl border border-border bg-panel p-8 shadow-card">
-          {error && (
-            <div className="rounded-xl border border-red-800/40 bg-red-900/20 px-4 py-2.5 text-sm text-red-400">
-              {error}
+        <section className="w-full space-y-7 rounded-[30px] border border-[#4a5270] bg-[#1b2236]/95 p-7 shadow-[0_26px_60px_rgba(0,0,0,0.36)] sm:p-8">
+          <div className="text-center">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center overflow-hidden rounded-xl border border-[#d7af35]/30 bg-[#111625]">
+              <Image src="/logo.png" alt="SG Gold" width={56} height={56} className="h-full w-full object-cover" />
             </div>
-          )}
-
-          <div className="space-y-1.5">
-            <label htmlFor="phone" className="text-xs font-medium uppercase tracking-wider text-ink/40">Phone Number</label>
-            <input
-              id="phone"
-              type="tel"
-              placeholder="9876543210"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              maxLength={10}
-              required
-              className="w-full rounded-xl border border-border bg-panel-alt px-4 py-3 text-ink transition placeholder:text-ink/20 focus:border-accent/60 focus:ring-2 focus:ring-accent/10 focus:outline-none"
-            />
+            <h1 className="text-2xl font-black tracking-tight text-[#eef2ff]">Sign In</h1>
+            <p className="mt-1 text-sm text-[#b4bdd5]">Access your SG Gold account</p>
           </div>
 
-          <div className="space-y-1.5">
-            <label htmlFor="password" className="text-xs font-medium uppercase tracking-wider text-ink/40">Password</label>
-            <input
-              id="password"
-              type="password"
-              placeholder="Min 6 characters"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full rounded-xl border border-border bg-panel-alt px-4 py-3 text-ink transition placeholder:text-ink/20 focus:border-accent/60 focus:ring-2 focus:ring-accent/10 focus:outline-none"
-            />
-          </div>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {error && (
+              <div className="rounded-xl border border-red-500/30 bg-red-500/12 px-4 py-2.5 text-sm text-red-300">{error}</div>
+            )}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded-xl bg-accent py-3 text-sm font-semibold text-bg shadow-sm transition hover:bg-accent-dim disabled:opacity-50"
-          >
-            {loading ? "Signing in..." : "Sign In"}
-          </button>
-        </form>
+            <div className="space-y-1.5">
+              <label htmlFor="phone" className="text-xs font-semibold uppercase tracking-[0.16em] text-[#8f98b3]">Phone Number</label>
+              <input
+                id="phone"
+                type="tel"
+                placeholder="9876543210"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                maxLength={10}
+                required
+                className="w-full rounded-xl border border-[#3f4762] bg-[#11182a] px-4 py-3 text-[#eef2ff] transition placeholder:text-[#6f7898] focus:border-[#d7af35]/55 focus:ring-2 focus:ring-[#d7af35]/15 focus:outline-none"
+              />
+            </div>
 
-        <p className="text-center text-sm text-ink/35">
-          Don&apos;t have an account?{" "}
-          <Link href="/register" className="font-medium text-accent hover:underline">
-            Create one
-          </Link>
-        </p>
+            <div className="space-y-1.5">
+              <label htmlFor="password" className="text-xs font-semibold uppercase tracking-[0.16em] text-[#8f98b3]">Password</label>
+              <input
+                id="password"
+                type="password"
+                placeholder="Min 6 characters"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full rounded-xl border border-[#3f4762] bg-[#11182a] px-4 py-3 text-[#eef2ff] transition placeholder:text-[#6f7898] focus:border-[#d7af35]/55 focus:ring-2 focus:ring-[#d7af35]/15 focus:outline-none"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full rounded-xl bg-[#d7af35] py-3 text-sm font-extrabold text-[#171b28] shadow-sm transition hover:brightness-110 disabled:opacity-50"
+            >
+              {loading ? "Signing in..." : "Sign In"}
+            </button>
+          </form>
+
+          <p className="text-center text-sm text-[#aab2ca]">
+            Do not have an account?{" "}
+            <Link href="/register" className="font-semibold text-[#f6d97f] hover:underline">
+              Create one
+            </Link>
+          </p>
+        </section>
       </div>
     </main>
   );

@@ -36,27 +36,27 @@ export function PasswordForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-2xl border border-border bg-panel p-4 shadow-card sm:p-6">
-      <h2 className="mb-4 text-sm font-semibold uppercase tracking-widest text-ink/40">Change Password</h2>
+    <form onSubmit={handleSubmit} className="rounded-3xl border border-[#404964] bg-[#1a2032]/95 p-5 shadow-[0_18px_46px_rgba(0,0,0,0.3)] sm:p-6">
+      <h2 className="mb-4 text-sm font-semibold uppercase tracking-[0.16em] text-[#8f98b3]">Change Password</h2>
 
-      {error && <div className="mb-4 rounded-lg border border-red-800/50 bg-red-900/20 px-3 py-2 text-sm text-red-400">{error}</div>}
-      {success && <div className="mb-4 rounded-lg border border-green-800/50 bg-green-900/20 px-3 py-2 text-sm text-green-400">{success}</div>}
+      {error && <div className="mb-4 rounded-lg border border-red-500/30 bg-red-500/12 px-3 py-2 text-sm text-red-300">{error}</div>}
+      {success && <div className="mb-4 rounded-lg border border-emerald-500/30 bg-emerald-500/12 px-3 py-2 text-sm text-emerald-300">{success}</div>}
 
       <div className="space-y-4">
         <div className="space-y-1.5">
-          <label htmlFor="currentPassword" className="text-sm text-ink/70">Current Password</label>
+          <label htmlFor="currentPassword" className="text-sm text-[#d7ddf1]">Current Password</label>
           <input
             id="currentPassword"
             type="password"
             value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
             required
-            className="w-full rounded-xl border border-border bg-panel-alt px-3 py-2.5 text-ink focus:border-accent/60 focus:outline-none focus:ring-2 focus:ring-accent/10"
+            className="w-full rounded-xl border border-[#3f4762] bg-[#11182a] px-3 py-2.5 text-[#eef2ff] focus:border-[#d7af35]/55 focus:outline-none focus:ring-2 focus:ring-[#d7af35]/15"
           />
         </div>
 
         <div className="space-y-1.5">
-          <label htmlFor="newPassword" className="text-sm text-ink/70">New Password</label>
+          <label htmlFor="newPassword" className="text-sm text-[#d7ddf1]">New Password</label>
           <input
             id="newPassword"
             type="password"
@@ -65,12 +65,12 @@ export function PasswordForm() {
             required
             minLength={6}
             placeholder="Min 6 characters"
-            className="w-full rounded-xl border border-border bg-panel-alt px-3 py-2.5 text-ink placeholder:text-ink/30 focus:border-accent/60 focus:outline-none focus:ring-2 focus:ring-accent/10"
+            className="w-full rounded-xl border border-[#3f4762] bg-[#11182a] px-3 py-2.5 text-[#eef2ff] placeholder:text-[#6f7898] focus:border-[#d7af35]/55 focus:outline-none focus:ring-2 focus:ring-[#d7af35]/15"
           />
         </div>
 
         <div className="space-y-1.5">
-          <label htmlFor="confirmNewPassword" className="text-sm text-ink/70">Confirm New Password</label>
+          <label htmlFor="confirmNewPassword" className="text-sm text-[#d7ddf1]">Confirm New Password</label>
           <input
             id="confirmNewPassword"
             type="password"
@@ -78,14 +78,14 @@ export function PasswordForm() {
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
             minLength={6}
-            className="w-full rounded-xl border border-border bg-panel-alt px-3 py-2.5 text-ink focus:border-accent/60 focus:outline-none focus:ring-2 focus:ring-accent/10"
+            className="w-full rounded-xl border border-[#3f4762] bg-[#11182a] px-3 py-2.5 text-[#eef2ff] focus:border-[#d7af35]/55 focus:outline-none focus:ring-2 focus:ring-[#d7af35]/15"
           />
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="rounded-xl border border-border bg-panel-alt px-5 py-2.5 text-sm font-medium text-ink/70 transition hover:bg-ink/5 disabled:opacity-50"
+          className="rounded-xl border border-[#4a5270] bg-[#20263a] px-5 py-2.5 text-sm font-semibold text-[#d7ddf1] transition hover:border-[#d7af35]/45 hover:text-[#f6d97f] disabled:opacity-50"
         >
           {loading ? "Changing..." : "Change Password"}
         </button>

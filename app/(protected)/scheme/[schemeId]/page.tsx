@@ -67,51 +67,56 @@ export default function SchemeDetailPage() {
   const allPaid = paidCount >= scheme.installments.length;
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-xl font-semibold sm:text-2xl">Scheme Detail</h1>
-          <p className="text-sm text-ink/50">{fmt(scheme.slabAmountPaise)} /month</p>
+    <div className="mx-auto max-w-4xl space-y-6">
+      <section className="relative overflow-hidden rounded-[28px] border border-[#4a5270] bg-[#1b2236]/95 p-6 shadow-[0_24px_56px_rgba(0,0,0,0.35)] sm:p-7">
+        <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[#d7af35]/16 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-20 left-8 h-48 w-48 rounded-full bg-[#725eb5]/16 blur-3xl" />
+        <div className="relative flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <span className="inline-flex rounded-full border border-[#d7af35]/35 bg-[#d7af35]/12 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#f7de89]">Scheme Ledger</span>
+            <h1 className="mt-3 text-3xl font-black tracking-tight text-[#f3f6ff]">Plan Detail</h1>
+            <p className="mt-2 text-sm text-[#b4bdd5]">{fmt(scheme.slabAmountPaise)} /month commitment with structured installment tracking.</p>
+          </div>
+          <span className={`rounded-full px-3 py-1 text-xs font-semibold ${
+            scheme.status === "active" ? "bg-emerald-500/15 text-emerald-300" :
+            scheme.status === "completed" ? "bg-[#d7af35]/18 text-[#f7de89]" :
+            "bg-red-500/15 text-red-300"
+          }`}>
+            {scheme.status}
+          </span>
         </div>
-        <span className={`rounded-full px-3 py-1 text-xs font-medium ${
-          scheme.status === "active" ? "bg-green-900/30 text-green-400" :
-          scheme.status === "completed" ? "bg-accent/20 text-accent" :
-          "bg-red-900/30 text-red-400"
-        }`}>
-          {scheme.status}
-        </span>
+      </section>
+
+      {error && <div className="rounded-xl border border-red-500/30 bg-red-500/12 px-3 py-2 text-sm text-red-300">{error}</div>}
+      {success && <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/12 px-3 py-2 text-sm text-emerald-300">{success}</div>}
+
+      <div className="grid gap-3 md:grid-cols-3">
+        <div className="rounded-2xl border border-[#404964] bg-[#1a2032]/95 p-4 shadow-[0_18px_46px_rgba(0,0,0,0.3)]">
+          <p className="text-xs text-[#8f98b3]">Total Paid</p>
+          <p className="mt-1 text-xl font-bold text-[#eef2ff]">{fmt(totalPaidPaise)}</p>
+        </div>
+        <div className="rounded-2xl border border-emerald-500/25 bg-emerald-500/10 p-4 shadow-[0_18px_46px_rgba(0,0,0,0.3)]">
+          <p className="text-xs text-[#d5f6e0]">Month 12 Bonus</p>
+          <p className="mt-1 text-xl font-bold text-emerald-300">{fmt(scheme.bonusAmountPaise)}</p>
+        </div>
+        <div className="rounded-2xl border border-[#d7af35]/35 bg-[#d7af35]/12 p-4 shadow-[0_18px_46px_rgba(0,0,0,0.3)]">
+          <p className="text-xs text-[#f6d97f]">Maturity Value</p>
+          <p className="mt-1 text-xl font-black text-[#f8df8a]">{fmt(totalPaidPaise + scheme.bonusAmountPaise)}</p>
+        </div>
       </div>
 
-      {error && <div className="rounded-lg border border-red-800/50 bg-red-900/20 px-3 py-2 text-sm text-red-400">{error}</div>}
-      {success && <div className="rounded-lg border border-green-800/50 bg-green-900/20 px-3 py-2 text-sm text-green-400">{success}</div>}
-
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-        <div className="rounded-xl border border-border bg-panel p-4 shadow-card">
-          <p className="text-xs text-ink/40">Total Paid</p>
-          <p className="mt-1 text-lg font-semibold">{fmt(totalPaidPaise)}</p>
-        </div>
-        <div className="rounded-xl border border-border bg-panel p-4 shadow-card">
-          <p className="text-xs text-ink/40">Bonus (12th month)</p>
-          <p className="mt-1 text-lg font-semibold text-green-400">{fmt(scheme.bonusAmountPaise)}</p>
-        </div>
-        <div className="rounded-xl border border-border bg-panel p-4 shadow-card">
-          <p className="text-xs text-ink/40">Total Value</p>
-          <p className="mt-1 text-lg font-semibold text-accent">{fmt(totalPaidPaise + scheme.bonusAmountPaise)}</p>
-        </div>
-      </div>
-
-      <div className="rounded-2xl border border-border bg-panel p-5">
-        <p className="mb-3 text-sm font-medium">Installments ({paidCount}/{scheme.installments.length})</p>
-        <div className="flex flex-wrap gap-2">
+      <div className="rounded-3xl border border-[#404964] bg-[#1a2032]/95 p-5 shadow-[0_18px_46px_rgba(0,0,0,0.3)]">
+        <p className="mb-4 text-sm font-semibold text-[#eef2ff]">Installments ({paidCount}/{scheme.installments.length})</p>
+        <div className="flex flex-wrap gap-2.5">
           {scheme.installments.map((inst, i) => (
             <div
               key={i}
-              className={`flex h-10 w-10 items-center justify-center rounded-full text-xs font-medium ${
-                inst.status === "paid" ? "bg-green-900/40 text-green-400" :
-                inst.status === "advance" ? "bg-accent/20 text-accent" :
-                inst.status === "missed" ? "bg-red-900/40 text-red-400" :
-                i === nextPending ? "border-2 border-accent bg-accent/10 text-accent" :
-                "bg-white/5 text-ink/30"
+              className={`flex h-11 w-11 items-center justify-center rounded-full text-xs font-semibold ${
+                inst.status === "paid" ? "bg-emerald-500/18 text-emerald-300" :
+                inst.status === "advance" ? "bg-[#d7af35]/18 text-[#f7de89]" :
+                inst.status === "missed" ? "bg-red-500/18 text-red-300" :
+                i === nextPending ? "border-2 border-[#d7af35]/60 bg-[#d7af35]/12 text-[#f7de89]" :
+                "bg-[#252d43] text-[#8f98b3]"
               }`}
               title={`Month ${i + 1}: ${inst.status}${inst.paidDate ? ` (paid ${new Date(inst.paidDate).toLocaleDateString("en-IN")})` : ""}`}
             >
@@ -125,7 +130,7 @@ export default function SchemeDetailPage() {
         <button
           onClick={handlePay}
           disabled={actionLoading}
-          className="w-full rounded-xl bg-accent py-2.5 font-medium text-bg transition hover:bg-accent-dim disabled:opacity-50"
+          className="w-full rounded-xl bg-[#d7af35] py-3 font-extrabold text-[#171b28] transition hover:brightness-110 disabled:opacity-50"
         >
           {actionLoading ? "Processing..." : `Pay Installment #${nextPending + 1} (${fmt(scheme.slabAmountPaise)})`}
         </button>
@@ -135,9 +140,9 @@ export default function SchemeDetailPage() {
         <button
           onClick={handleRedeem}
           disabled={actionLoading}
-          className="w-full rounded-xl bg-green-600 py-2.5 font-medium text-white transition hover:bg-green-700 disabled:opacity-50"
+          className="w-full rounded-xl bg-emerald-500 py-3 font-extrabold text-[#11251a] transition hover:brightness-110 disabled:opacity-50"
         >
-          {actionLoading ? "Processing..." : "Redeem Scheme — Convert to Gold"}
+          {actionLoading ? "Processing..." : "Redeem Scheme - Convert to Gold"}
         </button>
       )}
     </div>

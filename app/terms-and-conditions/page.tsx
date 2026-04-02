@@ -189,25 +189,27 @@ const sections: Array<{ title: string; paragraphs: string[]; bullets?: string[] 
 
 export default function TermsAndConditionsPage() {
   return (
-    <main className="min-h-screen bg-[#080808] text-[#f5f5f5]">
-      <div className="mx-auto w-full max-w-5xl px-6 py-16 md:px-10 md:py-20">
-        <h1 className="text-4xl font-black tracking-tight text-[#f0c96c] md:text-5xl">Terms and Conditions</h1>
-        <p className="mt-4 text-sm leading-7 text-[#c8c8c8] md:text-base">
+    <main className="relative min-h-screen overflow-hidden bg-[#0d1220] text-[#eef2ff]">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_10%,rgba(215,175,53,0.13),transparent_35%),radial-gradient(circle_at_88%_15%,rgba(114,94,181,0.18),transparent_40%),radial-gradient(circle_at_50%_100%,rgba(49,93,140,0.14),transparent_36%)]" />
+
+      <div className="relative mx-auto w-full max-w-5xl px-6 py-16 md:px-10 md:py-20">
+        <h1 className="text-4xl font-black tracking-tight text-[#f6d97f] md:text-5xl">Terms and Conditions</h1>
+        <p className="mt-4 text-sm leading-7 text-[#b4bdd5] md:text-base">
           These Terms govern use of SG Gold digital products, transactions, and related services. Please read this
           document carefully before using the Platform.
         </p>
 
         <div className="mt-10 space-y-8">
           {sections.map((section) => (
-            <section key={section.title} className="rounded-2xl border border-[#242424] bg-[#111111] p-6 md:p-8">
-              <h2 className="text-xl font-extrabold text-[#f2d480] md:text-2xl">{section.title}</h2>
-              <div className="mt-4 space-y-4 text-sm leading-7 text-[#d4d4d4] md:text-base">
+            <section key={section.title} className="rounded-3xl border border-[#404964] bg-[#1a2032]/95 p-6 shadow-[0_18px_46px_rgba(0,0,0,0.3)] md:p-8">
+              <h2 className="text-xl font-extrabold text-[#f6d97f] md:text-2xl">{section.title}</h2>
+              <div className="mt-4 space-y-4 text-sm leading-7 text-[#d4d9ec] md:text-base">
                 {section.paragraphs.map((paragraph, index) => (
                   <p key={`${section.title}-p-${index}`}>{paragraph}</p>
                 ))}
               </div>
               {section.bullets && (
-                <ul className="mt-4 list-disc space-y-2 pl-6 text-sm leading-7 text-[#d4d4d4] md:text-base">
+                <ul className="mt-4 list-disc space-y-2 pl-6 text-sm leading-7 text-[#d4d9ec] md:text-base">
                   {section.bullets.map((bullet, index) => (
                     <li key={`${section.title}-b-${index}`}>{bullet}</li>
                   ))}

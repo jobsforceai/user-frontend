@@ -75,28 +75,31 @@ export default function SchemeEnrollPage() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl space-y-8">
-      <div>
-        <h1 className="text-2xl font-bold">11-Month Gold Pool</h1>
-        <p className="text-sm text-ink/50">Disciplined saving meets luxury rewards. Contribute for 11 months and unlock your bonus on the 12th month.</p>
-      </div>
+    <div className="mx-auto max-w-6xl space-y-6">
+      <section className="relative overflow-hidden rounded-[30px] border border-[#4a5270] bg-[#1b2236]/95 p-6 shadow-[0_24px_56px_rgba(0,0,0,0.35)] sm:p-7">
+        <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[#d7af35]/16 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-24 left-10 h-52 w-52 rounded-full bg-[#725eb5]/16 blur-3xl" />
+        <div className="relative">
+          <span className="inline-flex rounded-full border border-[#d7af35]/35 bg-[#d7af35]/12 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#f7de89]">Enrollment Studio</span>
+          <h1 className="mt-3 text-3xl font-black tracking-tight text-[#f3f6ff] sm:text-4xl">11-Month Gold Pool</h1>
+          <p className="mt-2 max-w-2xl text-sm text-[#b4bdd5]">Create a fixed monthly commitment and unlock bonus value in month 12 with optional SGX loyalty rewards.</p>
+        </div>
+      </section>
 
       {error && (
-        <div className="rounded-lg border border-red-800/50 bg-red-900/20 px-3 py-2 text-sm text-red-400">{error}</div>
+        <div className="rounded-xl border border-red-500/30 bg-red-500/12 px-3 py-2 text-sm text-red-300">{error}</div>
       )}
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        {/* ── Left: Contribution Calculator ── */}
-        <div className="rounded-2xl border border-border bg-panel p-4 shadow-card sm:p-6">
-          <h2 className="text-lg font-semibold text-ink">Contribution Calculator</h2>
+      <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+        <div className="rounded-3xl border border-[#404964] bg-[#1a2032]/95 p-5 shadow-[0_18px_46px_rgba(0,0,0,0.3)] sm:p-6">
+          <h2 className="text-lg font-bold text-[#eef2ff]">Contribution Calculator</h2>
 
-          <div className="mt-6">
+          <div className="mt-6 rounded-2xl border border-[#3f4762] bg-[#11182a] p-4">
             <div className="flex items-center justify-between">
-              <p className="text-xs uppercase tracking-widest text-ink/40">Monthly Contribution</p>
-              <p className="text-2xl font-bold text-accent">{fmt(slab.monthlyPaise)}</p>
+              <p className="text-xs uppercase tracking-[0.16em] text-[#8f98b3]">Monthly Contribution</p>
+              <p className="text-2xl font-black text-[#f8df8a]">{fmt(slab.monthlyPaise)}</p>
             </div>
 
-            {/* Slider */}
             <div className="mt-4">
               <input
                 type="range"
@@ -105,75 +108,54 @@ export default function SchemeEnrollPage() {
                 step={1}
                 value={sliderIndex}
                 onChange={(e) => setSliderIndex(Number(e.target.value))}
-                className="w-full accent-accent"
+                className="scheme-slider w-full"
               />
-              <div className="mt-1 flex justify-between text-xs text-ink/30">
+              <div className="mt-1 flex justify-between text-xs text-[#8f98b3]">
                 <span>Rs 5K</span>
                 <span>Rs 100K</span>
               </div>
             </div>
           </div>
 
-          <div className="mt-6 space-y-3 border-t border-border pt-4">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-ink/50">Total Contribution (11 Months)</span>
-              <span className="font-medium text-ink">{fmt(totalPaid)}</span>
+          <div className="mt-5 space-y-3">
+            <div className="flex items-center justify-between rounded-xl border border-[#3f4762] bg-[#20263a] px-3 py-2.5 text-sm">
+              <span className="text-[#b4bdd5]">Total Contribution (11 months)</span>
+              <span className="font-semibold text-[#eef2ff]">{fmt(totalPaid)}</span>
             </div>
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-ink/50">Month 12 Bonus Benefit</span>
-              <span className="font-semibold text-emerald-400">+ {fmt(bonus)}</span>
+            <div className="flex items-center justify-between rounded-xl border border-emerald-500/25 bg-emerald-500/10 px-3 py-2.5 text-sm">
+              <span className="text-[#d6f7e1]">Month 12 Bonus</span>
+              <span className="font-semibold text-emerald-300">+ {fmt(bonus)}</span>
             </div>
-            <div className="border-t border-border pt-3">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-bold uppercase tracking-wide text-ink/60">Total Redemption Value</span>
-                <span className="text-2xl font-black text-accent">{fmt(redemptionValue)}</span>
-              </div>
+            <div className="flex items-center justify-between rounded-xl border border-[#d7af35]/35 bg-[#d7af35]/12 px-3 py-3">
+              <span className="text-sm font-semibold uppercase tracking-[0.12em] text-[#f6d97f]">Total Redemption</span>
+              <span className="text-2xl font-black text-[#f8df8a]">{fmt(redemptionValue)}</span>
             </div>
           </div>
 
           <button
             onClick={handleEnroll}
             disabled={loading}
-            className="mt-6 w-full rounded-xl bg-accent py-3 text-sm font-bold text-bg transition hover:brightness-110 disabled:opacity-50"
+            className="mt-6 w-full rounded-xl bg-[#d7af35] py-3 text-sm font-extrabold text-[#171b28] transition hover:brightness-110 disabled:opacity-50"
           >
             {loading ? "Enrolling..." : "Enroll in Scheme"}
           </button>
         </div>
 
-        {/* ── Right: Rules + SGX Reward ── */}
         <div className="space-y-4">
-          {/* Scheme Rules */}
-          <div className="rounded-2xl border border-border bg-panel p-6">
-            <div className="mb-3 flex items-center gap-2">
-              <svg className="h-4 w-4 text-ink/40" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>
-              <h3 className="font-semibold text-ink">Scheme Rules</h3>
-            </div>
-            <ul className="space-y-2 text-sm text-ink/50">
-              <li className="flex gap-2">
-                <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-ink/30" />
-                Locked for 11 months for maximum value yield.
-              </li>
-              <li className="flex gap-2">
-                <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-ink/30" />
-                Countdown resets every <strong className="text-ink/70">30 days</strong> from start date, not calendar months.
-              </li>
-              <li className="flex gap-2">
-                <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-ink/30" />
-                Standard penalties apply for missed payments. Early/Advance payments accepted.
-              </li>
-              <li className="flex gap-2">
-                <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-ink/30" />
-                Redeemable as 24K gold coins or bars at the end of month 12.
-              </li>
+          <div className="rounded-3xl border border-[#404964] bg-[#1a2032]/95 p-6 shadow-[0_18px_46px_rgba(0,0,0,0.3)]">
+            <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-[#f6d97f]">Scheme Rules</h3>
+            <ul className="mt-3 space-y-2 text-sm text-[#b4bdd5]">
+              <li className="flex gap-2"><span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-[#8f98b3]" />Locked for 11 months for maximum value yield.</li>
+              <li className="flex gap-2"><span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-[#8f98b3]" />Cycle resets every 30 days from your start date.</li>
+              <li className="flex gap-2"><span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-[#8f98b3]" />Penalties may apply for missed payments. Advance payments are allowed.</li>
+              <li className="flex gap-2"><span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-[#8f98b3]" />Redeemable as 24K coins or bars after month 12 maturity.</li>
             </ul>
           </div>
 
-          {/* SGX / Sagenex Loyalty Reward */}
-          <div className="rounded-2xl border border-accent/20 bg-accent/5 p-6">
-            <h3 className="text-sm font-bold italic text-accent">SGX / Sagenex Loyalty Reward</h3>
-            <p className="mt-2 text-sm text-ink/50">
-              Existing users investing min <strong className="text-ink/70">Rs 10,000/mo</strong> unlock an additional{" "}
-              <strong className="text-accent">250 mg Gold Coin</strong> on top of the 12th-month bonus.
+          <div className="rounded-3xl border border-[#d7af35]/30 bg-[#d7af35]/10 p-6 shadow-[0_18px_46px_rgba(0,0,0,0.3)]">
+            <h3 className="text-sm font-bold uppercase tracking-[0.14em] text-[#f8df8a]">SGX Loyalty Reward</h3>
+            <p className="mt-2 text-sm text-[#f2ead0]">
+              Users investing at least <strong>Rs 10,000/mo</strong> can unlock an extra <strong>250mg Gold Coin</strong> on maturity.
             </p>
 
             {sgxEligible ? (
@@ -183,50 +165,52 @@ export default function SchemeEnrollPage() {
                     type="text"
                     placeholder="Enter Eligibility Code"
                     value={eligibilityCode}
-                    onChange={(e) => { setEligibilityCode(e.target.value); setCodeStatus("idle"); }}
-                    className="flex-1 rounded-xl border border-border bg-panel-alt px-3 py-2.5 text-sm text-ink placeholder:text-ink/30 focus:border-accent/60 focus:outline-none focus:ring-2 focus:ring-accent/10"
+                    onChange={(e) => {
+                      setEligibilityCode(e.target.value);
+                      setCodeStatus("idle");
+                    }}
+                    className="flex-1 rounded-xl border border-[#b18d2d]/40 bg-[#2b230f]/50 px-3 py-2.5 text-sm text-[#fff6d8] placeholder:text-[#b8a980] focus:border-[#f7de89]/65 focus:outline-none focus:ring-2 focus:ring-[#f7de89]/15"
                   />
                   <button
                     onClick={handleVerifyCode}
                     disabled={codeLoading}
-                    className="rounded-xl bg-accent px-4 py-2.5 text-sm font-bold text-bg transition hover:brightness-110 disabled:opacity-50"
+                    className="rounded-xl bg-[#f0cd6b] px-4 py-2.5 text-sm font-bold text-[#221c0d] transition hover:brightness-110 disabled:opacity-50"
                   >
                     {codeLoading ? "..." : "Verify"}
                   </button>
                 </div>
                 {codeStatus === "valid" && (
-                  <p className="mt-2 text-sm text-emerald-400">Code verified! 250mg Gold Coin will be credited on scheme maturity.</p>
+                  <p className="mt-2 text-sm text-emerald-200">Code verified. 250mg coin will be credited on maturity.</p>
                 )}
                 {codeStatus === "invalid" && (
-                  <p className="mt-2 text-sm text-red-400">{codeError || "Invalid code. Please check and try again."}</p>
+                  <p className="mt-2 text-sm text-red-200">{codeError || "Invalid code. Please check and try again."}</p>
                 )}
               </div>
             ) : (
-              <p className="mt-3 text-xs text-ink/30">Select Rs 10,000/mo or higher to qualify for this reward.</p>
+              <p className="mt-3 text-xs text-[#d8c89d]">Choose Rs 10,000/mo or higher to unlock this reward.</p>
             )}
           </div>
 
-          {/* Benefit table */}
-          <div className="overflow-hidden rounded-2xl border border-border bg-panel">
-            <div className="border-b border-border bg-panel-alt/50 px-4 py-2.5">
-              <p className="text-xs font-semibold uppercase tracking-widest text-ink/40">Benefit Comparison</p>
+          <div className="overflow-hidden rounded-3xl border border-[#404964] bg-[#1a2032]/95 shadow-[0_18px_46px_rgba(0,0,0,0.3)]">
+            <div className="border-b border-[#3f4762] bg-[#20263a] px-4 py-2.5">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#8f98b3]">Benefit Comparison</p>
             </div>
             <table className="w-full text-left text-sm">
-              <thead className="text-xs uppercase tracking-wide text-ink/30">
+              <thead className="text-xs uppercase tracking-[0.1em] text-[#8f98b3]">
                 <tr>
                   <th className="px-4 py-2">Monthly</th>
-                  <th className="px-4 py-2">Total (11 mo)</th>
+                  <th className="px-4 py-2">Total</th>
                   <th className="px-4 py-2">Bonus</th>
                   <th className="px-4 py-2">Redemption</th>
                 </tr>
               </thead>
               <tbody>
                 {slabs.map((s, i) => (
-                  <tr key={s.monthlyPaise} className={`border-t border-border/50 ${i === sliderIndex ? "bg-accent/5" : ""}`}>
-                    <td className="px-4 py-2.5 font-medium text-ink">{fmt(s.monthlyPaise)}</td>
-                    <td className="px-4 py-2.5 text-ink/60">{fmt(s.monthlyPaise * 11)}</td>
-                    <td className="px-4 py-2.5 font-semibold text-emerald-400">+ {fmt(s.bonusPaise)}</td>
-                    <td className="px-4 py-2.5 font-bold text-accent">{fmt(s.monthlyPaise * 11 + s.bonusPaise)}</td>
+                  <tr key={s.monthlyPaise} className={`border-t border-[#2c344c] ${i === sliderIndex ? "bg-[#d7af35]/10" : ""}`}>
+                    <td className="px-4 py-2.5 font-medium text-[#eef2ff]">{fmt(s.monthlyPaise)}</td>
+                    <td className="px-4 py-2.5 text-[#b4bdd5]">{fmt(s.monthlyPaise * 11)}</td>
+                    <td className="px-4 py-2.5 font-semibold text-emerald-300">+ {fmt(s.bonusPaise)}</td>
+                    <td className="px-4 py-2.5 font-bold text-[#f8df8a]">{fmt(s.monthlyPaise * 11 + s.bonusPaise)}</td>
                   </tr>
                 ))}
               </tbody>

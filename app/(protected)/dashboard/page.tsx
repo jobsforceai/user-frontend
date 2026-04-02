@@ -25,6 +25,33 @@ const ranges: Array<{ key: Range; label: string }> = [
   { key: "5Y", label: "5Y" },
 ];
 
+const actionDeck = [
+  {
+    href: "/buy",
+    title: "Buy Gold",
+    description: "Execute instant purchase on secure rates.",
+    image: "/app-assets/trade-gold-silver-stack.png",
+    chip: "Trade",
+    tone: "from-[#413768] to-[#725eb5]",
+  },
+  {
+    href: "/scheme",
+    title: "SIP Plans",
+    description: "Build disciplined savings over 11 months.",
+    image: "/app-assets/scheme-piggybank-gold.png",
+    chip: "Scheme",
+    tone: "from-[#324050] to-[#506782]",
+  },
+  {
+    href: "/delivery",
+    title: "Delivery",
+    description: "Track request lifecycle and pickup status.",
+    image: "/app-assets/delivery-premium-box.png",
+    chip: "Fulfillment",
+    tone: "from-[#26345a] to-[#3f5891]",
+  },
+];
+
 export default async function DashboardPage({
   searchParams,
 }: {
@@ -80,251 +107,238 @@ export default async function DashboardPage({
   };
 
   return (
-    <div className="mx-auto max-w-6xl space-y-8 pb-8">
+    <div className="mx-auto max-w-[1180px] space-y-6 pb-10">
+      <section className="relative overflow-hidden rounded-[30px] border border-[#7f70ba]/35 bg-[#1B1F2D] p-6 shadow-[0_24px_60px_rgba(0,0,0,0.35)] sm:p-8">
+        <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#8f73cc]/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-24 left-1/3 h-64 w-64 rounded-full bg-[#d7af35]/18 blur-3xl" />
 
-      {/* ── Hero: Portfolio Overview ── */}
-      <section className="relative overflow-hidden rounded-3xl border border-accent/15 bg-gradient-to-br from-panel via-panel to-accent/[0.04] p-6 shadow-card sm:p-8">
-        {/* Decorative glow */}
-        <div className="pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full bg-accent/[0.06] blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-accent/[0.04] blur-3xl" />
-
-        <div className="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          {/* Left: Balance */}
+        <div className="relative grid gap-6 lg:grid-cols-[1.25fr_0.75fr]">
           <div>
-            <div className="flex items-center gap-3">
-              <Image src="/logo.png" alt="SG Gold" width={32} height={32} className="h-8 w-8 rounded-md object-cover" />
-              <p className="text-xs font-medium uppercase tracking-[0.2em] text-ink/35">Your Gold Portfolio</p>
+            <div className="flex flex-wrap items-center gap-2.5">
+              <span className="inline-flex items-center gap-2 rounded-full border border-[#d7af35]/30 bg-[#d7af35]/12 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#f8df8a]">
+                <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
+                Live Portfolio
+              </span>
+              <RefreshTimer intervalSeconds={45} />
             </div>
-            <div className="mt-4 flex items-baseline gap-4">
-              <h1 className="text-4xl font-black tracking-tight text-ink sm:text-5xl">{balanceGrams.toFixed(3)}<span className="ml-1.5 text-xl font-semibold text-ink/40">g</span></h1>
-              {profitPercent > 0 && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-2.5 py-1 text-xs font-bold text-emerald-400">
-                  <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l7.5-7.5 7.5 7.5" /></svg>
-                  {profitPercent.toFixed(1)}%
-                </span>
-              )}
+
+            <h1 className="mt-4 text-3xl font-black tracking-tight text-[#ECEFF8] sm:text-5xl">
+              {(balanceGrams || 0).toFixed(3)}g
+              <span className="ml-2 text-lg font-semibold text-[#B2B7CB] sm:text-2xl">Available Gold</span>
+            </h1>
+            <p className="mt-1 text-2xl font-extrabold text-[#EFCB57]">{fmt(balanceValue)}</p>
+            <p className="mt-2 max-w-xl text-sm text-[#B2B7CB]">
+              Unified command center for portfolio value, live market snapshots, and execution routes.
+            </p>
+
+            <div className="mt-5 grid gap-3 sm:grid-cols-3">
+              <div className="rounded-2xl border border-[#8a77c8]/30 bg-[#252A3A]/90 p-4">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#8B92AA]">Purchased</p>
+                <p className="mt-1 text-xl font-extrabold text-[#ECEFF8]">{totalPurchasedGrams.toFixed(3)}g</p>
+                <p className="text-xs text-[#8B92AA]">{fmt(purchasedValue)}</p>
+              </div>
+              <div className="rounded-2xl border border-emerald-400/20 bg-[#252A3A]/90 p-4">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#8B92AA]">Bonus</p>
+                <p className="mt-1 text-xl font-extrabold text-emerald-300">{totalBonusGrams.toFixed(3)}g</p>
+                <p className="text-xs text-[#8B92AA]">{fmt(profitFromBonus)}</p>
+              </div>
+              <div className="rounded-2xl border border-[#8a77c8]/30 bg-[#252A3A]/90 p-4">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#8B92AA]">P&L</p>
+                <p className={`mt-1 text-xl font-extrabold ${profitPercent >= 0 ? "text-emerald-300" : "text-red-300"}`}>
+                  {profitPercent >= 0 ? "+" : ""}{profitPercent.toFixed(2)}%
+                </p>
+                <p className="text-xs text-[#8B92AA]">from bonus credits</p>
+              </div>
             </div>
-            <p className="mt-1 text-lg font-medium text-accent">{fmt(balanceValue)}</p>
-            <RefreshTimer intervalSeconds={60} />
+
+            <div className="mt-5 flex flex-wrap gap-2.5">
+              <Link href="/buy" className="rounded-xl bg-[#D7AF35] px-5 py-2.5 text-sm font-extrabold text-[#171B27] transition hover:brightness-110">Buy Gold</Link>
+              <Link href="/sell" className="rounded-xl border border-[#8a77c8]/35 bg-[#252A3A] px-5 py-2.5 text-sm font-semibold text-[#ECEFF8] transition hover:border-[#d7af35]/40">Sell Gold</Link>
+              <Link href="/wallet" className="rounded-xl border border-[#8a77c8]/35 bg-[#252A3A] px-5 py-2.5 text-sm font-semibold text-[#ECEFF8] transition hover:border-[#d7af35]/40">View Wallet</Link>
+            </div>
           </div>
 
-          {/* Right: Quick stats */}
-          <div className="flex flex-wrap gap-6 lg:gap-10">
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-ink/30">Purchased</p>
-              <p className="mt-1 text-xl font-bold text-ink">{totalPurchasedGrams.toFixed(3)}g</p>
-              <p className="text-xs text-ink/40">{fmt(purchasedValue)}</p>
-            </div>
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-ink/30">Bonus</p>
-              <p className="mt-1 text-xl font-bold text-emerald-400">{totalBonusGrams.toFixed(3)}g</p>
-              <p className="text-xs text-ink/40">{fmt(profitFromBonus)}</p>
-            </div>
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-ink/30">Current Value</p>
-              <p className="mt-1 text-xl font-bold text-ink">{fmt(balanceValue)}</p>
+          <div className="relative overflow-hidden rounded-[26px] border border-[#9d8ad5]/35 bg-gradient-to-br from-[#2E3456] via-[#4C4F79] to-[#6A5BA4] p-6">
+            {/* <Image src="/app-assets/wallet-vault.png" alt="Vault" width={230} height={230} className="pointer-events-none absolute -right-8 -bottom-10 h-44 w-44 object-contain opacity-90" /> */}
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#d9daf0]">Vault Health</p>
+            <h2 className="mt-2 text-2xl font-black text-white">Portfolio secured</h2>
+            <p className="mt-1 max-w-[18rem] text-sm text-[#d0d3e6]">
+              Real-time metal pricing with synchronized dashboard controls and protected transaction routes.
+            </p>
+
+            <div className="mt-5 rounded-2xl border border-white/20 bg-black/20 p-4 backdrop-blur-sm">
+              <p className="text-[10px] uppercase tracking-[0.16em] text-white/60">Current Gold / 10g</p>
+              <IndicativeLivePrice
+                baseValue={goldPrice10g}
+                currency="INR"
+                className="mt-1 block text-2xl font-black text-[#F8DF8A]"
+                tickClassName="text-white/70"
+              />
             </div>
           </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="relative mt-6 flex flex-wrap gap-2.5 border-t border-border/50 pt-6">
-          <Link href="/buy" className="inline-flex items-center gap-2 rounded-xl bg-accent px-5 py-2.5 text-sm font-bold text-bg shadow-sm transition hover:brightness-110">
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2.2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-            Buy Gold
-          </Link>
-          <Link href="/sell" className="inline-flex items-center gap-2 rounded-xl border border-border bg-panel-alt/50 px-5 py-2.5 text-sm font-medium text-ink/60 transition hover:border-accent/30 hover:text-ink/80">
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l7.5-7.5 7.5 7.5" /></svg>
-            Sell Gold
-          </Link>
-          <Link href="/scheme" className="inline-flex items-center gap-2 rounded-xl border border-border bg-panel-alt/50 px-5 py-2.5 text-sm font-medium text-ink/60 transition hover:border-accent/30 hover:text-ink/80">
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" /></svg>
-            Schemes
-          </Link>
-          <Link href="/delivery" className="inline-flex items-center gap-2 rounded-xl border border-border bg-panel-alt/50 px-5 py-2.5 text-sm font-medium text-ink/60 transition hover:border-accent/30 hover:text-ink/80">
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.029-.504 1.029-1.125v-3.505a1.125 1.125 0 00-.311-.78l-2.511-2.511a1.125 1.125 0 00-.78-.311H14.25M3.75 16.5V4.875c0-.621.504-1.125 1.125-1.125h8.25c.621 0 1.125.504 1.125 1.125v11.625" /></svg>
-            Delivery
-          </Link>
         </div>
       </section>
 
-      {/* ── Live Price Cards ── */}
-      <section className="grid gap-4 sm:grid-cols-2">
+      <section className="grid gap-4 md:grid-cols-2">
         <Link
           scroll={false}
           href={qp({ metal: "gold" })}
-          className={`group relative overflow-hidden rounded-2xl border p-6 transition-all duration-200 ${
+          className={`relative overflow-hidden rounded-2xl border p-6 transition ${
             metal === "gold"
-              ? "border-accent/30 bg-panel ring-1 ring-accent/10 shadow-lg shadow-accent/5"
-              : "border-border bg-panel hover:border-accent/20"
+              ? "border-[#D7AF35]/50 bg-[#232838]"
+              : "border-[#3c4256] bg-[#1B1F2D] hover:border-[#D7AF35]/35"
           }`}
         >
+          <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-[#D7AF35]/12 blur-2xl" />
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-accent/15 text-sm font-bold text-accent ring-2 ring-accent/10">Au</div>
-              <div>
-                <p className="text-sm font-semibold text-ink">Gold</p>
-                <p className="text-[10px] uppercase tracking-wider text-ink/30">Per 10 grams</p>
-              </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#8B92AA]">Live Rate</p>
+              <h3 className="mt-1 text-xl font-bold text-[#ECEFF8]">Gold 24K</h3>
             </div>
-            <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${isGoldUp ? "bg-emerald-500/15 text-emerald-400" : "bg-red-500/15 text-red-400"}`}>
+            <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${isGoldUp ? "bg-emerald-500/15 text-emerald-300" : "bg-red-500/15 text-red-300"}`}>
               {isGoldUp ? "+" : ""}{gold.changePercent.toFixed(2)}%
             </span>
           </div>
-          <div className="mt-4">
-            <IndicativeLivePrice
-              baseValue={goldPrice10g}
-              currency="INR"
-              className="text-3xl font-black tracking-tight text-accent"
-            />
-          </div>
-          {metal === "gold" && <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-accent/[0.06] blur-2xl" />}
+          <IndicativeLivePrice
+            baseValue={goldPrice10g}
+            currency="INR"
+            className="mt-3 block text-4xl font-black tracking-tight text-[#EFCB57]"
+          />
+          <p className="mt-1 text-xs text-[#8B92AA]">Per 10 grams</p>
         </Link>
 
         <Link
           scroll={false}
           href={qp({ metal: "silver" })}
-          className={`group relative overflow-hidden rounded-2xl border p-6 transition-all duration-200 ${
+          className={`relative overflow-hidden rounded-2xl border p-6 transition ${
             metal === "silver"
-              ? "border-silver/30 bg-panel ring-1 ring-silver/10 shadow-lg shadow-silver/5"
-              : "border-border bg-panel hover:border-silver/20"
+              ? "border-[#b3bdd4]/45 bg-[#232838]"
+              : "border-[#3c4256] bg-[#1B1F2D] hover:border-[#b3bdd4]/35"
           }`}
         >
+          <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-[#9ca3af]/12 blur-2xl" />
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-silver/15 text-sm font-bold text-silver ring-2 ring-silver/10">Ag</div>
-              <div>
-                <p className="text-sm font-semibold text-ink">Silver</p>
-                <p className="text-[10px] uppercase tracking-wider text-ink/30">Per 1 kilogram</p>
-              </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#8B92AA]">Live Rate</p>
+              <h3 className="mt-1 text-xl font-bold text-[#ECEFF8]">Silver</h3>
             </div>
-            <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${isSilverUp ? "bg-emerald-500/15 text-emerald-400" : "bg-red-500/15 text-red-400"}`}>
+            <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${isSilverUp ? "bg-emerald-500/15 text-emerald-300" : "bg-red-500/15 text-red-300"}`}>
               {isSilverUp ? "+" : ""}{silver.changePercent.toFixed(2)}%
             </span>
           </div>
-          <div className="mt-4">
-            <IndicativeLivePrice
-              baseValue={silverPrice1kg}
-              currency="INR"
-              className="text-3xl font-black tracking-tight text-silver"
-            />
-          </div>
-          {metal === "silver" && <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-silver/[0.06] blur-2xl" />}
+          <IndicativeLivePrice
+            baseValue={silverPrice1kg}
+            currency="INR"
+            className="mt-3 block text-4xl font-black tracking-tight text-[#cdd5e9]"
+          />
+          <p className="mt-1 text-xs text-[#8B92AA]">Per 1 kilogram</p>
         </Link>
       </section>
 
-      {/* ── City Gold Prices ── */}
-      <section className="rounded-2xl border border-border bg-panel p-4 shadow-card sm:p-6">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-accent/15 text-xs font-bold text-accent ring-2 ring-accent/10">
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-            </svg>
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-ink">City Gold Prices</p>
-            <p className="text-[10px] uppercase tracking-wider text-ink/30">24K (999) &middot; Per 1 gram &middot; Live</p>
-          </div>
-        </div>
-        <CityLivePricesGrid cities={storeCities} basePricePerGram={goldPerGram} />
-      </section>
-
-      {/* ── Price Detail + Chart ── */}
-      <section className="grid gap-4 lg:grid-cols-5">
-        {/* Price Banner — 2 cols */}
-        <div className="rounded-2xl border border-border bg-panel p-6 shadow-card lg:col-span-2">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-ink/30">
-            {metal === "gold" ? "Gold" : "Silver"} &middot; Live
-          </p>
-          <div className="mt-3">
-            <IndicativeLivePrice
-              baseValue={convertedLivePrice}
-              currency={currency}
-              className={`text-3xl font-black tracking-tight ${metal === "gold" ? "text-accent" : "text-silver"}`}
-            />
-          </div>
-          <p className="mt-0.5 text-xs text-ink/35">{displayUnit}</p>
-
-          <div className="mt-3 flex items-center gap-2">
-            <span className={`inline-flex items-center gap-1 text-sm font-semibold ${isUp ? "text-emerald-400" : "text-red-400"}`}>
-              <svg className={`h-3.5 w-3.5 ${isUp ? "" : "rotate-180"}`} fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l7.5-7.5 7.5 7.5" />
-              </svg>
-              {formatCurrency(Math.abs(convertedLiveChange), currency)}
-            </span>
-            <span className={`text-xs ${isUp ? "text-emerald-400/60" : "text-red-400/60"}`}>
-              ({formatPercent(activeAsset.changePercent)})
-            </span>
+      <section className="grid gap-4 xl:grid-cols-[1.45fr_0.95fr]">
+        <div className="rounded-2xl border border-[#3c4256] bg-[#1B1F2D] p-6 shadow-card">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#8B92AA]">Price Studio</p>
+              <h3 className="mt-1 text-lg font-bold text-[#ECEFF8]">{metal === "gold" ? "Gold" : "Silver"} trend intelligence</h3>
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              <Link scroll={false} href={qp({ metal: "gold" })} className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${metal === "gold" ? "bg-[#D7AF35]/15 text-[#F8DF8A]" : "bg-[#252A3A] text-[#B2B7CB] hover:text-[#ECEFF8]"}`}>Gold</Link>
+              <Link scroll={false} href={qp({ metal: "silver" })} className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${metal === "silver" ? "bg-[#9CA3AF]/15 text-[#D7DEEE]" : "bg-[#252A3A] text-[#B2B7CB] hover:text-[#ECEFF8]"}`}>Silver</Link>
+            </div>
           </div>
 
-          {/* Currency pills */}
-          <div className="mt-6 flex flex-wrap gap-1.5">
+          <div className="mb-4 flex flex-wrap gap-1.5">
             {currencies.map((c) => (
               <Link
                 scroll={false}
                 key={c}
                 href={qp({ currency: c })}
-                className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
+                className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${
                   currency === c
-                    ? metal === "gold" ? "bg-accent/15 text-accent" : "bg-silver/15 text-silver"
-                    : "text-ink/30 hover:bg-panel-alt hover:text-ink/60"
+                    ? "bg-[#725eb5]/25 text-[#eceff8]"
+                    : "bg-[#252A3A] text-[#B2B7CB] hover:text-[#ECEFF8]"
                 }`}
               >
                 {c}
               </Link>
             ))}
           </div>
-        </div>
 
-        {/* Chart — 3 cols */}
-        <div className="rounded-2xl border border-border bg-panel p-6 shadow-card lg:col-span-3">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-ink/35">
-              {metal === "gold" ? "Gold" : "Silver"} Trend
-            </p>
-            <div className="flex gap-1">
-              {ranges.map((r) => (
-                <Link
-                  scroll={false}
-                  key={r.key}
-                  href={qp({ range: r.key })}
-                  className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
-                    range === r.key
-                      ? metal === "gold" ? "bg-accent/15 text-accent" : "bg-silver/15 text-silver"
-                      : "text-ink/30 hover:bg-panel-alt hover:text-ink/60"
-                  }`}
-                >
-                  {r.label}
-                </Link>
-              ))}
-            </div>
+          <div className="mb-5 flex flex-wrap gap-1.5">
+            {ranges.map((r) => (
+              <Link
+                scroll={false}
+                key={r.key}
+                href={qp({ range: r.key })}
+                className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${
+                  range === r.key
+                    ? "bg-[#D7AF35]/15 text-[#F8DF8A]"
+                    : "bg-[#252A3A] text-[#B2B7CB] hover:text-[#ECEFF8]"
+                }`}
+              >
+                {r.label}
+              </Link>
+            ))}
           </div>
+
           <div className="h-64 w-full md:h-72">
             <HistoricalChart title="" currency={currency} color={accentColor} range={range} data={convertedHistoryData} />
+          </div>
+
+          <div className="mt-5 rounded-xl border border-[#3c4256] bg-[#252A3A]/80 p-4">
+            <p className="text-[11px] uppercase tracking-[0.16em] text-[#8B92AA]">Current Selected Asset</p>
+            <div className="mt-1 flex flex-wrap items-center gap-3">
+              <span className="text-2xl font-black text-[#ECEFF8]">{formatCurrency(convertedLivePrice, currency)}</span>
+              <span className={`inline-flex items-center gap-1 text-sm font-semibold ${isUp ? "text-emerald-300" : "text-red-300"}`}>
+                {isUp ? "▲" : "▼"} {formatCurrency(Math.abs(convertedLiveChange), currency)} ({formatPercent(activeAsset.changePercent)})
+              </span>
+              <span className="text-xs text-[#8B92AA]">{displayUnit}</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          {actionDeck.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="group relative block overflow-hidden rounded-2xl border border-[#3c4256] bg-[#1B1F2D] p-5 transition hover:border-[#D7AF35]/35"
+            >
+              <div className={`pointer-events-none absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r ${item.tone}`} />
+              <div className="flex items-start gap-4">
+                <div className="min-w-0 flex-1">
+                  <span className="inline-flex rounded-full border border-[#8a77c8]/35 bg-[#252A3A] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#B2B7CB]">{item.chip}</span>
+                  <h4 className="mt-2 text-lg font-extrabold text-[#ECEFF8]">{item.title}</h4>
+                  <p className="mt-1 text-sm text-[#B2B7CB]">{item.description}</p>
+                </div>
+                <Image src={item.image} alt={item.title} width={88} height={88} className="h-20 w-20 shrink-0 object-contain transition-transform duration-300 group-hover:scale-105" />
+              </div>
+            </Link>
+          ))}
+
+          <div className="relative overflow-hidden rounded-2xl border border-[#3c4256] bg-gradient-to-br from-[#2d3a64] to-[#4d628c] p-5">
+            <Image src="/app-assets/vault.png" alt="Vault" width={180} height={180} className="pointer-events-none absolute -right-4 -bottom-8 h-28 w-28 object-contain opacity-90" />
+            <p className="text-xs uppercase tracking-[0.16em] text-[#d8deef]">Execution Notice</p>
+            <p className="mt-2 max-w-[17rem] text-sm text-[#eef2ff]">
+              Orders, schemes, and delivery requests are routed through verified execution flows. Continue to the respective module to proceed.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* ── Wallet CTA ── */}
-      <section className="group relative overflow-hidden rounded-2xl border border-border bg-panel p-6 shadow-card transition hover:border-accent/20">
-        <div className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-accent/[0.04] blur-2xl transition-all group-hover:bg-accent/[0.07]" />
-        <div className="relative flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-          <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-accent/10">
-              <svg className="h-5 w-5 text-accent" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 013 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 013 6v3" />
-              </svg>
-            </div>
-            <div>
-              <h2 className="text-base font-bold text-ink">Wallet & Transactions</h2>
-              <p className="text-sm text-ink/35">Full history, bonus progress, and storage benefits</p>
-            </div>
+      <section className="rounded-2xl border border-[#3c4256] bg-[#1B1F2D] p-6 shadow-card">
+        <div className="mb-4 flex items-center justify-between gap-2">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#8B92AA]">Regional Board</p>
+            <h3 className="mt-1 text-lg font-bold text-[#ECEFF8]">City Live Gold Prices</h3>
           </div>
-          <Link href="/wallet" className="rounded-xl bg-accent/10 px-5 py-2.5 text-sm font-bold text-accent transition hover:bg-accent/20">
-            View Wallet &rarr;
-          </Link>
+          <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold text-emerald-300">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
+            Streaming
+          </span>
         </div>
+        <CityLivePricesGrid cities={storeCities} basePricePerGram={goldPerGram} />
       </section>
     </div>
   );

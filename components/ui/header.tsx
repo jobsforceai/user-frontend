@@ -34,10 +34,13 @@ export function Header({ user }: Props) {
 
   return (
     <>
-      <header className="flex items-center justify-between border-b border-border bg-panel px-4 py-3 md:px-6">
+      <header className="sticky top-0 z-40 flex items-center justify-between border-b border-[#353c55] bg-[#151a29]/90 px-4 py-3 backdrop-blur-xl md:px-6">
         {/* Mobile: brand + hamburger */}
         <div className="flex items-center gap-3 md:hidden">
-          <button onClick={() => setMobileOpen(!mobileOpen)} className="text-ink/60 hover:text-ink">
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="rounded-lg border border-[#444d69] bg-[#20263a] p-2 text-[#c8cee2] transition hover:border-[#d7af35]/45 hover:text-[#f6d97f]"
+          >
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
               {mobileOpen ? (
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -46,26 +49,30 @@ export function Header({ user }: Props) {
               )}
             </svg>
           </button>
-          <Link href="/" className="flex items-center gap-2 text-lg font-semibold text-ink">
-            <Image src="/logo.png" alt="SG Gold" width={28} height={28} className="h-7 w-7 rounded-sm object-cover" />
-            SG <span className="text-accent">Gold</span>
+          <Link href="/" className="flex items-center gap-2 text-lg font-black tracking-tight text-[#eef1ff]">
+            <Image src="/logo.png" alt="SG Gold" width={28} height={28} className="h-7 w-7 rounded-md object-cover" />
+            SG <span className="text-[#f2cd63]">Gold</span>
           </Link>
         </div>
 
-        {/* Desktop: empty left */}
-        <div className="hidden md:block" />
+        <div className="hidden items-center gap-3 md:flex">
+          <div className="rounded-xl border border-[#4a5270] bg-[#20263a]/95 px-3 py-2">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#8e97b3]">Active Route</p>
+            <p className="text-sm font-semibold text-[#edf1ff]">{pathname.replace("/", "") || "dashboard"}</p>
+          </div>
+        </div>
 
         {/* Right side */}
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/10 text-xs font-semibold text-accent">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full border border-[#d7af35]/35 bg-[#d7af35]/15 text-xs font-semibold text-[#f8df8a]">
               {user.name?.charAt(0)?.toUpperCase() || "U"}
             </div>
-            <span className="hidden text-sm text-ink/60 sm:inline">{user.name}</span>
+            <span className="hidden text-sm font-medium text-[#d3d9ec] sm:inline">{user.name}</span>
           </div>
           <button
             onClick={handleLogout}
-            className="rounded-lg border border-border px-3 py-1.5 text-sm text-ink/50 transition hover:border-accent/30 hover:text-accent"
+            className="rounded-lg border border-[#4a5270] bg-[#20263a] px-3 py-1.5 text-sm font-medium text-[#c8cee2] transition hover:border-[#d7af35]/45 hover:text-[#f6d97f]"
           >
             Logout
           </button>
@@ -74,7 +81,7 @@ export function Header({ user }: Props) {
 
       {/* Mobile nav drawer */}
       {mobileOpen && (
-        <div className="border-b border-border bg-panel px-4 py-3 md:hidden">
+        <div className="border-b border-[#353c55] bg-[#151a29]/95 px-4 py-3 md:hidden">
           <nav className="space-y-1">
             {mobileNavItems.map((item) => {
               const isActive = pathname.startsWith(item.href);
@@ -84,10 +91,10 @@ export function Header({ user }: Props) {
                   href={item.href}
                   onClick={() => setMobileOpen(false)}
                   className={cn(
-                    "block rounded-lg px-3 py-2 text-sm transition",
+                    "block rounded-lg border px-3 py-2 text-sm transition",
                     isActive
-                      ? "bg-accent/10 text-accent font-medium"
-                      : "text-ink/50 hover:bg-white/5 hover:text-ink/70"
+                      ? "border-[#d7af35]/40 bg-[#252d43] font-semibold text-[#f7de89]"
+                      : "border-transparent text-[#a8b0c7] hover:border-[#4a5270] hover:bg-[#1c2335] hover:text-[#f0f3ff]"
                   )}
                 >
                   {item.label}
